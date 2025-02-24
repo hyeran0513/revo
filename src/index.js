@@ -5,32 +5,42 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { ThemeProvider } from "./context/ThemeContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
+import {
+  ThemeProvider as ContextThemeProvider,
+  useTheme,
+} from "./context/ThemeContext";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import GlobalStyle from "./styles/globalStyles";
+import { lightTheme, darkTheme } from "./styles/theme";
 
 const queryClient = new QueryClient();
+
+const AppWithTheme = () => {
+  const { state } = useTheme();
+
+  return (
+    <StyledThemeProvider theme={state.isDarkMode ? darkTheme : lightTheme}>
+      <GlobalStyle />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StyledThemeProvider>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* Redux store 제공 */}
     <Provider store={store}>
-      {/* React Query 클라이언트 제공 */}
       <QueryClientProvider client={queryClient}>
-        {/* ThemeContext 제공 */}
-        <ThemeProvider>
-          {/* 라우팅 */}
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ThemeProvider>
+        <ContextThemeProvider>
+          <AppWithTheme />
+        </ContextThemeProvider>
       </QueryClientProvider>
     </Provider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

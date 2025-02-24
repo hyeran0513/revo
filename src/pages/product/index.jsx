@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const fetchProducts = async () => {
   const querySnapshot = await getDocs(collection(db, "products"));
@@ -24,11 +24,17 @@ const Product = () => {
     queryFn: fetchProducts,
   });
 
+  const navigate = useNavigate();
+
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error.message}</div>;
 
   return (
     <div>
+      <button type="button" onClick={() => navigate("/product/add")}>
+        상품 추가하기
+      </button>
+
       {products.length > 0 ? (
         products.map((product) => (
           <Link to={`/product/${product.id}`} key={product.id}>

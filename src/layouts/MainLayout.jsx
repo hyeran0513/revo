@@ -8,7 +8,7 @@ const MainLayout = () => {
   const { state } = useTheme();
 
   return (
-    <LayoutWrapper $isDarkMode={state.isDarkMode}>
+    <LayoutWrapper>
       <Header />
 
       <LayoutMain>
@@ -19,8 +19,8 @@ const MainLayout = () => {
 };
 
 const LayoutWrapper = styled.div`
-  background: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
-  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  background: ${(props) => props.theme.colors.background};
+  color: ${(props) => props.theme.colors.text};
   min-height: 100vh;
   padding: 20px;
   display: flex;
