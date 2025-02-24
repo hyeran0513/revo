@@ -17,6 +17,10 @@ const Header = () => {
         <h1>Logo</h1>
       </Link>
 
+      <Gnb>
+        <GnbItem to="/product">상품목록</GnbItem>
+      </Gnb>
+
       <Utility>
         {isAuthenticated ? (
           <button onClick={() => dispatchRedux(logout())}>Logout</button>
@@ -44,6 +48,14 @@ const HeaderContainer = styled.header`
   align-items: center;
   margin-bottom: 20px;
 `;
+
+const Gnb = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const GnbItem = styled(Link)``;
 
 const Utility = styled.div`
   display: flex;
