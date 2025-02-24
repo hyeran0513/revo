@@ -1,12 +1,9 @@
 import React from "react";
-import { useTheme } from "../context/ThemeContext";
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import styled from "styled-components";
 
 const MainLayout = () => {
-  const { state } = useTheme();
-
   return (
     <LayoutWrapper>
       <Header />
