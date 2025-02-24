@@ -35,6 +35,10 @@ const ProductDetail = () => {
       <p>상품 ID: {product?.productId}</p>
       <p>제목: {product?.title}</p>
 
+      <button type="button" onClick={() => navigate(`/product/${id}/edit`)}>
+        수정하기
+      </button>
+
       <button type="button" onClick={() => navigate("/product")}>
         목록보기
       </button>
