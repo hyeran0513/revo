@@ -7,6 +7,7 @@ import Product from "./pages/product";
 import ProductDetail from "./pages/product/detail";
 import ProductEdit from "./pages/product/edit";
 import ProductAdd from "./pages/product/add";
+import Chat from "./pages/product/chat";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/product/:id/edit" element={<ProductEdit />} />
           <Route path="/product/add" element={<ProductAdd />} />
+          <Route path="/product/:id/chat" element={<Chat />} />
         </Route>
       </Routes>
     </>

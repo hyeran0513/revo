@@ -47,6 +47,10 @@ const ProductDetail = () => {
       <button type="button" onClick={() => navigate("/product")}>
         목록보기
       </button>
+
+      <button type="button" onClick={() => navigate(`/product/${id}/chat`)}>
+        채팅하기
+      </button>
     </div>
   );
 };
