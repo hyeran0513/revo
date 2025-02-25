@@ -5,6 +5,8 @@ import { db } from "../../firebase/firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LikeButton from "../../components/LikeButton";
+import styled from "styled-components";
+import Button from "../../components/Button";
 
 const fetchProducts = async () => {
   const querySnapshot = await getDocs(collection(db, "products"));
@@ -28,27 +30,50 @@ const Product = () => {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <div>
-      <button type="button" onClick={() => navigate("/product/add")}>
+    <ProductContainer>
+      <Button type="button" onClick={() => navigate("/product/add")}>
         상품 추가하기
-      </button>
+      </Button>
 
-      {products.length > 0 ? (
-        products.map((product) => (
-          <div key={product.id}>
-            <Link to={`/product/${product.id}`}>
-              <h1>{product?.title}</h1>
-              <p>상품 ID: {product?.id}</p>
-              <p>제목: {product?.title}</p>
-            </Link>
-            {user && <LikeButton productId={product.id} userId={user.uid} />}
-          </div>
-        ))
-      ) : (
-        <p>상품이 없습니다.</p>
-      )}
-    </div>
+      <ProductList>
+        {products.length > 0 ? (
+          products.map((product) => (
+            <div key={product.id}>
+              <Link to={`/product/${product.id}`}>
+                <ProductThumb>
+                  <img src="" />
+                </ProductThumb>
+
+                <h1>{product?.title}</h1>
+                <p>상품 ID: {product?.id}</p>
+                <p>제목: {product?.title}</p>
+              </Link>
+              {user && <LikeButton productId={product.id} userId={user.uid} />}
+            </div>
+          ))
+        ) : (
+          <p>상품이 없습니다.</p>
+        )}
+      </ProductList>
+    </ProductContainer>
   );
 };
+
+const ProductContainer = styled.div`
+  margin: 0 auto;
+  max-width: 1200px;
+`;
+
+const ProductList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+`;
+
+const ProductThumb = styled.div`
+  border: 1px solid #333;
+  border-radius: 10px;
+  aspect-ratio: 1 / 1;
+`;
 
 export default Product;

@@ -9,6 +9,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
+import styled from "styled-components";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -34,7 +35,7 @@ const Chat = () => {
   }, []);
 
   return (
-    <main>
+    <ChatContainer>
       <div>
         {messages?.map((message) => (
           <Message key={message.id} message={message} />
@@ -42,8 +43,13 @@ const Chat = () => {
       </div>
       <span ref={scroll}></span>
       <MessageForm scroll={scroll} />
-    </main>
+    </ChatContainer>
   );
 };
+
+const ChatContainer = styled.div`
+  margin: 0 auto;
+  max-width: 1200px;
+`;
 
 export default Chat;

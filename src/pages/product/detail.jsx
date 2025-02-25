@@ -5,6 +5,8 @@ import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import LikeButton from "../../components/LikeButton";
+import styled from "styled-components";
+import Button from "../../components/Button";
 
 const fetchProduct = async (id) => {
   const productDoc = await getDoc(doc(db, "products", id));
@@ -33,26 +35,31 @@ const ProductDetail = () => {
   if (!product) return <div>상품을 찾을 수 없습니다.</div>;
 
   return (
-    <div>
+    <ProductContainer>
       <h1>{product?.title}</h1>
       <p>상품 ID: {product?.id}</p>
       <p>제목: {product?.title}</p>
 
       {user && <LikeButton productId={id} userId={user.uid} />}
 
-      <button type="button" onClick={() => navigate(`/product/${id}/edit`)}>
+      <Button type="button" onClick={() => navigate(`/product/${id}/edit`)}>
         수정하기
-      </button>
+      </Button>
 
-      <button type="button" onClick={() => navigate("/product")}>
+      <Button type="button" onClick={() => navigate("/product")}>
         목록보기
-      </button>
+      </Button>
 
-      <button type="button" onClick={() => navigate(`/product/${id}/chat`)}>
+      <Button type="button" onClick={() => navigate(`/product/${id}/chat`)}>
         채팅하기
-      </button>
-    </div>
+      </Button>
+    </ProductContainer>
   );
 };
+
+const ProductContainer = styled.div`
+  margin: 0 auto;
+  max-width: 1200px;
+`;
 
 export default ProductDetail;
