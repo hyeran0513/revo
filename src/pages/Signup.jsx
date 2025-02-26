@@ -7,18 +7,22 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 
-const signupUser = async ({ email, password }) => {
+const signupUser = async ({ email, password, username }) => {
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,
     password
   );
 
-  // Firestore에 사용자 정보 저장
-  await setDoc(doc(db, "users", userCredential.user.uid), {
-    email: userCredential.user.email,
-    createdAt: serverTimestamp(),
-  });
+  await setDoc(
+    doc(db, "users", userCredential.user.uid),
+    {
+      email: userCredential.user.email,
+      createdAt: serverTimestamp(),
+      username,
+    },
+    { merge: true }
+  );
 
   return userCredential.user;
 };
@@ -40,7 +44,11 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutation.mutate({ email: state.email, password: state.password });
+    mutation.mutate({
+      email: state.email,
+      password: state.password,
+      username: state.username,
+    });
   };
 
   return (
@@ -58,6 +66,7 @@ const Signup = () => {
             }
           />
         </FormField>
+
         <FormField>
           <InputField
             type="password"
@@ -68,6 +77,18 @@ const Signup = () => {
             }
           />
         </FormField>
+
+        <FormField>
+          <InputField
+            type="text"
+            value={state.username}
+            placeholder={state.usernamePlaceholder}
+            onChange={(e) =>
+              dispatch({ type: "SET_USERNAME", payload: e.target.value })
+            }
+          />
+        </FormField>
+
         <Button type="submit" disabled={mutation.isPending}>
           {mutation.isPending ? "가입 중..." : "회원가입"}
         </Button>

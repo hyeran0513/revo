@@ -5,12 +5,19 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/authSlice";
 import { BiSun, BiMoon } from "react-icons/bi";
+import { auth } from "../firebase/firebaseConfig";
 
 const Header = () => {
   const { state, dispatch } = useTheme();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatchRedux = useDispatch();
+
+  const handleLogout = () => {
+    dispatchRedux(logout());
+    auth.signOut();
+    navigate("/login");
+  };
 
   return (
     <HeaderWrapper>
@@ -25,9 +32,7 @@ const Header = () => {
 
         <Utility>
           {isAuthenticated ? (
-            <UtilityButton onClick={() => dispatchRedux(logout())}>
-              로그아웃
-            </UtilityButton>
+            <UtilityButton onClick={handleLogout}>로그아웃</UtilityButton>
           ) : (
             <UtilityButton type="button" onClick={() => navigate("/login")}>
               로그인

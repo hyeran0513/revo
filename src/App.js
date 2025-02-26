@@ -9,8 +9,20 @@ import ProductEdit from "./pages/product/edit";
 import ProductAdd from "./pages/product/add";
 import Chat from "./pages/product/chat";
 import AuthLayout from "./layouts/AuthLayout";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { login } from "./redux/authSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      dispatch(login(JSON.parse(savedUser)));
+    }
+  }, [dispatch]);
+
   return (
     <>
       <Routes>

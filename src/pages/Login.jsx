@@ -1,10 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuthForm } from "../hooks/useAuthForm";
 import { auth } from "../firebase/firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithCredential,
+} from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
+import { useEffect, useState } from "react";
 
 const loginUser = async ({ email, password }) => {
   const userCredential = await signInWithEmailAndPassword(
@@ -12,12 +17,43 @@ const loginUser = async ({ email, password }) => {
     email,
     password
   );
+  const token = await userCredential.user.getIdToken();
+  localStorage.setItem("authToken", token);
   return userCredential.user;
 };
 
 const Login = () => {
   const [state, dispatch] = useAuthForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    if (token) {
+      auth.currentUser
+        .getIdTokenResult(true)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("토큰 인증 실패", error.message);
+          localStorage.removeItem("authToken");
+        });
+    } else {
+      setLoading(false);
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   const mutation = useMutation({
     mutationFn: loginUser,
@@ -34,6 +70,10 @@ const Login = () => {
     e.preventDefault();
     mutation.mutate({ email: state.email, password: state.password });
   };
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <LoginWrapper>
