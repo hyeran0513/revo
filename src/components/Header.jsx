@@ -28,6 +28,8 @@ const Header = () => {
 
         <Gnb>
           <GnbItem to="/product">상품목록</GnbItem>
+          <GnbItem to="/message">메시지</GnbItem>
+          <GnbItem to="/favorite">찜 목록</GnbItem>
         </Gnb>
 
         <Utility>
@@ -67,7 +69,7 @@ const HeaderContainer = styled.div`
 const Gnb = styled.nav`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.5rem;
 `;
 
 const GnbItem = styled(Link)``;
