@@ -4,7 +4,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { BiSend } from "react-icons/bi";
 
-const MessageForm = ({ scroll }) => {
+const MessageForm = ({ scroll, receivedId, productId }) => {
   const [message, setMessage] = useState("");
   const { user } = useSelector((state) => state.auth);
 
@@ -18,10 +18,10 @@ const MessageForm = ({ scroll }) => {
 
     await addDoc(collection(db, "messages"), {
       text: message,
-      name: "홍길동",
-      avatar: "",
       createdAt: serverTimestamp(),
-      uid: user.uid,
+      productId,
+      receivedId,
+      senderId: user.uid,
     });
 
     setMessage("");

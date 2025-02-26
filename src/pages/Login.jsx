@@ -1,11 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuthForm } from "../hooks/useAuthForm";
 import { auth } from "../firebase/firebaseConfig";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithCredential,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
@@ -31,15 +27,19 @@ const Login = () => {
     const token = localStorage.getItem("authToken");
 
     if (token) {
-      auth.currentUser
-        .getIdTokenResult(true)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error("토큰 인증 실패", error.message);
-          localStorage.removeItem("authToken");
-        });
+      if (auth.currentUser) {
+        auth.currentUser
+          .getIdTokenResult(true)
+          .then(() => {
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("토큰 인증 실패", error.message);
+            localStorage.removeItem("authToken");
+          });
+      } else {
+        setLoading(false);
+      }
     } else {
       setLoading(false);
     }
