@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { setDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
@@ -9,6 +9,8 @@ import Button from "../../components/Button";
 const ProductAdd = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useProductForm();
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get("type");
 
   // 상품 추가
   const addProduct = async (data) => {
@@ -32,7 +34,7 @@ const ProductAdd = () => {
     try {
       await addProduct(data);
       console.log("상품이 성공적으로 추가되었습니다.");
-      navigate("/product");
+      navigate(`/products/${type}`);
     } catch (error) {
       console.error("상품 추가 실패:", error);
     }
@@ -95,10 +97,13 @@ const ProductAdd = () => {
               required
             >
               <option value="">카테고리 선택</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Furniture">Furniture</option>
-              <option value="Toys">Toys</option>
+              <option value="mobile">모바일</option>
+              <option value="tablet">태블릿</option>
+              <option value="pc">PC</option>
+              <option value="monitor">모니터</option>
+              <option value="audio">스피커</option>
+              <option value="camera">카메라</option>
+              <option value="other">기타</option>
             </SelectField>
           </FormField>
         </FormBox>
@@ -150,7 +155,7 @@ const ProductAdd = () => {
         <Button type="submit">상품 추가</Button>
       </FormContainer>
 
-      <Button type="button" onClick={() => navigate("/product")}>
+      <Button type="button" onClick={() => navigate(`/products/${type}`)}>
         목록 보기
       </Button>
     </ProductAddWrapper>

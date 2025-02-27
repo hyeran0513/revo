@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 
@@ -10,6 +10,8 @@ const ProductEdit = () => {
   const [state, dispatch] = useProductForm();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get("type");
 
   // 상품 조회
   const fetchProduct = async (id) => {
@@ -128,10 +130,13 @@ const ProductEdit = () => {
               required
             >
               <option value="">카테고리 선택</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Furniture">Furniture</option>
-              <option value="Toys">Toys</option>
+              <option value="mobile">모바일</option>
+              <option value="tablet">태블릿</option>
+              <option value="pc">PC</option>
+              <option value="monitor">모니터</option>
+              <option value="audio">스피커</option>
+              <option value="camera">카메라</option>
+              <option value="other">기타</option>
             </SelectField>
           </FormField>
         </FormBox>
@@ -183,7 +188,7 @@ const ProductEdit = () => {
         <Button type="submit">수정하기</Button>
       </FormContainer>
 
-      <Button type="button" onClick={() => navigate("/product")}>
+      <Button type="button" onClick={() => navigate(`/products/${type}`)}>
         목록으로
       </Button>
     </ProductEditWrapper>

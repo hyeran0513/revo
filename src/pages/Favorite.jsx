@@ -1,10 +1,8 @@
 import { collection, getDoc, getDocs, doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import LikeButton from "../components/LikeButton";
+import ProductCard from "../components/ProductCard";
 
 const fetchFavorites = async () => {
   const favoritesRef = await getDocs(collection(db, "likes"));
@@ -28,7 +26,6 @@ const Favorite = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getFavorites = async () => {
@@ -72,20 +69,7 @@ const Favorite = () => {
     <ProductContainer>
       <ProductList>
         {products.length > 0 ? (
-          products.map((product) => (
-            <div key={product.id}>
-              <Link to={`/product/${product.id}`}>
-                <ProductThumb>
-                  <img src="" />
-                </ProductThumb>
-
-                <h1>{product?.title}</h1>
-                <p>상품 ID: {product?.id}</p>
-                <p>제목: {product?.title}</p>
-              </Link>
-              {user && <LikeButton productId={product.id} userId={user.uid} />}
-            </div>
-          ))
+          products.map((product) => <ProductCard product={product} />)
         ) : (
           <p>좋아하는 항목이 없습니다.</p>
         )}
@@ -103,12 +87,6 @@ const ProductList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-`;
-
-const ProductThumb = styled.div`
-  border: 1px solid #333;
-  border-radius: 10px;
-  aspect-ratio: 1 / 1;
 `;
 
 export default Favorite;

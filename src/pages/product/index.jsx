@@ -1,55 +1,48 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import LikeButton from "../../components/LikeButton";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import ProductCard from "../../components/ProductCard";
 
-const fetchProducts = async () => {
-  const querySnapshot = await getDocs(collection(db, "products"));
+const fetchProducts = async (type) => {
+  const q = query(collection(db, "products"), where("category", "==", type));
+  const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
 const Product = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get("type");
+
   const {
     data: products = [],
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
+    queryKey: ["products", type],
+    queryFn: () => fetchProducts(type),
   });
-
-  const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error.message}</div>;
 
   return (
     <ProductContainer>
-      <Button type="button" onClick={() => navigate("/product/add")}>
+      <Button
+        type="button"
+        onClick={() => navigate(`/product/add?type=${type}`)}
+      >
         상품 추가하기
       </Button>
 
       <ProductList>
         {products.length > 0 ? (
           products.map((product) => (
-            <div key={product.id}>
-              <Link to={`/product/${product.id}`}>
-                <ProductThumb>
-                  <img src="" />
-                </ProductThumb>
-
-                <h1>{product?.title}</h1>
-                <p>상품 ID: {product?.id}</p>
-                <p>제목: {product?.title}</p>
-              </Link>
-              {user && <LikeButton productId={product.id} userId={user.uid} />}
-            </div>
+            <ProductCard key={product.id} product={product} type={type} />
           ))
         ) : (
           <p>상품이 없습니다.</p>
@@ -68,12 +61,6 @@ const ProductList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-`;
-
-const ProductThumb = styled.div`
-  border: 1px solid #333;
-  border-radius: 10px;
-  aspect-ratio: 1 / 1;
 `;
 
 export default Product;

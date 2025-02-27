@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
@@ -19,6 +19,8 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get("type");
 
   const {
     data: product,
@@ -42,15 +44,21 @@ const ProductDetail = () => {
 
       {user && <LikeButton productId={id} userId={user.uid} />}
 
-      <Button type="button" onClick={() => navigate(`/product/${id}/edit`)}>
+      <Button
+        type="button"
+        onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
+      >
         수정하기
       </Button>
 
-      <Button type="button" onClick={() => navigate("/product")}>
-        목록보기
+      <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
+        목록으로
       </Button>
 
-      <Button type="button" onClick={() => navigate(`/product/${id}/chat`)}>
+      <Button
+        type="button"
+        onClick={() => navigate(`/product/${id}/chat?type=${type}`)}
+      >
         채팅하기
       </Button>
     </ProductContainer>

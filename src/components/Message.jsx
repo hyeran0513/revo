@@ -4,7 +4,6 @@ import styled from "styled-components";
 const Message = ({ message, userId }) => {
   return (
     <MessageBox $isUser={message.senderId === userId}>
-      <p>{message.senderId}</p>
       <p>{message.text}</p>
     </MessageBox>
   );
