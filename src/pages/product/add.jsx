@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
@@ -10,8 +10,6 @@ import ToastUIEditor from "../../components/ToastUIEditor";
 const ProductAdd = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useProductForm();
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get("type");
 
   // 상품 추가
   const addProduct = async (data) => {
@@ -35,7 +33,7 @@ const ProductAdd = () => {
     try {
       await addProduct(data);
       console.log("상품이 성공적으로 추가되었습니다.");
-      navigate(`/product?type=${type}`);
+      navigate(`/mypage`);
     } catch (error) {
       console.error("상품 추가 실패:", error);
     }
@@ -155,8 +153,8 @@ const ProductAdd = () => {
         <Button type="submit">상품 추가</Button>
       </FormContainer>
 
-      <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
-        목록 보기
+      <Button type="button" onClick={() => navigate("/mypage")}>
+        마이페이지로 이동
       </Button>
     </ProductAddWrapper>
   );

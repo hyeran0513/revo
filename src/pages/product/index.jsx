@@ -2,9 +2,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
 import ProductCard from "../../components/ProductCard";
 
 const fetchProducts = async (type) => {
@@ -14,7 +13,6 @@ const fetchProducts = async (type) => {
 };
 
 const Product = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type");
 
@@ -32,13 +30,6 @@ const Product = () => {
 
   return (
     <ProductContainer>
-      <Button
-        type="button"
-        onClick={() => navigate(`/product/add?type=${type}`)}
-      >
-        상품 추가하기
-      </Button>
-
       <ProductList>
         {products.length > 0 ? (
           products.map((product) => (

@@ -7,6 +7,7 @@ import Product from "./pages/product";
 import ProductDetail from "./pages/product/detail";
 import ProductEdit from "./pages/product/edit";
 import ProductAdd from "./pages/product/add";
+import ProductUpload from "./pages/product/upload";
 import Chat from "./pages/product/chat";
 import AuthLayout from "./layouts/AuthLayout";
 import { useDispatch } from "react-redux";
@@ -32,6 +33,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/product/upload" element={<ProductUpload />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/product/:id/edit" element={<ProductEdit />} />
           <Route path="/product/add" element={<ProductAdd />} />

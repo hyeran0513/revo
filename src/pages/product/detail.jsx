@@ -45,16 +45,24 @@ const ProductDetail = () => {
 
       {user && <LikeButton productId={id} userId={user.uid} />}
 
-      <Button
-        type="button"
-        onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
-      >
-        수정하기
-      </Button>
+      {user.uid === product.sellerId && (
+        <Button
+          type="button"
+          onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
+        >
+          수정하기
+        </Button>
+      )}
 
-      <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
-        목록으로
-      </Button>
+      {type === "undefined" ? (
+        <Button type="button" onClick={() => navigate(-1)}>
+          뒤로 가기
+        </Button>
+      ) : (
+        <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
+          목록으로
+        </Button>
+      )}
 
       <Button
         type="button"
