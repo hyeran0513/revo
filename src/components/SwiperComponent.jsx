@@ -21,8 +21,8 @@ const SwiperComponent = ({ products }) => {
       onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log("slide change")}
     >
-      {products.map((product) => (
-        <SwiperSlide>
+      {products.map((product, index) => (
+        <SwiperSlide key={index}>
           <ProductCard product={product} type={product.category} />
         </SwiperSlide>
       ))}

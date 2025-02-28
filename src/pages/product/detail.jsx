@@ -45,12 +45,19 @@ const ProductDetail = () => {
 
       {user && <LikeButton productId={id} userId={user.uid} />}
 
-      {user.uid === product.sellerId && (
+      {user.uid === product.sellerId ? (
         <Button
           type="button"
           onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
         >
           수정하기
+        </Button>
+      ) : (
+        <Button
+          type="button"
+          onClick={() => navigate(`/product/${id}/chat?type=${type}`)}
+        >
+          채팅하기
         </Button>
       )}
 
@@ -63,13 +70,6 @@ const ProductDetail = () => {
           목록으로
         </Button>
       )}
-
-      <Button
-        type="button"
-        onClick={() => navigate(`/product/${id}/chat?type=${type}`)}
-      >
-        채팅하기
-      </Button>
     </ProductContainer>
   );
 };

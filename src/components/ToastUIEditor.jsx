@@ -5,7 +5,7 @@ import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { useRef, useState, useEffect } from "react";
 
 const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
-  const [initialValueState, setInitialValueState] = useState(initialValue); // initialValue 값을 상태값으로 관리
+  const [initialValueState, setInitialValueState] = useState(initialValue);
   const editorRef = useRef(null);
 
   useEffect(() => {

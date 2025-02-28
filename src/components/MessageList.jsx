@@ -1,20 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const MessageList = ({
-  productIds,
+  productData,
   selectedProductId,
   setSelectedProductId,
 }) => {
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
   return (
     <MessageListWrapper>
-      {productIds.map((productId, index) => (
+      {productData.map((product, index) => (
         <ProductItem
           key={index}
-          onClick={() => setSelectedProductId(productId)}
-          $isSelected={productId === selectedProductId}
+          onClick={() => setSelectedProductId(product.productId)}
+          $isSelected={product.productId === selectedProductId}
         >
-          {productId}
+          {product.senderId === user.uid && (
+            <>{product.receivedUsername}님과의 채팅</>
+          )}
+          {product.receivedId === user.uid && (
+            <>{product.senderUsername}님과의 채팅</>
+          )}
         </ProductItem>
       ))}
     </MessageListWrapper>

@@ -15,7 +15,13 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const MessageBox = ({ productId: propProductId }) => {
+const MessageBox = ({
+  productId: propProductId,
+  receiveName,
+  sendName,
+  receivedId,
+  senderId,
+}) => {
   const { id: paramId } = useParams();
   const [messages, setMessages] = useState([]);
   const [sellerId, setSellerId] = useState(null);
@@ -27,6 +33,8 @@ const MessageBox = ({ productId: propProductId }) => {
   const productId = paramId || propProductId;
 
   useEffect(() => {
+    if (!productId) return;
+
     const fetchProduct = async () => {
       const productDoc = await getDoc(doc(db, "products", productId));
 
@@ -35,13 +43,11 @@ const MessageBox = ({ productId: propProductId }) => {
       }
     };
 
-    if (productId) {
-      fetchProduct();
-    }
+    fetchProduct();
   }, [productId]);
 
   useEffect(() => {
-    if (!sellerId) return;
+    if (!sellerId || !user?.uid) return;
 
     const q = query(
       collection(db, "messages"),
@@ -56,7 +62,7 @@ const MessageBox = ({ productId: propProductId }) => {
         const message = doc.data();
 
         if (
-          (message.senderId === user.uid || message.receivedId === sellerId) &&
+          (message.senderId === user.uid || message.receivedId === user.uid) &&
           message.productId === productId
         ) {
           messages.push({ ...message, id: doc.id });
@@ -67,10 +73,15 @@ const MessageBox = ({ productId: propProductId }) => {
     });
 
     return () => unsubscribe();
-  }, [user.uid, sellerId, productId]);
+  }, [user?.uid, sellerId, productId]);
 
   return (
     <ChatContainer>
+      <OpponentInfo>
+        {receivedId === user.uid && <> {sendName}님과의 채팅</>}
+        {senderId === user.uid && <>{receiveName}님과의 채팅</>}
+      </OpponentInfo>
+
       <MessageContainer>
         {messages?.map((message) => (
           <Message key={message.id} message={message} userId={user.uid} />
@@ -98,6 +109,11 @@ const MessageContainer = styled.div`
 
 const ChatContainer = styled.div`
   flex: 1;
+`;
+
+const OpponentInfo = styled.div`
+  padding: 20px 0;
+  border-bottom: 1px solid #d7d7d7;
 `;
 
 export default MessageBox;

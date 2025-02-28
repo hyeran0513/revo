@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <HomeWrapper>
-      {/* <UserProfile /> */}
+      <UserProfile />
 
       <Section>
         <SectionTop>

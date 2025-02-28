@@ -9,6 +9,8 @@ const Chat = () => {
   const type = searchParams.get("type");
   const { id } = useParams();
 
+  console.log("chat" + id);
+
   return (
     <div>
       <Button

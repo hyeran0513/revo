@@ -8,6 +8,7 @@ const initialState = {
   condition: "",
   images: [],
   location: "",
+  sellerId: "",
 };
 
 const productReducer = (state, action) => {
@@ -26,6 +27,8 @@ const productReducer = (state, action) => {
       return { ...state, images: action.payload };
     case "SET_LOCATION":
       return { ...state, location: action.payload };
+    case "SET_SELLERID":
+      return { ...state, sellerId: action.payload };
     default:
       return state;
   }

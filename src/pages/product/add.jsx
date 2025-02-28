@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { setDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
@@ -6,10 +6,12 @@ import { useProductForm } from "../../hooks/useProductForm";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import ToastUIEditor from "../../components/ToastUIEditor";
+import { useSelector } from "react-redux";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useProductForm();
+  const { user } = useSelector((state) => state.auth);
 
   // 상품 추가
   const addProduct = async (data) => {
@@ -43,11 +45,23 @@ const ProductAdd = () => {
     dispatch({ type: "SET_DESCRIPTION", payload: description });
   };
 
+  useEffect(() => {
+    dispatch({ type: "SET_SELLERID", payload: user.uid });
+  }, [user.uid]);
+
   return (
     <ProductAddWrapper>
       <PageTitle>상품 추가</PageTitle>
 
       <FormContainer onSubmit={handleSubmit}>
+        <input
+          type="hidden"
+          value={state.sellerId}
+          onChange={(e) =>
+            dispatch({ type: "SET_SELLERID", payload: user.uid })
+          }
+        />
+
         <FormBox>
           <label>상품명</label>
           <FormField>
