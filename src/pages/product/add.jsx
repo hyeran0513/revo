@@ -5,6 +5,7 @@ import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import ToastUIEditor from "../../components/ToastUIEditor";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
@@ -34,10 +35,14 @@ const ProductAdd = () => {
     try {
       await addProduct(data);
       console.log("상품이 성공적으로 추가되었습니다.");
-      navigate(`/products/${type}`);
+      navigate(`/product?type=${type}`);
     } catch (error) {
       console.error("상품 추가 실패:", error);
     }
+  };
+
+  const handleSaveDescription = (description) => {
+    dispatch({ type: "SET_DESCRIPTION", payload: description });
   };
 
   return (
@@ -61,15 +66,10 @@ const ProductAdd = () => {
 
         <FormBox>
           <label>상품 설명</label>
-          <FormField>
-            <TextareaField
-              value={state.description}
-              onChange={(e) =>
-                dispatch({ type: "SET_DESCRIPTION", payload: e.target.value })
-              }
-              required
-            />
-          </FormField>
+          <ToastUIEditor
+            initialValue={state.description}
+            onSaveDescription={handleSaveDescription}
+          />
         </FormBox>
 
         <FormBox>
@@ -155,7 +155,7 @@ const ProductAdd = () => {
         <Button type="submit">상품 추가</Button>
       </FormContainer>
 
-      <Button type="button" onClick={() => navigate(`/products/${type}`)}>
+      <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
         목록 보기
       </Button>
     </ProductAddWrapper>

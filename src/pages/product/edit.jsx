@@ -186,7 +186,7 @@ const ProductEdit = () => {
         <Button type="submit">수정하기</Button>
       </FormContainer>
 
-      <Button type="button" onClick={() => navigate(`/products/${type}`)}>
+      <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
         목록으로
       </Button>
     </ProductEditWrapper>
@@ -221,13 +221,6 @@ const FormField = styled.div`
 `;
 
 const InputField = styled.input`
-  padding: 0 20px;
-  width: 100%;
-  height: 100%;
-  border: 0;
-`;
-
-const TextareaField = styled.textarea`
   padding: 0 20px;
   width: 100%;
   height: 100%;
