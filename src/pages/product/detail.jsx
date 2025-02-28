@@ -41,6 +41,7 @@ const ProductDetail = () => {
       <h1>{product?.title}</h1>
       <p>상품 ID: {product?.id}</p>
       <p>제목: {product?.title}</p>
+      <p>설명: {product?.description}</p>
 
       {user && <LikeButton productId={id} userId={user.uid} />}
 

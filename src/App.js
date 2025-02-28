@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { login } from "./redux/authSlice";
 import Favorite from "./pages/Favorite";
 import Message from "./pages/Message";
+import Mypage from "./pages/Mypage";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
           <Route path="/product/:id/chat" element={<Chat />} />
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/message" element={<Message />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Route>
 
         <Route element={<AuthLayout />}>

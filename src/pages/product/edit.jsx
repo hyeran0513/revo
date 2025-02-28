@@ -5,6 +5,7 @@ import { useProductForm } from "../../hooks/useProductForm";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import ToastUIEditor from "../../components/ToastUIEditor";
 
 const ProductEdit = () => {
   const [state, dispatch] = useProductForm();
@@ -13,7 +14,6 @@ const ProductEdit = () => {
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type");
 
-  // 상품 조회
   const fetchProduct = async (id) => {
     const productDoc = await getDoc(doc(db, "products", id));
 
@@ -24,7 +24,6 @@ const ProductEdit = () => {
     }
   };
 
-  // 상품 업데이트
   const updateProduct = async (id, updatedData) => {
     const productRef = doc(db, "products", id);
     await updateDoc(productRef, updatedData);
@@ -73,6 +72,10 @@ const ProductEdit = () => {
     }
   };
 
+  const handleSaveDescription = (description) => {
+    dispatch({ type: "SET_DESCRIPTION", payload: description });
+  };
+
   return (
     <ProductEditWrapper>
       <PageTitle>상품 수정</PageTitle>
@@ -94,15 +97,10 @@ const ProductEdit = () => {
 
         <FormBox>
           <label>상품 설명</label>
-          <FormField>
-            <TextareaField
-              value={state.description}
-              onChange={(e) =>
-                dispatch({ type: "SET_DESCRIPTION", payload: e.target.value })
-              }
-              required
-            />
-          </FormField>
+          <ToastUIEditor
+            initialValue={state.description}
+            onSaveDescription={handleSaveDescription}
+          />
         </FormBox>
 
         <FormBox>

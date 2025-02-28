@@ -35,6 +35,10 @@ const SubHeader = () => {
           <UtilityButton type="button" onClick={() => navigate("/signup")}>
             회원가입
           </UtilityButton>
+
+          <UtilityButton type="mypage" onClick={() => navigate("/mypage")}>
+            마이페이지
+          </UtilityButton>
         </Utility>
       </SubHeaderContainer>
     </SubHeaderWrapper>
@@ -63,12 +67,13 @@ const UtilityButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-right: 0.5rem;
   background-color: inherit;
   cursor: pointer;
   font-size: 12px;
 
   &:not(:last-child) {
+    margin-right: 0.5rem;
+
     &::after {
       content: "";
       display: inline-block;
