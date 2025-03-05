@@ -1,4 +1,10 @@
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebase/firebaseConfig";
 import ChatList from "../../components/ChatList";
@@ -24,7 +30,11 @@ const ChatRoom = () => {
   useEffect(() => {
     if (!chatId) return;
     const messagesRef = collection(db, "messages");
-    const q = query(messagesRef, where("chatId", "==", chatId));
+    const q = query(
+      messagesRef,
+      where("chatId", "==", chatId),
+      orderBy("createdAt", "asc")
+    );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
