@@ -16,7 +16,7 @@ const Home = () => {
       <Section>
         <SectionTop>
           <SectionTitle>모바일</SectionTitle>
-          <MoreBtn onClick={() => navigate("/product?type=mobile")}>
+          <MoreBtn onClick={() => navigate("/products?type=mobile")}>
             더 보기
           </MoreBtn>
         </SectionTop>

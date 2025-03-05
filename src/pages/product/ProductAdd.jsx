@@ -30,6 +30,7 @@ const ProductAdd = () => {
       condition: state.condition,
       location: state.location,
       createdAt: serverTimestamp(),
+      sellerId: state.sellerId,
     };
 
     try {
