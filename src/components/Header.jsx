@@ -11,9 +11,7 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <Link to="/">
-          <h1>REVO</h1>
-        </Link>
+        <Logo to="/">REVO</Logo>
 
         <Gnb>
           <GnbItem to="/products?type=mobile">모바일</GnbItem>
@@ -54,6 +52,11 @@ const HeaderContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   height: 100%;
+`;
+
+const Logo = styled(Link)`
+  font-size: 34px;
+  font-weight: bold;
 `;
 
 const Gnb = styled.nav`
