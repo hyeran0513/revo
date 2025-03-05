@@ -13,13 +13,18 @@ import Favorite from "../pages/user/Favorite";
 import Mypage from "../pages/user/Mypage";
 import NotFound from "../pages/error/NotFound";
 import ChatRoom from "../pages/user/ChatRoom";
+import SubLayout from "../layouts/SubLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    children: [{ path: "", element: <Home /> }],
+  },
+  {
+    path: "/",
+    element: <SubLayout />,
     children: [
-      { path: "", element: <Home /> },
       { path: "products", element: <Product /> },
       { path: "product/upload", element: <ProductUpload /> },
       { path: "product/:id", element: <ProductDetail /> },

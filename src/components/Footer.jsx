@@ -16,11 +16,11 @@ const FooterWrapper = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 80px;
-  border-top: 1px solid #d7d7d7;
+  border-top: 1px solid ${(props) => props.theme.colors.border};
 `;
 
 const CopyRight = styled.p`
-  color: #999;
+  color: ${(props) => props.theme.colors.secondary};
   font-size: 12px;
 `;
 

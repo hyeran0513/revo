@@ -1,24 +1,12 @@
-import {
-  collection,
-  getDoc,
-  getDocs,
-  doc,
-  where,
-  query,
-} from "firebase/firestore";
+import { collection, getDoc, getDocs, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProductCard from "../../components/ProductCard";
-import { useSelector } from "react-redux";
 
-const fetchFavorites = async (uid) => {
-  const favoritesQuery = query(
-    collection(db, "likes"),
-    where("userId", "==", uid)
-  );
-  const favoritesSnapshot = await getDocs(favoritesQuery);
-  const productIds = favoritesSnapshot.docs.map((doc) => doc.data().productId);
+const fetchFavorites = async () => {
+  const favoritesRef = await getDocs(collection(db, "likes"));
+  const productIds = favoritesRef.docs.map((doc) => doc.data().productId);
 
   return productIds;
 };
@@ -38,12 +26,11 @@ const Favorite = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getFavorites = async () => {
       try {
-        const fetchedFavorites = await fetchFavorites(user.uid);
+        const fetchedFavorites = await fetchFavorites();
         setProductIds(fetchedFavorites);
       } catch (error) {
         setError(error.message);

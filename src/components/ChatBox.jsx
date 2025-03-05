@@ -1,8 +1,14 @@
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const ChatBox = ({ messages, otherUsername }) => {
   const { user } = useSelector((state) => state.auth);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <>
@@ -14,6 +20,8 @@ const ChatBox = ({ messages, otherUsername }) => {
             {msg.text}
           </MessageBox>
         ))}
+
+        <div ref={messagesEndRef} />
       </MessageBody>
     </>
   );
@@ -21,7 +29,7 @@ const ChatBox = ({ messages, otherUsername }) => {
 
 const MessageHead = styled.div`
   padding: 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
 `;
 
 const MessageBody = styled.div`
@@ -36,8 +44,11 @@ const MessageBody = styled.div`
 const MessageBox = styled.div`
   align-self: ${({ $isUser }) => ($isUser ? "flex-end" : "flex-start")};
   line-height: 1.3;
-  background-color: ${({ $isUser }) => ($isUser ? "#2979ff" : "#f6f5f7")};
-  color: ${({ $isUser }) => ($isUser ? "#fff" : "#333")};
+  background-color: ${({ $isUser, theme }) =>
+    $isUser ? theme.chats.sendbubble : theme.chats.receivebubble};
+  color: ${({ $isUser, theme }) =>
+    $isUser ? theme.chats.sendtext : theme.chats.receivetext};
+
   padding: 12px;
   margin: 8px 0;
   border-radius: ${({ $isUser }) =>

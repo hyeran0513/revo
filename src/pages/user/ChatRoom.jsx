@@ -99,7 +99,7 @@ const ChatWrapper = styled.div`
   display: flex;
   margin: 0 auto;
   max-width: 1200px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 8px;
 `;
 

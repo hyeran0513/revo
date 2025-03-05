@@ -66,7 +66,7 @@ const ChatList = ({ setChatId }) => {
 const ChatListWrapper = styled.div`
   max-width: 30%;
   width: 100%;
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: 1px solid ${(props) => props.theme.colors.border};
 `;
 
 const ChatContainer = styled.div`
@@ -78,13 +78,14 @@ const ChatContainer = styled.div`
 const ChatItem = styled.div`
   cursor: pointer;
   padding: 8px 16px;
+  transition: background-color ease 0.3s;
 
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
   }
 
   &:hover {
-    background-color: #dcdcdc;
+    background-color: ${(props) => props.theme.colors.hover};
   }
 `;
 

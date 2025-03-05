@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/authSlice";
 import { auth } from "../firebase/firebaseConfig";
+import useUserAuth from "../hooks/useUserAuth";
 
 const SubHeader = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatchRedux = useDispatch();
+  const { userInfo, error, isLoading } = useUserAuth();
+  const { user } = useSelector((state) => state.auth);
 
   const handleLogout = async () => {
     try {
@@ -36,9 +39,11 @@ const SubHeader = () => {
             회원가입
           </UtilityButton>
 
-          <UtilityButton type="mypage" onClick={() => navigate("/mypage")}>
-            마이페이지
-          </UtilityButton>
+          {isAuthenticated && (
+            <UtilityButton type="mypage" onClick={() => navigate("/mypage")}>
+              {userInfo?.username}님 마이페이지
+            </UtilityButton>
+          )}
         </Utility>
       </SubHeaderContainer>
     </SubHeaderWrapper>
@@ -70,6 +75,7 @@ const UtilityButton = styled.button`
   background-color: inherit;
   cursor: pointer;
   font-size: 12px;
+  color: ${(props) => props.theme.colors.text};
 
   &:not(:last-child) {
     margin-right: 0.5rem;

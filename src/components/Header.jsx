@@ -44,7 +44,6 @@ const Header = () => {
 };
 
 const HeaderWrapper = styled.header`
-  margin-bottom: 20px;
   height: 90px;
 `;
 
@@ -77,12 +76,13 @@ const UtilityButton = styled.button`
   align-items: center;
   width: 34px;
   height: 34px;
-  border: 1px solid #333;
+  border: 1px solid ${(props) => props.theme.colors.text};
   border-radius: 4px;
   background-color: inherit;
 
   svg {
     font-size: 16px;
+    color: ${(props) => props.theme.colors.text};
   }
 `;
 

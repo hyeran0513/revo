@@ -5,7 +5,7 @@ import styled from "styled-components";
 import SubHeader from "../components/SubHeader";
 import Footer from "../components/Footer";
 
-const MainLayout = () => {
+const SubLayout = () => {
   return (
     <LayoutWrapper>
       <SubHeader />
@@ -30,7 +30,8 @@ const LayoutWrapper = styled.div`
 
 const LayoutMain = styled.main`
   flex: 1;
-  padding-bottom: 30px;
+  margin-top: 20px;
+  padding: 0 20px;
 `;
 
-export default MainLayout;
+export default SubLayout;

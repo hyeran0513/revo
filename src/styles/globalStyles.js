@@ -44,7 +44,8 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    }
+    transition: all 0.5s ease-in-out;
+  }
 
   /* 헤더 태그의 기본 스타일 리셋 */
   h1, h2, h3, h4, h5, h6 {

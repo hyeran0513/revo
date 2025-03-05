@@ -51,13 +51,13 @@ const FormContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 20px;
-  border-top: 1px solid #d7d7d7;
+  border-top: 1px solid ${(props) => props.theme.colors.border};
 `;
 
 const FormField = styled.div`
   flex: 1;
   height: 40px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px 0 0 4px;
   overflow: hidden;
 `;
@@ -78,13 +78,13 @@ const FormButton = styled.button`
   gap: 0.5rem;
   padding: 0 20px;
   height: 40px;
-  background-color: #13c2c2;
+  background-color: ${(props) => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0 4px 4px 0;
 
   &:hover {
-    background-color: #36cfc9;
+    background-color: ${(props) => props.theme.colors.primary};
   }
 `;
 

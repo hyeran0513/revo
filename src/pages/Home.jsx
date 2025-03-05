@@ -1,9 +1,9 @@
 import React from "react";
-import UserProfile from "../components/UserProfile";
 import styled from "styled-components";
 import SwiperComponent from "../components/SwiperComponent";
 import useProductData from "../hooks/useProductData";
 import { useNavigate } from "react-router-dom";
+import Banner from "../components/Banner";
 
 const Home = () => {
   const { data: products = [], error, isLoading } = useProductData("mobile");
@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <HomeWrapper>
-      <UserProfile />
+      <Banner />
 
       <Section>
         <SectionTop>
@@ -27,12 +27,12 @@ const Home = () => {
   );
 };
 
-const HomeWrapper = styled.div`
-  margin: 0 auto;
+const HomeWrapper = styled.div``;
+
+const Section = styled.section`
+  margin: 0 auto 20px;
   max-width: 1200px;
 `;
-
-const Section = styled.section``;
 
 const SectionTop = styled.div`
   display: flex;
@@ -41,10 +41,14 @@ const SectionTop = styled.div`
 `;
 
 const SectionTitle = styled.h1`
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
-const MoreBtn = styled.button``;
+const MoreBtn = styled.button`
+  background-color: inherit;
+  color: ${(props) => props.theme.colors.primary};
+`;
 
 export default Home;
