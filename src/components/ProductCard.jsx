@@ -19,7 +19,7 @@ const ProductCard = ({ product, type }) => {
 
           {product.image ? (
             <ProductThumb>
-              <img src="" />
+              <img src={product.image} />
             </ProductThumb>
           ) : (
             <ProductThumbDefault>
@@ -52,6 +52,13 @@ const LikeButtonWrapper = styled.div`
 const ProductThumb = styled.div`
   border-radius: 10px;
   aspect-ratio: 1 / 1;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ProductThumbDefault = styled.div`

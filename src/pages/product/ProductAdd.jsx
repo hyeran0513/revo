@@ -13,7 +13,6 @@ const ProductAdd = () => {
   const [state, dispatch] = useProductForm();
   const { user } = useSelector((state) => state.auth);
 
-  // 상품 추가
   const addProduct = async (data) => {
     const productRef = doc(collection(db, "products"));
     await setDoc(productRef, { ...data, createdAt: serverTimestamp() });
@@ -48,7 +47,7 @@ const ProductAdd = () => {
 
   useEffect(() => {
     dispatch({ type: "SET_SELLERID", payload: user.uid });
-  }, [user.uid]);
+  }, []);
 
   return (
     <ProductAddWrapper>
@@ -64,7 +63,7 @@ const ProductAdd = () => {
         />
 
         <FormBox>
-          <label>상품명</label>
+          <FormLabel>상품명</FormLabel>
           <FormField>
             <InputField
               type="text"
@@ -78,7 +77,7 @@ const ProductAdd = () => {
         </FormBox>
 
         <FormBox>
-          <label>상품 설명</label>
+          <FormLabel>상품 설명</FormLabel>
           <ToastUIEditor
             initialValue={state.description}
             onSaveDescription={handleSaveDescription}
@@ -86,7 +85,7 @@ const ProductAdd = () => {
         </FormBox>
 
         <FormBox>
-          <label>가격</label>
+          <FormLabel>가격</FormLabel>
           <FormField>
             <InputField
               type="number"
@@ -100,7 +99,7 @@ const ProductAdd = () => {
         </FormBox>
 
         <FormBox>
-          <label>카테고리</label>
+          <FormLabel>카테고리</FormLabel>
           <FormField>
             <SelectField
               value={state.category}
@@ -122,7 +121,7 @@ const ProductAdd = () => {
         </FormBox>
 
         <FormBox>
-          <label>상태</label>
+          <FormLabel>상태</FormLabel>
           <FormField>
             <SelectField
               value={state.condition}
@@ -138,8 +137,8 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
-        <FormBox>
-          <label>상품 이미지</label>
+        {/* <FormBox>
+          <FormLabel>상품 이미지</FormLabel>
           <FormField>
             <InputField
               type="file"
@@ -149,10 +148,10 @@ const ProductAdd = () => {
               }
             />
           </FormField>
-        </FormBox>
+        </FormBox> */}
 
         <FormBox>
-          <label>위치</label>
+          <FormLabel>위치</FormLabel>
           <FormField>
             <InputField
               type="text"
@@ -165,12 +164,21 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
-        <Button type="submit">상품 추가</Button>
-      </FormContainer>
+        <ButtonWrap>
+          <Button
+            type="button"
+            variant="outline"
+            size="large"
+            onClick={() => navigate("/mypage")}
+          >
+            마이페이지로 이동
+          </Button>
 
-      <Button type="button" onClick={() => navigate("/mypage")}>
-        마이페이지로 이동
-      </Button>
+          <Button type="submit" size="large">
+            상품 추가
+          </Button>
+        </ButtonWrap>
+      </FormContainer>
     </ProductAddWrapper>
   );
 };
@@ -195,7 +203,7 @@ const FormBox = styled.div``;
 
 const FormField = styled.div`
   height: 40px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px;
   overflow: hidden;
 `;
@@ -205,13 +213,7 @@ const InputField = styled.input`
   width: 100%;
   height: 100%;
   border: 0;
-`;
-
-const TextareaField = styled.textarea`
-  padding: 0 20px;
-  width: 100%;
-  height: 100%;
-  border: 0;
+  background-color: ${(props) => props.theme.inputs.background};
 `;
 
 const SelectField = styled.select`
@@ -219,6 +221,23 @@ const SelectField = styled.select`
   width: 100%;
   height: 100%;
   border: 0;
+  background-color: ${(props) => props.theme.inputs.background};
+`;
+
+const ButtonWrap = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 20px;
+
+  button {
+    flex: 1;
+  }
+`;
+
+const FormLabel = styled.label`
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 14px;
 `;
 
 export default ProductAdd;

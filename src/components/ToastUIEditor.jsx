@@ -25,7 +25,7 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
       const description = editorRef.current.getInstance().getMarkdown();
       onSaveDescription(description);
     }
-  }, [initialValue, onSaveDescription]);
+  }, []);
 
   return (
     <Editor

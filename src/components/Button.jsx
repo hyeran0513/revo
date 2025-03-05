@@ -38,7 +38,7 @@ const Button = styled.button`
           color: white;
           border: none;
           &:hover {
-            background-color: #36cfc9;
+            background-color: ${theme.colors.primary};
           }
         `;
       case "secondary":
@@ -53,12 +53,8 @@ const Button = styled.button`
       case "outline":
         return `
           background-color: transparent;
-          color: #007bff;
-          border: 2px solid #007bff;
-          &:hover {
-            background-color: #007bff;
-            color: white;
-          }
+          color: ${theme.colors.text};
+          border: 1px solid ${theme.colors.border};
         `;
       default:
         return `

@@ -31,12 +31,9 @@ const ProductUpload = () => {
     <ProductUploadWrapper>
       <ProductList>
         {products.map((product) => (
-          <ProductCard product={product} />
+          <ProductCard product={product} key={product.id} />
         ))}
       </ProductList>
-      <Button type="button" onClick={() => navigate("/mypage")}>
-        마이페이지로 이동
-      </Button>
     </ProductUploadWrapper>
   );
 };

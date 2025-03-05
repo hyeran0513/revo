@@ -82,7 +82,7 @@ const ProductEdit = () => {
 
       <FormContainer onSubmit={handleSubmit}>
         <FormBox>
-          <label>상품명</label>
+          <FormLabel>상품명</FormLabel>
           <FormField>
             <InputField
               type="text"
@@ -96,7 +96,7 @@ const ProductEdit = () => {
         </FormBox>
 
         <FormBox>
-          <label>상품 설명</label>
+          <FormLabel>상품 설명</FormLabel>
           <ToastUIEditor
             initialValue={state.description}
             onSaveDescription={handleSaveDescription}
@@ -104,7 +104,7 @@ const ProductEdit = () => {
         </FormBox>
 
         <FormBox>
-          <label>가격</label>
+          <FormLabel>가격</FormLabel>
           <FormField>
             <InputField
               type="number"
@@ -118,7 +118,7 @@ const ProductEdit = () => {
         </FormBox>
 
         <FormBox>
-          <label>카테고리</label>
+          <FormLabel>카테고리</FormLabel>
           <FormField>
             <SelectField
               value={state.category}
@@ -140,7 +140,7 @@ const ProductEdit = () => {
         </FormBox>
 
         <FormBox>
-          <label>상태</label>
+          <FormLabel>상태</FormLabel>
           <FormField>
             <SelectField
               value={state.condition}
@@ -156,8 +156,8 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
-        <FormBox>
-          <label>상품 이미지</label>
+        {/* <FormBox>
+          <FormLabel>상품 이미지</FormLabel>
           <FormField>
             <InputField
               type="file"
@@ -167,10 +167,10 @@ const ProductEdit = () => {
               }
             />
           </FormField>
-        </FormBox>
+        </FormBox> */}
 
         <FormBox>
-          <label>위치</label>
+          <FormLabel>위치</FormLabel>
           <FormField>
             <InputField
               type="text"
@@ -183,12 +183,21 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
-        <Button type="submit">수정하기</Button>
-      </FormContainer>
+        <ButtonWrap>
+          <Button
+            type="button"
+            variant="outline"
+            size="large"
+            onClick={() => navigate(-1)}
+          >
+            뒤로가기
+          </Button>
 
-      <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
-        목록으로
-      </Button>
+          <Button type="submit" size="large">
+            수정하기
+          </Button>
+        </ButtonWrap>
+      </FormContainer>
     </ProductEditWrapper>
   );
 };
@@ -207,15 +216,13 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 0 auto;
-  max-width: 500px;
 `;
 
 const FormBox = styled.div``;
 
 const FormField = styled.div`
   height: 40px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px;
   overflow: hidden;
 `;
@@ -225,6 +232,7 @@ const InputField = styled.input`
   width: 100%;
   height: 100%;
   border: 0;
+  background-color: ${(props) => props.theme.inputs.background};
 `;
 
 const SelectField = styled.select`
@@ -232,6 +240,22 @@ const SelectField = styled.select`
   width: 100%;
   height: 100%;
   border: 0;
+`;
+
+const ButtonWrap = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 20px;
+
+  button {
+    flex: 1;
+  }
+`;
+
+const FormLabel = styled.label`
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 14px;
 `;
 
 export default ProductEdit;
