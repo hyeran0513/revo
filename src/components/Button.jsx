@@ -7,9 +7,12 @@ const Button = styled.button`
       : size === "large"
       ? "12px 24px"
       : "0px 15px"};
-  height: 32px;
+
+  height: ${({ size }) =>
+    size === "small" ? "28px" : size === "large" ? "40px" : "32px"};
+
   font-size: ${({ size }) =>
-    size === "small" ? "14px" : size === "large" ? "18px" : "16px"};
+    size === "small" ? "14px" : size === "large" ? "16px" : "16px"};
 
   transition: background-color 0.3s, border-color 0.3s;
 
@@ -27,11 +30,11 @@ const Button = styled.button`
   touch-action: manipulation;
   border-radius: 4px;
 
-  ${({ variant }) => {
+  ${({ variant, theme }) => {
     switch (variant) {
       case "primary":
         return `
-          background-color: #13c2c2;
+          background-color: ${theme.colors.primary};
           color: white;
           border: none;
           &:hover {
@@ -59,12 +62,11 @@ const Button = styled.button`
         `;
       default:
         return `
-          background-color: #13c2c2;
+          background-color: ${theme.colors.primary};
           color: white;
           border: none;
-
           &:hover {
-            background-color: #36cfc9;
+            background-color: ${theme.colors.primary};
           }
         `;
     }

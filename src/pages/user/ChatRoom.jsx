@@ -1,5 +1,7 @@
 import {
   collection,
+  doc,
+  getDoc,
   onSnapshot,
   orderBy,
   query,
@@ -12,6 +14,12 @@ import styled from "styled-components";
 import ChatForm from "../../components/ChatForm";
 import ChatBox from "../../components/ChatBox";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+const fetchUser = async (uid) => {
+  const userDoc = await getDoc(doc(db, "users", uid));
+  return userDoc.exists() ? userDoc.data() : null;
+};
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
@@ -20,6 +28,33 @@ const ChatRoom = () => {
   const searchChatId = searchParams.get("chatId");
 
   const [chatId, setChatId] = useState(searchChatId || "");
+  const { user } = useSelector((state) => state.auth);
+  const [otherUsername, setOtherUsername] = useState(null);
+
+  useEffect(() => {
+    const fetchOtherUser = async () => {
+      try {
+        const chatRef = doc(db, "chats", chatId); // 특정 chatId 문서 참조
+        const chatSnap = await getDoc(chatRef); // 해당 문서 가져오기
+
+        if (chatSnap.exists()) {
+          const chatData = chatSnap.data();
+          const otherParticipant = chatData.participants.find(
+            (uid) => uid !== user.uid
+          );
+
+          if (otherParticipant) {
+            const otherUserInfo = await fetchUser(otherParticipant);
+            setOtherUsername(otherUserInfo.username);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching other user:", error);
+      }
+    };
+
+    fetchOtherUser();
+  }, [user.uid, chatId]);
 
   useEffect(() => {
     if (searchChatId) {
@@ -49,7 +84,7 @@ const ChatRoom = () => {
 
       {chatId ? (
         <ChatContainer>
-          <ChatBox messages={messages} />
+          <ChatBox messages={messages} otherUsername={otherUsername} />
           <ChatForm chatId={chatId} />
         </ChatContainer>
       ) : (
@@ -61,9 +96,10 @@ const ChatRoom = () => {
 
 const ChatWrapper = styled.div`
   display: flex;
-  gap: 40px;
   margin: 0 auto;
   max-width: 1200px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
 `;
 
 const ChatContainer = styled.div`

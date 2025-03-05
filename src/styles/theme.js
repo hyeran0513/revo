@@ -19,11 +19,21 @@ export const lightTheme = {
     background: "#fff",
     text: "#000",
     primary: "#3498db",
-    secondary: "#2ecc71",
+    secondary: "#999",
+    border: "hsla(220, 20%, 80%, 0.4)",
+    focus: "rgb(148, 160, 184)",
+    accent: "#e02020",
   },
   fonts: {
     main: "'Arial', sans-serif",
     heading: "'Roboto', sans-serif",
+  },
+  inputs: {
+    background: "hsl(0, 0%, 99%)",
+  },
+  thumb: {
+    background: "#eee",
+    icon: "#dcdcdc",
   },
 };
 

@@ -50,7 +50,6 @@ const LikeButtonWrapper = styled.div`
 `;
 
 const ProductThumb = styled.div`
-  border: 1px solid #333;
   border-radius: 10px;
   aspect-ratio: 1 / 1;
 `;
@@ -61,11 +60,11 @@ const ProductThumbDefault = styled.div`
   align-items: center;
   border-radius: 10px;
   aspect-ratio: 1 / 1;
-  background-color: #eee;
+  background-color: ${(props) => props.theme.thumb.background};
 
   svg {
     font-size: 60px;
-    fill: #dcdcdc;
+    fill: ${(props) => props.theme.thumb.icon};
   }
 `;
 
@@ -78,7 +77,7 @@ const ProductTitle = styled.h1``;
 
 const ProductPrice = styled.div`
   font-size: 20px;
-  color: #e02020;
+  color: ${(props) => props.theme.colors.accent};
 `;
 
 export default ProductCard;

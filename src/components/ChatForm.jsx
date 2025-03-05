@@ -3,6 +3,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { BiSend } from "react-icons/bi";
 
 const ChatForm = ({ chatId }) => {
   const [newMessage, setNewMessage] = useState("");
@@ -40,7 +41,7 @@ const ChatForm = ({ chatId }) => {
         />
       </FormField>
       <FormButton type="button" onClick={sendMessage}>
-        전송
+        <BiSend /> 전송
       </FormButton>
     </FormContainer>
   );
@@ -57,6 +58,8 @@ const FormField = styled.div`
   flex: 1;
   height: 40px;
   border: 1px solid #d7d7d7;
+  border-radius: 4px 0 0 4px;
+  overflow: hidden;
 `;
 
 const InputField = styled.input`
@@ -69,11 +72,16 @@ const InputField = styled.input`
 `;
 
 const FormButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0 20px;
   height: 40px;
   background-color: #13c2c2;
   color: white;
   border: none;
+  border-radius: 0 4px 4px 0;
 
   &:hover {
     background-color: #36cfc9;

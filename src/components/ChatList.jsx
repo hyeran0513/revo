@@ -50,32 +50,38 @@ const ChatList = ({ setChatId }) => {
 
   return (
     <ChatListWrapper>
-      {chats.map((chat) => (
-        <ChatItem key={chat.id} onClick={() => setChatId(chat.id)}>
-          {chat.otherUserInfo
-            ? chat.otherUserInfo.username
-            : "알 수 없는 사용자"}{" "}
-          님과의 채팅
-        </ChatItem>
-      ))}
+      <ChatContainer>
+        {chats.map((chat) => (
+          <ChatItem key={chat.id} onClick={() => setChatId(chat.id)}>
+            {chat.otherUserInfo
+              ? chat.otherUserInfo.username
+              : "알 수 없는 사용자"}
+          </ChatItem>
+        ))}
+      </ChatContainer>
     </ChatListWrapper>
   );
 };
 
 const ChatListWrapper = styled.div`
+  max-width: 30%;
+  width: 100%;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+`;
+
+const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  max-width: 30%;
   width: 100%;
 `;
 
 const ChatItem = styled.div`
   cursor: pointer;
-  padding: 10px;
-  background-color: ${(props) => (props.isSelected ? "#e0e0e0" : "#f5f5f5")};
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  padding: 8px 16px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
 
   &:hover {
     background-color: #dcdcdc;

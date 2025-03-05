@@ -89,7 +89,7 @@ const SignUp = () => {
           />
         </FormField>
 
-        <Button type="submit" disabled={mutation.isPending}>
+        <Button type="submit" disabled={mutation.isPending} size="large">
           {mutation.isPending ? "가입 중..." : "회원가입"}
         </Button>
       </FormContainer>
@@ -115,13 +115,13 @@ const FormContainer = styled.form`
   flex-direction: column;
   gap: 1rem;
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 400px;
   width: 100%;
 `;
 
 const FormField = styled.div`
   height: 40px;
-  border: 1px solid #d7d7d7;
+  border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 4px;
   overflow: hidden;
 `;
@@ -131,6 +131,7 @@ const InputField = styled.input`
   width: 100%;
   height: 100%;
   border: 0;
+  background-color: ${(props) => props.theme.inputs.background};
 `;
 
 export default SignUp;
