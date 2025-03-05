@@ -99,9 +99,15 @@ const ProductDetail = () => {
     <ProductContainer>
       <ProductTop>
         {/* 상품 썸네일 */}
-        <ProductThumbDefault>
-          <BiSolidImageAlt />
-        </ProductThumbDefault>
+        {product?.image ? (
+          <ProductThumb>
+            <img src={product.image} />
+          </ProductThumb>
+        ) : (
+          <ProductThumbDefault>
+            <BiSolidImageAlt />
+          </ProductThumbDefault>
+        )}
 
         {/* 좋아요 버튼 */}
         <LikeButtonWrapper>
@@ -198,6 +204,19 @@ const LikeButtonWrapper = styled.div`
   position: absolute;
   bottom: 10px;
   right: 10px;
+`;
+
+const ProductThumb = styled.div`
+  margin-bottom: 40px;
+  height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ProductThumbDefault = styled.div`
