@@ -14,7 +14,7 @@ const SubHeader = () => {
     try {
       await auth.signOut();
       dispatchRedux(logout());
-      navigate("/login");
+      navigate("/signin");
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -27,7 +27,7 @@ const SubHeader = () => {
           {isAuthenticated ? (
             <UtilityButton onClick={handleLogout}>로그아웃</UtilityButton>
           ) : (
-            <UtilityButton type="button" onClick={() => navigate("/login")}>
+            <UtilityButton type="button" onClick={() => navigate("/signin")}>
               로그인
             </UtilityButton>
           )}

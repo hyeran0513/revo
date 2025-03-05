@@ -1,4 +1,11 @@
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
@@ -17,8 +24,9 @@ const ChatList = ({ setChatId }) => {
     if (!user?.uid) return;
 
     const chatRef = collection(db, "chats");
+    const q = query(chatRef, where("participants", "array-contains", user.uid));
 
-    const unsubscribe = onSnapshot(chatRef, async (snapshot) => {
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
       const chatData = await Promise.all(
         snapshot.docs.map(async (doc) => {
           const chat = { id: doc.id, ...doc.data() };
@@ -46,7 +54,7 @@ const ChatList = ({ setChatId }) => {
         <ChatItem key={chat.id} onClick={() => setChatId(chat.id)}>
           {chat.otherUserInfo
             ? chat.otherUserInfo.username
-            : "알 수 없는 사용자"}
+            : "알 수 없는 사용자"}{" "}
           님과의 채팅
         </ChatItem>
       ))}

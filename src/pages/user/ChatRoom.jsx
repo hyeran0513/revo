@@ -5,10 +5,21 @@ import ChatList from "../../components/ChatList";
 import styled from "styled-components";
 import ChatForm from "../../components/ChatForm";
 import ChatBox from "../../components/ChatBox";
+import { useSearchParams } from "react-router-dom";
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
-  const [chatId, setChatId] = useState(null);
+
+  const [searchParams] = useSearchParams();
+  const searchChatId = searchParams.get("chatId");
+
+  const [chatId, setChatId] = useState(searchChatId || "");
+
+  useEffect(() => {
+    if (searchChatId) {
+      setChatId(searchChatId);
+    }
+  }, [searchChatId]);
 
   useEffect(() => {
     if (!chatId) return;

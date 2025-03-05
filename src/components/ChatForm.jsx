@@ -22,21 +22,31 @@ const ChatForm = ({ chatId }) => {
     setNewMessage("");
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
   return (
-    <FormContainer onSubmit={sendMessage}>
+    <FormContainer>
       <FormField>
         <InputField
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="메시지 입력..."
+          onKeyDown={handleKeyDown}
         />
       </FormField>
-      <FormButton type="submit">전송</FormButton>
+      <FormButton type="button" onClick={sendMessage}>
+        전송
+      </FormButton>
     </FormContainer>
   );
 };
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 20px;
@@ -53,6 +63,9 @@ const InputField = styled.input`
   padding: 0 20px;
   width: 100%;
   height: 100%;
+  border: none;
+  resize: none;
+  font-size: 14px;
 `;
 
 const FormButton = styled.button`
