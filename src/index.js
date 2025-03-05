@@ -6,7 +6,6 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
 import {
   ThemeProvider as ContextThemeProvider,
   useTheme,
@@ -23,9 +22,7 @@ const AppWithTheme = () => {
   return (
     <StyledThemeProvider theme={state.isDarkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </StyledThemeProvider>
   );
 };

@@ -1,8 +1,8 @@
 import { collection, getDoc, getDocs, doc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../../components/ProductCard";
 
 const fetchFavorites = async () => {
   const favoritesRef = await getDocs(collection(db, "likes"));

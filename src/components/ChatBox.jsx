@@ -1,11 +1,17 @@
-import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const Message = ({ message, userId }) => {
+const ChatBox = ({ messages }) => {
+  const { user } = useSelector((state) => state.auth);
+
   return (
-    <MessageBox $isUser={message.senderId === userId}>
-      <p>{message.text}</p>
-    </MessageBox>
+    <>
+      {messages.map((msg) => (
+        <MessageBox key={msg.id} $isUser={msg.senderId === user.uid}>
+          {msg.text}
+        </MessageBox>
+      ))}
+    </>
   );
 };
 
@@ -20,4 +26,4 @@ const MessageBox = styled.div`
     $isUser ? "50px 50px 0 50px" : "50px 50px 50px 0px"};
 `;
 
-export default Message;
+export default ChatBox;

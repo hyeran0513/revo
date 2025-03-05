@@ -1,84 +1,60 @@
 import { useMutation } from "@tanstack/react-query";
-import { useAuthForm } from "../hooks/useAuthForm";
-import { auth } from "../firebase/firebaseConfig";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useAuthForm } from "../../hooks/useAuthForm";
+import { auth, db } from "../../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/Button";
-import { useEffect, useState } from "react";
+import Button from "../../components/Button";
 
-const loginUser = async ({ email, password }) => {
-  const userCredential = await signInWithEmailAndPassword(
+const signupUser = async ({ email, password, username }) => {
+  const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,
     password
   );
-  const token = await userCredential.user.getIdToken();
-  localStorage.setItem("authToken", token);
+
+  await setDoc(
+    doc(db, "users", userCredential.user.uid),
+    {
+      email: userCredential.user.email,
+      createdAt: serverTimestamp(),
+      username,
+    },
+    { merge: true }
+  );
+
   return userCredential.user;
 };
 
-const Login = () => {
+const SignUp = () => {
   const [state, dispatch] = useAuthForm();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-
-    if (token) {
-      if (auth.currentUser) {
-        auth.currentUser
-          .getIdTokenResult(true)
-          .then(() => {
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("토큰 인증 실패", error.message);
-            localStorage.removeItem("authToken");
-          });
-      } else {
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/");
-      } else {
-        setLoading(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
 
   const mutation = useMutation({
-    mutationFn: loginUser,
+    mutationFn: signupUser,
     onSuccess: (user) => {
-      console.log("로그인 성공:", user);
+      console.log("회원가입 성공:", user);
       navigate("/");
     },
     onError: (error) => {
-      console.error("로그인 실패:", error.message);
+      console.error("회원가입 실패:", error.message);
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutation.mutate({ email: state.email, password: state.password });
+    mutation.mutate({
+      email: state.email,
+      password: state.password,
+      username: state.username,
+    });
   };
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
-
   return (
-    <LoginWrapper>
+    <SignupWrapper>
       <FormContainer onSubmit={handleSubmit}>
-        <Logo to="/">로그인</Logo>
+        <Logo to="/">회원가입</Logo>
 
         <FormField>
           <InputField
@@ -90,6 +66,7 @@ const Login = () => {
             }
           />
         </FormField>
+
         <FormField>
           <InputField
             type="password"
@@ -100,15 +77,27 @@ const Login = () => {
             }
           />
         </FormField>
+
+        <FormField>
+          <InputField
+            type="text"
+            value={state.username}
+            placeholder={state.usernamePlaceholder}
+            onChange={(e) =>
+              dispatch({ type: "SET_USERNAME", payload: e.target.value })
+            }
+          />
+        </FormField>
+
         <Button type="submit" disabled={mutation.isPending}>
-          {mutation.isPending ? "로그인 중..." : "로그인"}
+          {mutation.isPending ? "가입 중..." : "회원가입"}
         </Button>
       </FormContainer>
-    </LoginWrapper>
+    </SignupWrapper>
   );
 };
 
-const LoginWrapper = styled.div`
+const SignupWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -144,4 +133,4 @@ const InputField = styled.input`
   border: 0;
 `;
 
-export default Login;
+export default SignUp;

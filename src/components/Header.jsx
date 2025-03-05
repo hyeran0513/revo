@@ -16,17 +16,17 @@ const Header = () => {
         </Link>
 
         <Gnb>
-          <GnbItem to="/product?type=mobile">모바일</GnbItem>
-          <GnbItem to="/product?type=tablet">태블릿</GnbItem>
-          <GnbItem to="/product?type=pc">PC</GnbItem>
-          <GnbItem to="/product?type=monitor">모니터</GnbItem>
-          <GnbItem to="/product?type=audio">스피커</GnbItem>
-          <GnbItem to="/product?type=camera">카메라</GnbItem>
-          <GnbItem to="/product?type=other">기타</GnbItem>
+          <GnbItem to="/products?type=mobile">모바일</GnbItem>
+          <GnbItem to="/products?type=tablet">태블릿</GnbItem>
+          <GnbItem to="/products?type=pc">PC</GnbItem>
+          <GnbItem to="/products?type=monitor">모니터</GnbItem>
+          <GnbItem to="/products?type=audio">스피커</GnbItem>
+          <GnbItem to="/products?type=camera">카메라</GnbItem>
+          <GnbItem to="/products?type=other">기타</GnbItem>
         </Gnb>
 
         <Utility>
-          <UtilityButton onClick={() => navigate("/message")}>
+          <UtilityButton onClick={() => navigate("/chatroom")}>
             <BiMessage />
           </UtilityButton>
 

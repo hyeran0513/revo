@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import UserProfile from "../components/UserProfile";
+import UserProfile from "../../components/UserProfile";
 
 const Mypage = () => {
   return (
