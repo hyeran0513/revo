@@ -15,12 +15,18 @@ import { useSelector } from "react-redux";
 import LikeButton from "../../components/LikeButton";
 import styled from "styled-components";
 import Button from "../../components/Button";
+import { BiSolidImageAlt } from "react-icons/bi";
 
 const fetchProduct = async (id) => {
   const productDoc = await getDoc(doc(db, "products", id));
   return productDoc.exists()
     ? { id: productDoc.id, ...productDoc.data() }
     : null;
+};
+
+const fetchUser = async (uid) => {
+  const userDoc = await getDoc(doc(db, "users", uid));
+  return userDoc.exists() ? userDoc.data() : null;
 };
 
 const ProductDetail = () => {
@@ -30,6 +36,7 @@ const ProductDetail = () => {
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type");
   const [chatId, setChatId] = useState(null);
+  const [sellerInfo, setSellerInfo] = useState(null);
 
   const {
     data: product,
@@ -39,6 +46,12 @@ const ProductDetail = () => {
     queryKey: ["product", id],
     queryFn: () => fetchProduct(id),
     enabled: !!id,
+  });
+
+  const { data: userInfo, isLoading: userInfoLoading } = useQuery({
+    queryKey: ["user", product?.sellerId],
+    queryFn: () => (product ? fetchUser(product.sellerId) : null),
+    enabled: !!product?.sellerId,
   });
 
   useEffect(() => {
@@ -61,7 +74,6 @@ const ProductDetail = () => {
       });
 
       if (!existingChat) {
-        // 새로운 채팅방 생성
         const newChat = {
           participants: [user.uid, product.sellerId],
           createdAt: new Date(),
@@ -77,45 +89,59 @@ const ProductDetail = () => {
     fetchChat();
   }, [product, user]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading || userInfoLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error.message}</div>;
   if (!product) return <div>상품을 찾을 수 없습니다.</div>;
 
   return (
     <ProductContainer>
-      <h1>{product?.title}</h1>
-      <p>상품 ID: {product?.id}</p>
-      <p>제목: {product?.title}</p>
-      <p>설명: {product?.description}</p>
-      <p>sellerId: {product?.sellerId}</p>
+      <ProductTop>
+        <ProductThumbDefault>
+          <BiSolidImageAlt />
+        </ProductThumbDefault>
+        <LikeButtonWrapper>
+          {user && <LikeButton productId={id} userId={user.uid} />}
+        </LikeButtonWrapper>
+      </ProductTop>
 
-      {user && <LikeButton productId={id} userId={user.uid} />}
+      <ProductInfo>
+        <ProductSeller>{userInfo && <p>{userInfo.username}</p>}</ProductSeller>
 
-      {user.uid === product.sellerId ? (
-        <Button
-          type="button"
-          onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
-        >
-          수정하기
-        </Button>
-      ) : (
-        <Button
-          type="button"
-          onClick={() => navigate(`/chatroom?chatId=${chatId}`)}
-        >
-          채팅하기
-        </Button>
-      )}
+        <ProductTitle>{product?.title}</ProductTitle>
 
-      {type === "undefined" ? (
-        <Button type="button" onClick={() => navigate(-1)}>
-          뒤로 가기
-        </Button>
-      ) : (
-        <Button type="button" onClick={() => navigate(`/product?type=${type}`)}>
-          목록으로
-        </Button>
-      )}
+        <ProductContent>{product?.description}</ProductContent>
+      </ProductInfo>
+
+      <ButtonWrap>
+        {user.uid === product.sellerId ? (
+          <Button
+            type="button"
+            onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
+          >
+            수정하기
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={() => navigate(`/chatroom?chatId=${chatId}`)}
+          >
+            채팅하기
+          </Button>
+        )}
+
+        {type === "undefined" ? (
+          <Button type="button" onClick={() => navigate(-1)}>
+            뒤로 가기
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={() => navigate(`/product?type=${type}`)}
+          >
+            목록으로
+          </Button>
+        )}
+      </ButtonWrap>
     </ProductContainer>
   );
 };
@@ -123,6 +149,59 @@ const ProductDetail = () => {
 const ProductContainer = styled.div`
   margin: 0 auto;
   max-width: 1200px;
+`;
+
+const ProductInfo = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.border};
+  border-radius: 8px;
+`;
+
+const ProductSeller = styled.div`
+  padding: 20px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+`;
+
+const ProductTitle = styled.p`
+  padding: 20px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+`;
+
+const ProductContent = styled.p`
+  padding: 20px;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+`;
+
+const ButtonWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 40px;
+`;
+
+const ProductTop = styled.div`
+  position: relative;
+`;
+
+const LikeButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+`;
+
+const ProductThumbDefault = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  height: 400px;
+  background-color: ${(props) => props.theme.thumb.background};
+
+  svg {
+    font-size: 60px;
+    fill: ${(props) => props.theme.thumb.icon};
+  }
 `;
 
 export default ProductDetail;

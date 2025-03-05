@@ -30,8 +30,7 @@ const LayoutWrapper = styled.div`
 
 const LayoutMain = styled.main`
   flex: 1;
-  margin-top: 20px;
-  padding: 0 20px;
+  padding: 0 20px 30px;
 `;
 
 export default SubLayout;
