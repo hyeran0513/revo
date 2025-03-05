@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ProductCard from "../../components/ProductCard";
 import NoData from "../../components/NoData";
+import SubBanner from "../../components/SubBanner";
 
 const fetchProducts = async (type) => {
   const q = query(collection(db, "products"), where("category", "==", type));
@@ -26,11 +27,23 @@ const Product = () => {
     queryFn: () => fetchProducts(type),
   });
 
+  const typeText = {
+    mobile: "모바일",
+    tablet: "태블릿",
+    pc: "PC",
+    monitor: "모니터",
+    audio: "스피커",
+    camera: "카메라",
+    other: "기타",
+  };
+
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error.message}</div>;
 
   return (
     <ProductContainer>
+      <SubBanner text={typeText[type]} />
+
       {products.length > 0 ? (
         <ProductList>
           {products.map((product) => (

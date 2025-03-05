@@ -134,11 +134,7 @@ const ProductDetail = () => {
             뒤로 가기
           </Button>
         ) : (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => navigate(`/product?type=${type}`)}
-          >
+          <Button type="button" variant="outline" onClick={() => navigate(-1)}>
             목록으로
           </Button>
         )}

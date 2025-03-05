@@ -4,66 +4,50 @@ import styled from "styled-components";
 const Banner = () => {
   return (
     <BannerWrapper>
-      <SiteIntro>
-        <SiteName>
-          <SiteTitle>REVO</SiteTitle>
-        </SiteName>
-        <SiteDescription>
+      <BannerText>
+        <BannerTitle>REVO</BannerTitle>
+        <BannerSubTitle>
           합리적인 가격의 중고 상품을 만나보세요
-        </SiteDescription>
-      </SiteIntro>
+          <br />
+          <strong>REVO</strong>에서 지금 바로 확인해 보세요
+        </BannerSubTitle>
+      </BannerText>
     </BannerWrapper>
   );
 };
 
 const BannerWrapper = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 40px;
-  height: 300px;
+  height: 500px;
 
   &::before {
     content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: ${(props) => props.theme.colors.primary};
-    opacity: 0.2;
+    background-image: url("/banner.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
 `;
 
-const SiteIntro = styled.div`
-  text-align: center;
+const BannerText = styled.div`
+  position: relative;
+  margin: 0 auto;
+  max-width: 1200px;
 `;
 
-const SiteName = styled.div`
-  position: relative;
-  font-size: 60px;
+const BannerTitle = styled.div`
+  font-size: 70px;
   font-weight: bold;
-
-  &::before {
-    content: "";
-    position: absolute;
-    display: inline-block;
-    left: 50%;
-    bottom: 12px;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 20px;
-    background-color: ${(props) => props.theme.colors.primary};
-    z-index: 0;
-  }
 `;
 
-const SiteTitle = styled.div`
-  position: relative;
-  z-index: 10;
+const BannerSubTitle = styled.div`
+  font-size: 20px;
 `;
-
-const SiteDescription = styled.div``;
 
 export default Banner;
