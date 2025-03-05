@@ -35,6 +35,10 @@ export const lightTheme = {
     background: "#eee",
     icon: "#dcdcdc",
   },
+  scrollbar: {
+    track: "#f6f5f7",
+    thumb: "#e8e8e8",
+  },
 };
 
 export const darkTheme = {

@@ -28,6 +28,9 @@ const MessageBody = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  height: 50vh;
+  overflow: hidden;
+  overflow-y: auto;
 `;
 
 const MessageBox = styled.div`

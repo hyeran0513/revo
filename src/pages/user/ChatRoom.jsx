@@ -15,6 +15,7 @@ import ChatForm from "../../components/ChatForm";
 import ChatBox from "../../components/ChatBox";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import NoData from "../../components/NoData";
 
 const fetchUser = async (uid) => {
   const userDoc = await getDoc(doc(db, "users", uid));
@@ -34,8 +35,8 @@ const ChatRoom = () => {
   useEffect(() => {
     const fetchOtherUser = async () => {
       try {
-        const chatRef = doc(db, "chats", chatId); // 특정 chatId 문서 참조
-        const chatSnap = await getDoc(chatRef); // 해당 문서 가져오기
+        const chatRef = doc(db, "chats", chatId);
+        const chatSnap = await getDoc(chatRef);
 
         if (chatSnap.exists()) {
           const chatData = chatSnap.data();
@@ -88,7 +89,7 @@ const ChatRoom = () => {
           <ChatForm chatId={chatId} />
         </ChatContainer>
       ) : (
-        <>메시지를 선택해 주세요.</>
+        <NoData text="메시지를 선택해 주세요." icon="mail" />
       )}
     </ChatWrapper>
   );

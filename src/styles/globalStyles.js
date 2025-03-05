@@ -58,6 +58,21 @@ const GlobalStyle = createGlobalStyle`
   :focus {
     outline: none;
   }
+
+  /* 스크롤바 */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${(props) => props.theme.scrollbar.track};
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.scrollbar.thumb};
+    border-radius: 10px;
+  }
 `;
 
 export default GlobalStyle;

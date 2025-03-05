@@ -5,6 +5,7 @@ import { db } from "../../firebase/firebaseConfig";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ProductCard from "../../components/ProductCard";
+import NoData from "../../components/NoData";
 
 const fetchProducts = async (type) => {
   const q = query(collection(db, "products"), where("category", "==", type));
@@ -30,15 +31,15 @@ const Product = () => {
 
   return (
     <ProductContainer>
-      <ProductList>
-        {products.length > 0 ? (
-          products.map((product) => (
+      {products.length > 0 ? (
+        <ProductList>
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} type={type} />
-          ))
-        ) : (
-          <p>상품이 없습니다.</p>
-        )}
-      </ProductList>
+          ))}
+        </ProductList>
+      ) : (
+        <NoData text="상품이 없습니다." icon="shoppingbag" />
+      )}
     </ProductContainer>
   );
 };
