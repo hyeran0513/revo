@@ -4,10 +4,13 @@ import Header from "../components/Header";
 import styled from "styled-components";
 import SubHeader from "../components/SubHeader";
 import Footer from "../components/Footer";
+import TopButton from "../components/TopButton";
 
 const SubLayout = () => {
   return (
     <LayoutWrapper>
+      <TopButton />
+
       <HeaderWrapper>
         <SubHeader />
         <Header />

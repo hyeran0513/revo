@@ -84,6 +84,7 @@ const ProductInfo = styled.div`
 const ProductTitle = styled.h1``;
 
 const ProductPrice = styled.div`
+  margin-bottom: 8px;
   font-size: 20px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.accent};
