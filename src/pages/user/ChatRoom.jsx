@@ -16,6 +16,7 @@ import ChatBox from "../../components/ChatBox";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NoData from "../../components/NoData";
+import SubBanner from "../../components/SubBanner";
 
 const fetchUser = async (uid) => {
   const userDoc = await getDoc(doc(db, "users", uid));
@@ -80,18 +81,22 @@ const ChatRoom = () => {
   }, [chatId]);
 
   return (
-    <ChatWrapper>
-      <ChatList setChatId={setChatId} />
+    <>
+      <SubBanner text="채팅" />
 
-      {chatId ? (
-        <ChatContainer>
-          <ChatBox messages={messages} otherUsername={otherUsername} />
-          <ChatForm chatId={chatId} />
-        </ChatContainer>
-      ) : (
-        <NoData text="메시지를 선택해 주세요." icon="mail" />
-      )}
-    </ChatWrapper>
+      <ChatWrapper>
+        <ChatList setChatId={setChatId} />
+
+        {chatId ? (
+          <ChatContainer>
+            <ChatBox messages={messages} otherUsername={otherUsername} />
+            <ChatForm chatId={chatId} />
+          </ChatContainer>
+        ) : (
+          <NoData text="메시지를 선택해 주세요." icon="mail" />
+        )}
+      </ChatWrapper>
+    </>
   );
 };
 

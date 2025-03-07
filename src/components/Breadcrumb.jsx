@@ -3,17 +3,7 @@ import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
 import { Link, useSearchParams } from "react-router-dom";
 
-const typeText = {
-  mobile: "모바일",
-  tablet: "태블릿",
-  pc: "PC",
-  monitor: "모니터",
-  audio: "스피커",
-  camera: "카메라",
-  other: "기타",
-};
-
-const Breadcrumb = () => {
+const Breadcrumb = ({ text }) => {
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type");
 
@@ -25,7 +15,7 @@ const Breadcrumb = () => {
         </BreadcrumbLink>
 
         <BreadcrumbLink to={`/products?type=${type}`} $isActive>
-          {typeText[type]}
+          {text}
         </BreadcrumbLink>
       </BreadContainer>
     </BreadcrumbWrapper>

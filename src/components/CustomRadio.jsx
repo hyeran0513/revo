@@ -70,8 +70,9 @@ const RadioText = styled.div`
   justify-content: center;
   align-items: center;
   border: 1px solid
-    ${({ $isSelected }) =>
-      $isSelected ? "#4c7fff" : "hsla(220, 20%, 80%, 0.4)"};
+    ${({ theme, $isSelected }) =>
+      $isSelected ? theme.colors.primary : theme.colors.border};
+
   height: 40px;
   border-radius: 5px;
   text-align: center;
@@ -87,8 +88,8 @@ const RadioText = styled.div`
     display: inline-block;
     opacity: 0.2;
 
-    background-color: ${({ $isSelected, theme }) =>
-      $isSelected ? "#4c7fff" : "#fafafa"};
+    background-color: ${({ theme, $isSelected }) =>
+      $isSelected ? theme.colors.primary : theme.inputs.background};
     z-index: -1;
   }
 `;

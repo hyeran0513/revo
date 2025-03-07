@@ -8,7 +8,7 @@ const SubBanner = ({ text }) => {
       <SubBannerContainer>
         <SubBannerText>{text}</SubBannerText>
       </SubBannerContainer>
-      <Breadcrumb />
+      <Breadcrumb text={text} />
     </SubBannerWrapper>
   );
 };

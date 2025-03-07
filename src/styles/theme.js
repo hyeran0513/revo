@@ -18,7 +18,7 @@ export const lightTheme = {
   colors: {
     background: "#fff",
     text: "#000",
-    primary: "#4c7fff",
+    primary: "#9D7DC9",
     secondary: "#999",
     border: "hsla(220, 20%, 80%, 0.4)",
     focus: "rgb(148, 160, 184)",
