@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import CustomRadio from "./CustomRadio";
 
-const productTypes = [
-  { text: "새 상품", value: "new" },
-  { text: "중고", value: "used" },
+const productConditions = [
+  { text: "전체", value: "", checked: true },
+  { text: "새 상품", value: "new", checked: false },
+  { text: "중고", value: "used", checked: false },
 ];
 
-const SideFilter = () => {
+const productPrice = [
+  { text: "전체", value: "", checked: true },
+  { text: "만원 ↓", value: "10000", checked: false },
+  { text: "오만원 ↓", value: "50000", checked: false },
+  { text: "십만원 ↓", value: "100000", checked: false },
+  { text: "십만원 ↑", value: "other", checked: false },
+];
+
+const SideFilter = ({ setFilter, filter }) => {
+  const [selectedCondition, setSelectedCondition] = useState(
+    productConditions.find((condition) => condition.checked)?.value || ""
+  );
+  const [selectedPrice, setSelectedPrice] = useState(
+    productPrice.find((price) => price.checked)?.value || ""
+  );
+
+  const handleSubmit = () => {
+    setFilter({
+      condition: selectedCondition,
+      price: selectedPrice,
+    });
+  };
+
+  useEffect(() => {
+    console.log("Filter updated:", filter);
+  }, [filter]);
+
   return (
     <SideFilterWrapper>
       <FilterHeader>필터</FilterHeader>
@@ -16,19 +43,33 @@ const SideFilter = () => {
       <FormContainer>
         <FormField>
           <FormLabel>상품 유형</FormLabel>
-          <CustomRadio productTypes={productTypes} />
+          <CustomRadio
+            conditions={productConditions}
+            setSelectedValue={setSelectedCondition}
+            selectedValue={selectedCondition}
+            radioName="condition"
+          />
         </FormField>
 
         <FormField>
           <FormLabel>가격</FormLabel>
           <PriceInput>
-            <InputField type="number" /> ~
-            <InputField type="number" />
+            <CustomRadio
+              conditions={productPrice}
+              setSelectedValue={setSelectedPrice}
+              selectedValue={selectedPrice}
+              radioName="price"
+            />
           </PriceInput>
         </FormField>
 
         <FormAction>
-          <Button size="large" wfull>
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            size="large"
+            wfull="true"
+          >
             검색
           </Button>
         </FormAction>
@@ -72,18 +113,6 @@ const PriceInput = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-`;
-
-const InputField = styled.input`
-  padding: 0 20px;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background-color: ${(props) => props.theme.inputs.background};
-  height: 40px;
-  border: 1px solid ${(props) => props.theme.colors.border};
-  border-radius: 4px;
-  overflow: hidden;
 `;
 
 export default SideFilter;

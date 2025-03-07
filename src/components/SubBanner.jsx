@@ -5,7 +5,9 @@ import Breadcrumb from "./Breadcrumb";
 const SubBanner = ({ text }) => {
   return (
     <SubBannerWrapper>
-      <SubBannerText>{text}</SubBannerText>
+      <SubBannerContainer>
+        <SubBannerText>{text}</SubBannerText>
+      </SubBannerContainer>
       <Breadcrumb />
     </SubBannerWrapper>
   );
@@ -17,9 +19,18 @@ const SubBannerWrapper = styled.div`
   width: 100%;
 `;
 
+const SubBannerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 150px;
+  background-color: ${(props) => props.theme.colors.primary};
+  color: #fff;
+`;
+
 const SubBannerText = styled.div`
-  margin: 0 auto 20px;
+  margin: 0 auto;
   max-width: 1200px;
+  width: 100%;
   font-size: 40px;
   font-weight: bold;
 `;

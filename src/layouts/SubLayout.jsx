@@ -35,7 +35,7 @@ const LayoutWrapper = styled.div`
 
 const LayoutMain = styled.main`
   flex: 1;
-  padding: 150px 0 30px;
+  padding: 120px 0 30px;
 `;
 
 const HeaderWrapper = styled.div`

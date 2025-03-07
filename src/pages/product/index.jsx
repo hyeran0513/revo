@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
@@ -9,8 +9,28 @@ import NoData from "../../components/NoData";
 import SubBanner from "../../components/SubBanner";
 import SideFilter from "../../components/SideFilter";
 
-const fetchProducts = async (type) => {
-  const q = query(collection(db, "products"), where("category", "==", type));
+const fetchProducts = async (type, filter) => {
+  const conditions = [];
+
+  if (filter.condition)
+    conditions.push(where("condition", "==", filter.condition));
+
+  if (filter.price) {
+    if (filter.price === "other") {
+      conditions.push(where("price", ">=", 100000));
+    } else {
+      const priceValue = parseFloat(filter.price);
+      if (!isNaN(priceValue)) {
+        conditions.push(where("price", "<=", priceValue));
+      }
+    }
+  }
+
+  const q = query(
+    collection(db, "products"),
+    where("category", "==", type),
+    ...conditions
+  );
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
@@ -18,17 +38,18 @@ const fetchProducts = async (type) => {
 const Product = () => {
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type");
-  const condition = searchParams.get("condition");
-  const minPrice = searchParams.get("minPrice");
-  const maxPrice = searchParams.get("maxPrice");
+  const [filter, setFilter] = useState({
+    condition: "",
+    price: "",
+  });
 
   const {
     data: products = [],
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["products", type, condition, minPrice, maxPrice],
-    queryFn: () => fetchProducts(type, condition, minPrice, maxPrice),
+    queryKey: ["products", type, filter],
+    queryFn: () => fetchProducts(type, filter),
   });
 
   const typeText = {
@@ -41,15 +62,15 @@ const Product = () => {
     other: "기타",
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (error) return <div>{error.message}</div>;
+  // if (isLoading) return <div>로딩 중...</div>;
+  // if (error) return <div>{error.message}</div>;
 
   return (
     <ProductWrapper>
       <SubBanner text={typeText[type]} />
 
       <ProductContainer>
-        <SideFilter />
+        <SideFilter setFilter={setFilter} filter={filter} />
 
         <ProductListWrapper>
           {products.length > 0 ? (

@@ -1,27 +1,40 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const CustomRadio = ({ productTypes }) => {
-  const [selectedType, setSelectedType] = useState(null);
-
+const CustomRadio = ({
+  conditions,
+  selectedValue,
+  setSelectedValue,
+  radioName,
+  checked,
+}) => {
   const onChangeRadio = (e) => {
-    setSelectedType(e.target.value);
+    setSelectedValue(e.target.value);
   };
 
   return (
     <RadioWrapper>
-      {productTypes.map((productType) => (
-        <Label key={productType.value}>
+      {conditions.map((condition) => (
+        <Label key={condition.value}>
           <RadioInput
             type="radio"
-            name="productType"
-            value={productType.value}
+            name={radioName}
+            value={condition.value}
             onChange={onChangeRadio}
-            checked={selectedType === productType.value}
-            id={productType.value}
+            checked={
+              selectedValue
+                ? selectedValue === condition.value
+                : condition.checked === "true"
+            }
+            id={condition.value}
           />
-          <RadioText $isSelected={selectedType === productType.value}>
-            {productType.text}
+          <RadioText
+            $isSelected={
+              selectedValue === condition.value ||
+              (checked && condition.checked === "true")
+            }
+          >
+            {condition.text}
           </RadioText>
         </Label>
       ))}
@@ -33,7 +46,7 @@ export default CustomRadio;
 
 const RadioWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
 `;
 
