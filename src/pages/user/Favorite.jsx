@@ -1,12 +1,16 @@
-import { collection, getDoc, getDocs, doc } from "firebase/firestore";
+import { collection, getDoc, getDocs, doc, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProductCard from "../../components/ProductCard";
 import SubBanner from "../../components/SubBanner";
+import { useSelector } from "react-redux";
 
-const fetchFavorites = async () => {
-  const favoritesRef = await getDocs(collection(db, "likes"));
+const fetchFavorites = async (uid) => {
+  const favoritesRef = await getDocs(
+    collection(db, "likes"),
+    where("userId", "==", uid)
+  );
   const productIds = favoritesRef.docs.map((doc) => doc.data().productId);
 
   return productIds;
@@ -27,11 +31,12 @@ const Favorite = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getFavorites = async () => {
       try {
-        const fetchedFavorites = await fetchFavorites();
+        const fetchedFavorites = await fetchFavorites(user.uid);
         setProductIds(fetchedFavorites);
       } catch (error) {
         setError(error.message);

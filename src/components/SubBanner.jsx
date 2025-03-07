@@ -33,6 +33,7 @@ const SubBannerText = styled.div`
   width: 100%;
   font-size: 40px;
   font-weight: bold;
+  color: ${(props) => props.theme.colors.text};
 `;
 
 export default SubBanner;

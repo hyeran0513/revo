@@ -11,9 +11,7 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <Logo to="/">
-          <LogoImg src="/logo.png" />
-        </Logo>
+        <Logo to="/">REVO</Logo>
 
         <Gnb>
           <GnbItem to="/products?type=mobile">모바일</GnbItem>
@@ -57,16 +55,10 @@ const HeaderContainer = styled.div`
 `;
 
 const Logo = styled(Link)`
-  width: 110px;
-  height: 34px;
   font-weight: bold;
-  overflow: hidden;
-`;
-
-const LogoImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  font-family: "Sigmar", sans-serif;
+  font-size: 40px;
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 const Gnb = styled.nav`

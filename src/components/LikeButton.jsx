@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  onSnapshot,
   collection,
-  query,
   where,
+  query,
+  getDocs,
   doc,
   setDoc,
   deleteDoc,
@@ -12,53 +12,118 @@ import {
 import { db } from "../firebase/firebaseConfig";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-const LikeButton = ({ productId, userId }) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeId, setLikeId] = useState(null);
+const fetchLikeStatus = async ({ queryKey }) => {
+  const [, userId, productId] = queryKey;
+  if (!userId) return null;
 
-  useEffect(() => {
-    if (!userId) return;
+  const likesRef = collection(db, "likes");
+  const q = query(
+    likesRef,
+    where("userId", "==", userId),
+    where("productId", "==", productId)
+  );
 
-    const likesRef = collection(db, "likes");
-    const q = query(
-      likesRef,
-      where("productId", "==", productId),
-      where("userId", "==", userId)
-    );
+  const querySnapshot = await getDocs(q);
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      if (!snapshot.empty) {
-        setIsLiked(true);
-        setLikeId(snapshot.docs[0].id);
+  if (!querySnapshot.empty) {
+    const docSnapshot = querySnapshot.docs[0];
+    return { isLiked: true, likeId: docSnapshot.id };
+  }
+
+  return { isLiked: false, likeId: null };
+};
+
+const LikeButton = ({ productId }) => {
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.uid;
+  const queryClient = useQueryClient();
+
+  // Firestore에서 좋아요 상태 조회
+  const { data } = useQuery({
+    queryKey: ["likeStatus", userId, productId],
+    queryFn: fetchLikeStatus,
+    enabled: !!userId,
+  });
+
+  const likeMutation = useMutation({
+    mutationFn: async () => {
+      if (data?.isLiked && data?.likeId) {
+        // Firestore에서 좋아요 삭제
+        await deleteDoc(doc(db, "likes", data.likeId));
+        return { isLiked: false, likeId: null };
       } else {
-        setIsLiked(false);
-        setLikeId(null);
+        // Firestore에서 productId 존재 여부 확인
+        const likesRef = collection(db, "likes");
+        const q = query(
+          likesRef,
+          where("userId", "==", userId),
+          where("productId", "==", productId)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          return { isLiked: true, likeId: querySnapshot.docs[0].id };
+        }
+
+        // Firestore에 좋아요 추가
+        const likeRef = doc(collection(db, "likes"));
+
+        await setDoc(likeRef, {
+          favoriteId: likeRef.id,
+          userId,
+          productId,
+          createdAt: serverTimestamp(),
+        });
+
+        return { isLiked: true, likeId: likeRef.id };
       }
-    });
+    },
+    onMutate: async () => {
+      // UI를 즉시 업데이트 (Optimistic UI)
+      await queryClient.cancelQueries(["likeStatus", userId, productId]);
 
-    return () => unsubscribe();
-  }, [productId, userId]);
-
-  const handleLike = async (e) => {
-    e.preventDefault();
-
-    if (isLiked && likeId) {
-      await deleteDoc(doc(db, "likes", likeId));
-    } else {
-      const likeRef = doc(collection(db, "likes"));
-      await setDoc(likeRef, {
-        favoriteId: likeRef.id,
+      const previousData = queryClient.getQueryData([
+        "likeStatus",
         userId,
         productId,
-        createdAt: serverTimestamp(),
-      });
+      ]);
+
+      queryClient.setQueryData(["likeStatus", userId, productId], (old) => ({
+        isLiked: !old?.isLiked,
+        likeId: old?.isLiked ? null : "temp-id",
+      }));
+
+      return { previousData };
+    },
+    onError: (err, _, context) => {
+      // 오류 발생 시 이전 상태로 롤백
+      queryClient.setQueryData(
+        ["likeStatus", userId, productId],
+        context.previousData
+      );
+    },
+    onSettled: () => {
+      // Firestore 데이터 동기화
+      queryClient.invalidateQueries(["likeStatus", userId, productId]);
+    },
+  });
+
+  const handleLike = (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
     }
+    likeMutation.mutate();
   };
 
   return (
     <LikeButtonItem type="button" onClick={handleLike}>
-      {isLiked ? <BiSolidHeart /> : <BiHeart />}
+      {data?.isLiked ? <BiSolidHeart /> : <BiHeart />}
     </LikeButtonItem>
   );
 };
