@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/ProductCard";
 import styled from "styled-components";
+import SubBanner from "../../components/SubBanner";
 
 const fetchProducts = async (uid) => {
   const q = query(collection(db, "products"), where("sellerId", "==", uid));
@@ -28,13 +29,17 @@ const ProductUpload = () => {
   });
 
   return (
-    <ProductUploadWrapper>
-      <ProductList>
-        {products.map((product) => (
-          <ProductCard product={product} key={product.id} />
-        ))}
-      </ProductList>
-    </ProductUploadWrapper>
+    <>
+      <SubBanner text="업로드한 상품 조회" />
+
+      <ProductUploadWrapper>
+        <ProductList>
+          {products.map((product) => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </ProductList>
+      </ProductUploadWrapper>
+    </>
   );
 };
 

@@ -2,28 +2,33 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import UserProfile from "../../components/UserProfile";
 import { BiCloudUpload, BiBox } from "react-icons/bi";
+import SubBanner from "../../components/SubBanner";
 
 const Mypage = () => {
   return (
-    <MypageWrapper>
-      <UserProfile />
+    <>
+      <SubBanner text="마이페이지" />
 
-      <Menu>
-        <MenuItem>
-          <Link to="/product/add">
-            <BiBox />
-            <MenuText>상품 추가</MenuText>
-          </Link>
-        </MenuItem>
+      <MypageWrapper>
+        <UserProfile />
 
-        <MenuItem>
-          <Link to="/product/upload">
-            <BiCloudUpload />
-            <MenuText>업로드한 상품 조회</MenuText>
-          </Link>
-        </MenuItem>
-      </Menu>
-    </MypageWrapper>
+        <Menu>
+          <MenuItem>
+            <Link to="/product/add">
+              <BiBox />
+              <MenuText>상품 추가</MenuText>
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link to="/product/upload">
+              <BiCloudUpload />
+              <MenuText>업로드한 상품 조회</MenuText>
+            </Link>
+          </MenuItem>
+        </Menu>
+      </MypageWrapper>
+    </>
   );
 };
 

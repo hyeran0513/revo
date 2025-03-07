@@ -18,6 +18,7 @@ import Button from "../../components/Button";
 import { BiSolidImageAlt } from "react-icons/bi";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
+import SubBanner from "../../components/SubBanner";
 
 const fetchProduct = async (id) => {
   const productDoc = await getDoc(doc(db, "products", id));
@@ -96,66 +97,80 @@ const ProductDetail = () => {
   if (!product) return <div>상품을 찾을 수 없습니다.</div>;
 
   return (
-    <ProductContainer>
-      <ProductTop>
-        {/* 상품 썸네일 */}
-        {product?.image ? (
-          <ProductThumb>
-            <img src={product.image} />
-          </ProductThumb>
-        ) : (
-          <ProductThumbDefault>
-            <BiSolidImageAlt />
-          </ProductThumbDefault>
-        )}
+    <>
+      <SubBanner text="상품 상세 정보" />
 
-        {/* 좋아요 버튼 */}
-        <LikeButtonWrapper>
-          {user && <LikeButton productId={id} userId={user.uid} />}
-        </LikeButtonWrapper>
-      </ProductTop>
+      <ProductContainer>
+        <ProductTop>
+          {/* 상품 썸네일 */}
+          {product?.image ? (
+            <ProductThumb>
+              <img src={product.image} />
+            </ProductThumb>
+          ) : (
+            <ProductThumbDefault>
+              <BiSolidImageAlt />
+            </ProductThumbDefault>
+          )}
 
-      <ProductInfo>
-        {/* 판매자 */}
-        <ProductSeller>{userInfo && <p>{userInfo.username}</p>}</ProductSeller>
+          {/* 좋아요 버튼 */}
+          <LikeButtonWrapper>
+            {user && <LikeButton productId={id} userId={user.uid} />}
+          </LikeButtonWrapper>
+        </ProductTop>
 
-        {/* 상품명 */}
-        <ProductTitle>{product?.title}</ProductTitle>
+        <ProductInfo>
+          {/* 판매자 */}
+          <ProductSeller>
+            {userInfo && <p>{userInfo.username}</p>}
+          </ProductSeller>
 
-        {/* 상품 설명 */}
-        <ProductContent>
-          <Viewer initialValue={product?.description} />
-        </ProductContent>
-      </ProductInfo>
+          {/* 상품명 */}
+          <ProductTitle>{product?.title}</ProductTitle>
 
-      <ButtonWrap>
-        {type === "undefined" ? (
-          <Button type="button" variant="outline" onClick={() => navigate(-1)}>
-            뒤로 가기
-          </Button>
-        ) : (
-          <Button type="button" variant="outline" onClick={() => navigate(-1)}>
-            목록으로
-          </Button>
-        )}
+          {/* 상품 설명 */}
+          <ProductContent>
+            <Viewer initialValue={product?.description} />
+          </ProductContent>
+        </ProductInfo>
 
-        {user.uid === product.sellerId ? (
-          <Button
-            type="button"
-            onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
-          >
-            수정하기
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            onClick={() => navigate(`/chatroom?chatId=${chatId}`)}
-          >
-            채팅하기
-          </Button>
-        )}
-      </ButtonWrap>
-    </ProductContainer>
+        <ButtonWrap>
+          {type === "undefined" ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(-1)}
+            >
+              뒤로 가기
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(-1)}
+            >
+              목록으로
+            </Button>
+          )}
+
+          {user.uid === product.sellerId ? (
+            <Button
+              type="button"
+              onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
+            >
+              수정하기
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={() => navigate(`/chatroom?chatId=${chatId}`)}
+            >
+              채팅하기
+            </Button>
+          )}
+        </ButtonWrap>
+      </ProductContainer>
+    </>
   );
 };
 

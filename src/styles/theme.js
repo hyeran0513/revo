@@ -22,7 +22,7 @@ export const lightTheme = {
     secondary: "#999",
     border: "hsla(220, 20%, 80%, 0.4)",
     focus: "rgb(148, 160, 184)",
-    accent: "#e02020",
+    accent: "#F9779B",
     hover: "#f8f8f8",
   },
   fonts: {
@@ -65,7 +65,7 @@ export const darkTheme = {
     heading: "'Roboto', sans-serif",
   },
   inputs: {
-    background: "hsl(0, 0%, 99%)",
+    background: "#1E1E2A",
   },
   thumb: {
     background: "#1E1E2A",

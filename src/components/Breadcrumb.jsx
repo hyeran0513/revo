@@ -42,15 +42,11 @@ const BreadcrumbLink = styled(Link)`
   justify-content: center;
   align-items: center;
   min-width: 40px;
-  color: ${(props) => (props.$isActive ? "#333" : "#999")};
+  color: ${(props) =>
+    props.$isActive ? props.theme.colors.text : props.theme.colors.secondary};
   border-right: 1px solid ${(props) => props.theme.colors.border};
   padding: 0 20px;
   height: 100%;
-
-  &.active {
-    font-weight: bold;
-    color: #333;
-  }
 `;
 
 export default Breadcrumb;

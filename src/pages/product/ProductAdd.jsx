@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import ToastUIEditor from "../../components/ToastUIEditor";
 import { useSelector } from "react-redux";
+import SubBanner from "../../components/SubBanner";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const ProductAdd = () => {
 
   return (
     <ProductAddWrapper>
-      <PageTitle>상품 추가</PageTitle>
+      <SubBanner text="상품 추가" />
 
       <FormContainer onSubmit={handleSubmit}>
         <input
@@ -183,20 +184,14 @@ const ProductAdd = () => {
   );
 };
 
-const ProductAddWrapper = styled.div`
-  margin: 0 auto;
-  max-width: 500px;
-`;
-
-const PageTitle = styled.h1`
-  margin-bottom: 30px;
-  text-align: center;
-`;
+const ProductAddWrapper = styled.div``;
 
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin: 0 auto;
+  max-width: 500px;
 `;
 
 const FormBox = styled.div``;

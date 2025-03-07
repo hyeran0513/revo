@@ -12,26 +12,35 @@ import SideFilter from "../../components/SideFilter";
 const fetchProducts = async (type, filter) => {
   const conditions = [];
 
-  if (filter.condition)
+  if (filter.condition) {
     conditions.push(where("condition", "==", filter.condition));
+  }
+
+  let useOrderByPrice = false;
 
   if (filter.price) {
     if (filter.price === "other") {
       conditions.push(where("price", ">=", 100000));
+      useOrderByPrice = true;
     } else {
       const priceValue = parseInt(filter.price);
-
       if (!isNaN(priceValue)) {
         conditions.push(where("price", "<=", priceValue));
+        useOrderByPrice = true;
       }
     }
   }
 
-  const q = query(
+  let q = query(
     collection(db, "products"),
     where("category", "==", type),
     ...conditions
   );
+
+  if (useOrderByPrice) {
+    q = query(q, orderBy("price"));
+  }
+
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };

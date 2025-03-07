@@ -3,6 +3,7 @@ import { db } from "../../firebase/firebaseConfig";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProductCard from "../../components/ProductCard";
+import SubBanner from "../../components/SubBanner";
 
 const fetchFavorites = async () => {
   const favoritesRef = await getDocs(collection(db, "likes"));
@@ -66,15 +67,19 @@ const Favorite = () => {
   }
 
   return (
-    <ProductContainer>
-      <ProductList>
-        {products.length > 0 ? (
-          products.map((product) => <ProductCard product={product} />)
-        ) : (
-          <p>좋아하는 항목이 없습니다.</p>
-        )}
-      </ProductList>
-    </ProductContainer>
+    <>
+      <SubBanner text="찜 목록" />
+
+      <ProductContainer>
+        <ProductList>
+          {products.length > 0 ? (
+            products.map((product) => <ProductCard product={product} />)
+          ) : (
+            <p>좋아하는 항목이 없습니다.</p>
+          )}
+        </ProductList>
+      </ProductContainer>
+    </>
   );
 };
 
