@@ -23,8 +23,8 @@ const SubBannerContainer = styled.div`
   display: flex;
   align-items: center;
   height: 150px;
-  background-color: ${(props) => props.theme.colors.primary};
-  color: #fff;
+  background-color: ${(props) => props.theme.colors.light};
+  color: #333;
 `;
 
 const SubBannerText = styled.div`

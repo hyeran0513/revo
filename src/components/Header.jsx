@@ -11,7 +11,9 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <Logo to="/">REVO</Logo>
+        <Logo to="/">
+          <LogoImg src="/logo.png" />
+        </Logo>
 
         <Gnb>
           <GnbItem to="/products?type=mobile">모바일</GnbItem>
@@ -55,8 +57,16 @@ const HeaderContainer = styled.div`
 `;
 
 const Logo = styled(Link)`
-  font-size: 34px;
+  width: 110px;
+  height: 34px;
   font-weight: bold;
+  overflow: hidden;
+`;
+
+const LogoImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const Gnb = styled.nav`

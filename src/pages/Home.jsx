@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 
 const Home = () => {
-  const { data: products = [], error, isLoading } = useProductData("mobile");
+  const { data: mobile = [] } = useProductData("mobile");
+  const { data: tablet = [] } = useProductData("tablet");
   const navigate = useNavigate();
 
   return (
@@ -21,7 +22,18 @@ const Home = () => {
           </MoreBtn>
         </SectionTop>
 
-        <SwiperComponent products={products} />
+        <SwiperComponent products={mobile} />
+      </Section>
+
+      <Section>
+        <SectionTop>
+          <SectionTitle>태블릿</SectionTitle>
+          <MoreBtn onClick={() => navigate("/products?type=tablet")}>
+            더 보기
+          </MoreBtn>
+        </SectionTop>
+
+        <SwiperComponent products={tablet} />
       </Section>
     </HomeWrapper>
   );

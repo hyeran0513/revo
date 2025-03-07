@@ -17,13 +17,15 @@ export const lightTheme = {
   ...baseTheme,
   colors: {
     background: "#fff",
-    text: "#000",
+    text: "#333",
     primary: "#9D7DC9",
     secondary: "#999",
+    light: "#F8F5FE",
     border: "hsla(220, 20%, 80%, 0.4)",
     focus: "rgb(148, 160, 184)",
     accent: "#F9779B",
     hover: "#f8f8f8",
+    bgopacity: "rgba(255, 255, 255, 0.2)",
   },
   fonts: {
     main: "'Arial', sans-serif",
@@ -46,6 +48,10 @@ export const lightTheme = {
     receivebubble: "#f6f5f7",
     receivetext: "#333",
   },
+  buttons: {
+    background: "#fff",
+    icon: "#333",
+  },
 };
 
 export const darkTheme = {
@@ -59,6 +65,7 @@ export const darkTheme = {
     focus: "rgb(148, 160, 184)",
     accent: "#F9779B",
     hover: "#242430",
+    bgopacity: "rgba(33, 33, 43, 0.2)",
   },
   fonts: {
     main: "'Arial', sans-serif",
@@ -80,5 +87,9 @@ export const darkTheme = {
     sendtext: "#fff",
     receivebubble: "#21212D",
     receivetext: "#B2B2BA",
+  },
+  buttons: {
+    background: "#FEFEFF",
+    icon: "#333",
   },
 };

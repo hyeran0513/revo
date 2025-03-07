@@ -105,7 +105,7 @@ const SideFilterWrapper = styled.div`
   width: 30%;
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 8px;
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.bgopacity};
   z-index: 10;
 `;
 

@@ -44,7 +44,7 @@ const Button = styled.button`
   align-items: center;
   width: 56px;
   height: 56px;
-  background: #fff;
+  background: ${(props) => props.theme.buttons.background};
   border-radius: 50%;
   box-shadow: 5px 0 12px #0000001f;
   color: #333;
@@ -55,6 +55,7 @@ const Button = styled.button`
 
   svg {
     font-size: 24px;
+    fill: ${(props) => props.theme.buttons.icon};
   }
 `;
 

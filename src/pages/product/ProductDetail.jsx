@@ -182,6 +182,7 @@ const ProductContainer = styled.div`
 const ProductInfo = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 8px;
+  background-color: ${(props) => props.theme.colors.bgopacity};
 `;
 
 const ProductSeller = styled.div`

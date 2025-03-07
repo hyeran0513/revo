@@ -69,6 +69,7 @@ const InputField = styled.input`
   border: none;
   resize: none;
   font-size: 14px;
+  background-color: ${(props) => props.theme.inputs.background};
 `;
 
 const FormButton = styled.button`
