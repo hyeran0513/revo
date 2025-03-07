@@ -77,13 +77,13 @@ const ProductThumbDefault = styled.div`
 
 const ProductInfo = styled.div`
   margin-top: 16px;
-  text-align: center;
 `;
 
 const ProductTitle = styled.h1``;
 
 const ProductPrice = styled.div`
   font-size: 20px;
+  font-weight: bold;
   color: ${(props) => props.theme.colors.accent};
 `;
 

@@ -31,6 +31,7 @@ const HomeWrapper = styled.div``;
 
 const Section = styled.section`
   margin: 0 auto 20px;
+  padding: 30px 0;
   max-width: 1200px;
 `;
 

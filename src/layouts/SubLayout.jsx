@@ -8,8 +8,10 @@ import Footer from "../components/Footer";
 const SubLayout = () => {
   return (
     <LayoutWrapper>
-      <SubHeader />
-      <Header />
+      <HeaderWrapper>
+        <SubHeader />
+        <Header />
+      </HeaderWrapper>
 
       <LayoutMain>
         <Outlet />
@@ -30,7 +32,13 @@ const LayoutWrapper = styled.div`
 
 const LayoutMain = styled.main`
   flex: 1;
-  padding: 0 20px 30px;
+  padding: 150px 20px 30px;
+`;
+
+const HeaderWrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 `;
 
 export default SubLayout;
