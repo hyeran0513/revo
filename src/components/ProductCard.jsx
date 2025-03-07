@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { formatNumber } from "../utils/format";
+import Badge from "./Badge";
 
 const ProductCard = ({ product, type }) => {
   const { user } = useSelector((state) => state.auth);
@@ -31,13 +32,12 @@ const ProductCard = ({ product, type }) => {
         <ProductInfo>
           <ProductTitle>{product?.title}</ProductTitle>
           <ProductPrice>{formatNumber(product?.price)}원</ProductPrice>
+          <Badge text="새 상품" />
         </ProductInfo>
       </Link>
     </ProductItem>
   );
 };
-
-const ProductItem = styled.div``;
 
 const ProductTop = styled.div`
   position: relative;
@@ -47,6 +47,7 @@ const LikeButtonWrapper = styled.div`
   position: absolute;
   bottom: 10px;
   right: 10px;
+  z-index: 10;
 `;
 
 const ProductThumb = styled.div`
@@ -58,6 +59,7 @@ const ProductThumb = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease-in-out;
   }
 `;
 
@@ -85,6 +87,14 @@ const ProductPrice = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.accent};
+`;
+
+const ProductItem = styled.div`
+  &:hover {
+    ${ProductThumb} img {
+      transform: scale(1.2);
+    }
+  }
 `;
 
 export default ProductCard;

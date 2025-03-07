@@ -1,5 +1,5 @@
 import React from "react";
-import { BiChevronRight } from "react-icons/bi";
+import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -19,28 +19,43 @@ const Breadcrumb = () => {
 
   return (
     <BreadcrumbWrapper>
-      <BreadcrumbLink to="/">홈</BreadcrumbLink>
+      <BreadContainer>
+        <BreadcrumbLink to="/">
+          <BiHomeAlt />
+        </BreadcrumbLink>
 
-      <BiChevronRight />
-
-      <BreadcrumbLink to={`/products?type=${type}`} isActive>
-        {typeText[type]}
-      </BreadcrumbLink>
+        <BreadcrumbLink to={`/products?type=${type}`} $isActive>
+          {typeText[type]}
+        </BreadcrumbLink>
+      </BreadContainer>
     </BreadcrumbWrapper>
   );
 };
 
 const BreadcrumbWrapper = styled.div`
+  border-top: 1px solid ${(props) => props.theme.colors.border};
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+`;
+
+const BreadContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 8px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  height: 40px;
+  border-left: 1px solid ${(props) => props.theme.colors.border};
 `;
 
 const BreadcrumbLink = styled(Link)`
-  color: ${(props) => (props.isActive ? "#333" : "#999")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40px;
+  color: ${(props) => (props.$isActive ? "#333" : "#999")};
+  border-right: 1px solid ${(props) => props.theme.colors.border};
+  padding: 0 20px;
+  height: 100%;
 
   &.active {
     font-weight: bold;

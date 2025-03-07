@@ -15,6 +15,7 @@ const Button = styled.button`
     size === "small" ? "14px" : size === "large" ? "16px" : "16px"};
 
   transition: background-color 0.3s, border-color 0.3s;
+  width: ${({ wfull }) => (wfull ? "100%" : "auto")};
 
   outline: none;
   position: relative;

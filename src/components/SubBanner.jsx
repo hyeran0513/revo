@@ -18,7 +18,8 @@ const SubBannerWrapper = styled.div`
 `;
 
 const SubBannerText = styled.div`
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
+  max-width: 1200px;
   font-size: 40px;
   font-weight: bold;
 `;
