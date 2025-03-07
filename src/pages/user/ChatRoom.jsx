@@ -35,6 +35,8 @@ const ChatRoom = () => {
 
   useEffect(() => {
     const fetchOtherUser = async () => {
+      if (!chatId) return;
+
       try {
         const chatRef = doc(db, "chats", chatId);
         const chatSnap = await getDoc(chatRef);
@@ -51,7 +53,7 @@ const ChatRoom = () => {
           }
         }
       } catch (error) {
-        console.error("Error fetching other user:", error);
+        console.error(error);
       }
     };
 

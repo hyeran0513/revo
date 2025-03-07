@@ -19,6 +19,8 @@ import { BiSolidImageAlt } from "react-icons/bi";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
 import SubBanner from "../../components/SubBanner";
+import Loading from "../../components/Loading";
+import NoData from "../../components/NoData";
 
 const fetchProduct = async (id) => {
   const productDoc = await getDoc(doc(db, "products", id));
@@ -83,17 +85,19 @@ const ProductDetail = () => {
     }
   };
 
+  useEffect(() => {
+    if (chatId) {
+      navigate(`/chatroom?chatId=${chatId}`);
+    }
+  }, [chatId, navigate]);
+
   const handleChat = () => {
-    fetchChat().then(() => {
-      if (chatId) {
-        navigate(`/chatroom?chatId=${chatId}`);
-      }
-    });
+    fetchChat();
   };
 
-  if (isLoading || userInfoLoading) return <div>로딩 중...</div>;
+  if (isLoading || userInfoLoading) return <Loading />;
   if (error) return <div>{error.message}</div>;
-  if (!product) return <div>상품을 찾을 수 없습니다.</div>;
+  if (!product) return <NoData text="상품을 찾을 수 없습니다." />;
 
   return (
     <>
