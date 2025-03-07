@@ -46,8 +46,9 @@ export default CustomRadio;
 
 const RadioWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
+  width: 100%;
 `;
 
 const Label = styled.label``;
@@ -70,7 +71,7 @@ const RadioText = styled.div`
   align-items: center;
   border: 1px solid
     ${({ $isSelected }) =>
-      $isSelected ? "#9D7DC9" : "hsla(220, 20%, 80%, 0.4)"};
+      $isSelected ? "#4c7fff" : "hsla(220, 20%, 80%, 0.4)"};
   height: 40px;
   border-radius: 5px;
   text-align: center;
@@ -87,7 +88,7 @@ const RadioText = styled.div`
     opacity: 0.2;
 
     background-color: ${({ $isSelected, theme }) =>
-      $isSelected ? "#9D7DC9" : "#fafafa"};
+      $isSelected ? "#4c7fff" : "#fafafa"};
     z-index: -1;
   }
 `;

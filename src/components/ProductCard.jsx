@@ -32,7 +32,9 @@ const ProductCard = ({ product, type }) => {
         <ProductInfo>
           <ProductTitle>{product?.title}</ProductTitle>
           <ProductPrice>{formatNumber(product?.price)}원</ProductPrice>
-          <Badge text="새 상품" />
+          <Badge
+            text={product?.condition === "new" ? "새 상품" : "중고 상품"}
+          />
         </ProductInfo>
       </Link>
     </ProductItem>

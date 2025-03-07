@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getDocs, collection, query, where } from "firebase/firestore";
+import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
@@ -19,7 +19,8 @@ const fetchProducts = async (type, filter) => {
     if (filter.price === "other") {
       conditions.push(where("price", ">=", 100000));
     } else {
-      const priceValue = parseFloat(filter.price);
+      const priceValue = parseInt(filter.price);
+
       if (!isNaN(priceValue)) {
         conditions.push(where("price", "<=", priceValue));
       }
@@ -99,7 +100,6 @@ const ProductContainer = styled.div`
 `;
 
 const ProductListWrapper = styled.div`
-  height: 1000px;
   width: 100%;
   min-width: 0;
   flex: 1;

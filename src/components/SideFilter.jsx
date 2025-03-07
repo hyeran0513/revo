@@ -11,10 +11,10 @@ const productConditions = [
 
 const productPrice = [
   { text: "전체", value: "", checked: true },
-  { text: "만원 ↓", value: "10000", checked: false },
-  { text: "오만원 ↓", value: "50000", checked: false },
-  { text: "십만원 ↓", value: "100000", checked: false },
-  { text: "십만원 ↑", value: "other", checked: false },
+  { text: "만원 이하", value: "10000", checked: false },
+  { text: "오만원 이하", value: "50000", checked: false },
+  { text: "십만원 이하", value: "100000", checked: false },
+  { text: "십만원 이상", value: "other", checked: false },
 ];
 
 const SideFilter = ({ setFilter, filter }) => {
