@@ -26,3 +26,4 @@
 | `@toast-ui/react-editor`       | `yarn add @toast-ui/react-editor`       |
 | `firebase`                     | `yarn add firebase`                     |
 | `react-icons`                  | `yarn add react-icons`                  |
+| `react-loading-spinner`        | `yarn add react-loader-spinner`         |
