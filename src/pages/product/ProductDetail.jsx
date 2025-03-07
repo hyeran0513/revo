@@ -57,40 +57,39 @@ const ProductDetail = () => {
     enabled: !!product?.sellerId,
   });
 
-  useEffect(() => {
-    if (!product || !user) return;
+  const fetchChat = async () => {
+    const chatRef = collection(db, "chats");
+    const q = query(chatRef, where("participants", "array-contains", user.uid));
+    const querySnapshot = await getDocs(q);
 
-    const fetchChat = async () => {
-      const chatRef = collection(db, "chats");
-      const q = query(
-        chatRef,
-        where("participants", "array-contains", user.uid)
-      );
-      const querySnapshot = await getDocs(q);
-
-      let existingChat = null;
-      querySnapshot.forEach((doc) => {
-        const chatData = doc.data();
-        if (chatData.participants.includes(product.sellerId)) {
-          existingChat = doc.id;
-        }
-      });
-
-      if (!existingChat) {
-        const newChat = {
-          participants: [user.uid, product.sellerId],
-          createdAt: new Date(),
-        };
-
-        const docRef = await addDoc(chatRef, newChat);
-        setChatId(docRef.id);
-      } else {
-        setChatId(existingChat);
+    let existingChat = null;
+    querySnapshot.forEach((doc) => {
+      const chatData = doc.data();
+      if (chatData.participants.includes(product.sellerId)) {
+        existingChat = doc.id;
       }
-    };
+    });
 
-    fetchChat();
-  }, [product, user]);
+    if (!existingChat) {
+      const newChat = {
+        participants: [user.uid, product.sellerId],
+        createdAt: new Date(),
+      };
+
+      const docRef = await addDoc(chatRef, newChat);
+      setChatId(docRef.id);
+    } else {
+      setChatId(existingChat);
+    }
+  };
+
+  const handleChat = () => {
+    fetchChat().then(() => {
+      if (chatId) {
+        navigate(`/chatroom?chatId=${chatId}`);
+      }
+    });
+  };
 
   if (isLoading || userInfoLoading) return <div>로딩 중...</div>;
   if (error) return <div>{error.message}</div>;
@@ -161,10 +160,7 @@ const ProductDetail = () => {
               수정하기
             </Button>
           ) : (
-            <Button
-              type="button"
-              onClick={() => navigate(`/chatroom?chatId=${chatId}`)}
-            >
+            <Button type="button" onClick={handleChat}>
               채팅하기
             </Button>
           )}
