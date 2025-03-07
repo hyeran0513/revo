@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import { useEffect, useState } from "react";
+import Loading from "../../components/Loading";
 
 const loginUser = async ({ email, password }) => {
   const userCredential = await signInWithEmailAndPassword(
@@ -72,7 +73,7 @@ const SignIn = () => {
   };
 
   if (loading) {
-    return <div>로딩 중...</div>;
+    return <Loading />;
   }
 
   return (

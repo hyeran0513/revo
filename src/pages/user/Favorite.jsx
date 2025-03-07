@@ -5,6 +5,7 @@ import styled from "styled-components";
 import ProductCard from "../../components/ProductCard";
 import SubBanner from "../../components/SubBanner";
 import { useSelector } from "react-redux";
+import Loading from "../../components/Loading";
 
 const fetchFavorites = async (uid) => {
   const favoritesRef = await getDocs(
@@ -38,13 +39,18 @@ const Favorite = () => {
       try {
         const fetchedFavorites = await fetchFavorites(user.uid);
         setProductIds(fetchedFavorites);
+
+        if (fetchedFavorites.length === 0) {
+          setLoading(false);
+        }
       } catch (error) {
         setError(error.message);
+        setLoading(false);
       }
     };
 
     getFavorites();
-  }, []);
+  }, [user.uid]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -56,6 +62,8 @@ const Favorite = () => {
         } catch (error) {
           setError(error.message);
           setLoading(false);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -64,7 +72,7 @@ const Favorite = () => {
   }, [productIds]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
