@@ -150,8 +150,8 @@ const ProductEdit = () => {
               required
             >
               <option value="">상태 선택</option>
-              <option value="New">New</option>
-              <option value="Used">Used</option>
+              <option value="New">새 상품</option>
+              <option value="Used">중고 상품</option>
             </SelectField>
           </FormField>
         </FormBox>
