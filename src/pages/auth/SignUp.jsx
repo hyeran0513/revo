@@ -123,7 +123,7 @@ const SignUp = () => {
 
         {/* 비밀번호 확인 */}
         <InputField
-          type="passwordConfirm"
+          type="password"
           value={state.passwordConfirm}
           placeholder={state.placeholder.passwordConfirm}
           onChange={(e) =>
@@ -131,7 +131,7 @@ const SignUp = () => {
           }
           error={state.errors.passwordConfirm}
           showPassword={showPasswordConfirm}
-          onTogglePassword={() => setShowPassword(!showPasswordConfirm)}
+          onTogglePassword={() => setShowPasswordConfirm(!showPasswordConfirm)}
         />
 
         {/* 이름 */}
