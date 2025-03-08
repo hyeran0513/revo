@@ -20,12 +20,10 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
     }
   }, [initialValue]);
 
-  useEffect(() => {
-    if (onSaveDescription && editorRef.current) {
-      const description = editorRef.current.getInstance().getMarkdown();
-      onSaveDescription(description);
-    }
-  }, []);
+  const handleEditorChange = () => {
+    const description = editorRef.current.getInstance().getMarkdown();
+    onSaveDescription(description);
+  };
 
   return (
     <Editor
@@ -43,6 +41,7 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
       ]}
       ref={editorRef}
       useCommandShortcut={true}
+      onChange={handleEditorChange}
     />
   );
 };
