@@ -2,11 +2,24 @@ import { useReducer } from "react";
 
 const initialState = {
   email: "",
-  password: "",
   username: "",
-  emailPlaceholder: "이메일을 입력해 주세요.",
-  passwordPlaceholder: "비밀번호를 입력해 주세요.",
-  usernamePlaceholder: "이름을 입력해 주세요.",
+  nickname: "",
+  password: "",
+  passwordConfirm: "",
+  errors: {
+    email: "",
+    username: "",
+    nickname: "",
+    password: "",
+    passwordConfirm: "",
+  },
+  placeholder: {
+    email: "이메일을 입력해 주세요.",
+    username: "이름을 입력해 주세요.",
+    nickname: "닉네임을 입력해 주세요.",
+    password: "비밀번호를 입력해 주세요.",
+    passwordConfirm: "비밀번호 한번 더 입력해 주세요.",
+  },
 };
 
 const formReducer = (state, action) => {
@@ -21,10 +34,25 @@ const formReducer = (state, action) => {
         ...state,
         password: action.payload,
       };
+    case "SET_PASSWORDCONFIRM":
+      return {
+        ...state,
+        passwordConfirm: action.payload,
+      };
     case "SET_USERNAME":
       return {
         ...state,
         username: action.payload,
+      };
+    case "SET_NICKNAME":
+      return {
+        ...state,
+        nickname: action.payload,
+      };
+    case "SET_ERRORS":
+      return {
+        ...state,
+        errors: { ...state.errors, ...action.payload },
       };
     default:
       return state;
