@@ -156,19 +156,6 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
-        {/* <FormBox>
-          <FormLabel>상품 이미지</FormLabel>
-          <FormField>
-            <InputField
-              type="file"
-              multiple
-              onChange={(e) =>
-                dispatch({ type: "SET_IMAGES", payload: e.target.files })
-              }
-            />
-          </FormField>
-        </FormBox> */}
-
         <FormBox>
           <FormLabel>위치</FormLabel>
           <FormField>

@@ -195,7 +195,7 @@ const ProductTitle = styled.p`
   border-bottom: 1px solid ${(props) => props.theme.colors.border};
 `;
 
-const ProductContent = styled.p`
+const ProductContent = styled.div`
   padding: 20px;
   border-bottom: 1px solid ${(props) => props.theme.colors.border};
 `;

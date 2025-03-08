@@ -29,7 +29,7 @@ const TopButton = () => {
   }, []);
 
   return (
-    <Button show={showButton} onClick={scrollToTop}>
+    <Button show={showButton ? "true" : "false"} onClick={scrollToTop}>
       <BiArrowToTop />
     </Button>
   );
@@ -50,7 +50,7 @@ const Button = styled.button`
   color: #333;
   opacity: 0;
   z-index: 100;
-  opacity: ${({ show }) => (show ? 1 : 0)};
+  opacity: ${({ show }) => (show === "true" ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
 
   svg {
