@@ -75,7 +75,7 @@ const SignUp = () => {
     e.preventDefault();
 
     // 폼 유효성 검사
-    const errors = validateForm(state);
+    const errors = validateForm(state, "signup");
 
     // 에러 상태 설정
     if (Object.keys(errors).length > 0) {
