@@ -6,14 +6,26 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import ToastUIEditor from "../../components/ToastUIEditor";
+import { useMutation } from "@tanstack/react-query";
 
 const ProductEdit = () => {
   const [state, dispatch] = useProductForm();
-  const { id } = useParams();
+  const { id } = useParams(); // url에서 상품 id 조회
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get("type");
 
+  // 상품 수정 요청
+  const { mutate, isLoading, isError, error } = useMutation({
+    mutationFn: (updatedData) => updateProduct(id, updatedData),
+    onSuccess: () => {
+      console.log("상품이 성공적으로 수정되었습니다.");
+      navigate(`/product/${id}`); // 수정된 상품 페이지로 이동
+    },
+    onError: (error) => {
+      console.error("상품 수정 실패:", error);
+    },
+  });
+
+  // 상품 데이터 fetch
   const fetchProduct = async (id) => {
     const productDoc = await getDoc(doc(db, "products", id));
 
@@ -24,11 +36,13 @@ const ProductEdit = () => {
     }
   };
 
+  // 상품 데이터 업데이트
   const updateProduct = async (id, updatedData) => {
     const productRef = doc(db, "products", id);
     await updateDoc(productRef, updatedData);
   };
 
+  // 마운트 시, 상품 데이터 로드
   useEffect(() => {
     if (id) {
       const loadProductData = async () => {
@@ -46,10 +60,12 @@ const ProductEdit = () => {
           dispatch({ type: "SET_LOCATION", payload: productData.location });
         }
       };
+
       loadProductData();
     }
   }, [id]);
 
+  // 폼 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,13 +79,7 @@ const ProductEdit = () => {
       location: state.location,
     };
 
-    try {
-      await updateProduct(id, updatedData);
-      console.log("상품이 성공적으로 수정되었습니다.");
-      navigate(`/product/${id}`);
-    } catch (error) {
-      console.error("상품 수정 실패:", error);
-    }
+    mutate(updatedData);
   };
 
   const handleSaveDescription = (description) => {
