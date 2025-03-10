@@ -22,6 +22,7 @@ import SubBanner from "../../components/SubBanner";
 import Loading from "../../components/Loading";
 import NoData from "../../components/NoData";
 
+// 상품 정보 조회
 const fetchProduct = async (id) => {
   const productDoc = await getDoc(doc(db, "products", id));
   return productDoc.exists()
@@ -29,20 +30,22 @@ const fetchProduct = async (id) => {
     : null;
 };
 
+// 사용자 정보 조회
 const fetchUser = async (uid) => {
   const userDoc = await getDoc(doc(db, "users", uid));
   return userDoc.exists() ? userDoc.data() : null;
 };
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // URL에서 상품 ID 조회
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
-  const type = searchParams.get("type");
+  const type = searchParams.get("type"); // 상품 카테고리 파라미터 값 가져오기
   const [chatId, setChatId] = useState(null);
   const [sellerInfo, setSellerInfo] = useState(null);
 
+  // 상품 데이터 fetch
   const {
     data: product,
     error,
@@ -53,44 +56,57 @@ const ProductDetail = () => {
     enabled: !!id,
   });
 
+  // 판매자 정보 fetch
   const { data: userInfo, isLoading: userInfoLoading } = useQuery({
     queryKey: ["user", product?.sellerId],
     queryFn: () => (product ? fetchUser(product.sellerId) : null),
     enabled: !!product?.sellerId,
   });
 
+  // 기존 채팅이 있는지 확인하고, 없으면 새 채팅 생성
   const fetchChat = async () => {
     const chatRef = collection(db, "chats");
     const q = query(chatRef, where("participants", "array-contains", user.uid));
     const querySnapshot = await getDocs(q);
 
     let existingChat = null;
+
+    // 기존 채팅이 있는지 확인
     querySnapshot.forEach((doc) => {
       const chatData = doc.data();
+
+      // 판매자와 이미 채팅이 있다면, 해당 채팅 ID를 existingChat에 저장
       if (chatData.participants.includes(product.sellerId)) {
         existingChat = doc.id;
       }
     });
 
+    // 기존 채팅이 없다면 새 채팅 생성
     if (!existingChat) {
       const newChat = {
         participants: [user.uid, product.sellerId],
         createdAt: new Date(),
       };
 
+      // 새로운 채팅 추가
       const docRef = await addDoc(chatRef, newChat);
+
+      // 생성된 채팅 ID 저장
       setChatId(docRef.id);
     } else {
+      // 기존 채팅이 있다면 그 채팅 ID 저장
       setChatId(existingChat);
     }
   };
 
+  // 채팅방으로 이동하는 useEffect
   useEffect(() => {
     if (chatId) {
       navigate(`/chatroom?chatId=${chatId}`);
     }
   }, [chatId, navigate]);
 
+  // 채팅하기 버튼 클릭 시
   const handleChat = () => {
     fetchChat();
   };
