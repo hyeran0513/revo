@@ -17,68 +17,75 @@ import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NoData from "../../components/NoData";
 import SubBanner from "../../components/SubBanner";
+import { useQuery } from "@tanstack/react-query";
 
-const fetchUser = async (uid) => {
-  const userDoc = await getDoc(doc(db, "users", uid));
-  return userDoc.exists() ? userDoc.data() : null;
+// 상대방 사용자 정보 조회
+const fetchOtherUser = async (chatId, userUid) => {
+  const chatRef = doc(db, "chats", chatId);
+  const chatSnap = await getDoc(chatRef);
+
+  if (chatSnap.exists()) {
+    const chatData = chatSnap.data();
+
+    // 채팅 참여자 중 현재 사용자를 제외한 값(상대방 사용자 찾기)
+    const otherParticipant = chatData.participants.find(
+      (uid) => uid !== userUid
+    );
+
+    // 상대방이 존재하면 해당 사용자 정보를 조회
+    if (otherParticipant) {
+      const userDoc = await getDoc(doc(db, "users", otherParticipant));
+      return userDoc.exists() ? userDoc.data().username : null;
+    }
+  }
+
+  return null;
 };
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
 
   const [searchParams] = useSearchParams();
-  const searchChatId = searchParams.get("chatId");
+  const searchChatId = searchParams.get("chatId"); // URL에서 chatId 조회
 
   const [chatId, setChatId] = useState(searchChatId || "");
   const { user } = useSelector((state) => state.auth);
-  const [otherUsername, setOtherUsername] = useState(null);
 
-  useEffect(() => {
-    const fetchOtherUser = async () => {
-      if (!chatId) return;
+  const {
+    data: otherUsername,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["otherUser", chatId, user.uid],
+    queryFn: () => fetchOtherUser(chatId, user.uid),
+    enabled: !!chatId,
+  });
 
-      try {
-        const chatRef = doc(db, "chats", chatId);
-        const chatSnap = await getDoc(chatRef);
-
-        if (chatSnap.exists()) {
-          const chatData = chatSnap.data();
-          const otherParticipant = chatData.participants.find(
-            (uid) => uid !== user.uid
-          );
-
-          if (otherParticipant) {
-            const otherUserInfo = await fetchUser(otherParticipant);
-            setOtherUsername(otherUserInfo.username);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchOtherUser();
-  }, [user.uid, chatId]);
-
+  // URL의 쿼리 파라미터(searchChatId)가 변경되면 chatId 업데이트
   useEffect(() => {
     if (searchChatId) {
       setChatId(searchChatId);
     }
   }, [searchChatId]);
 
+  // chatId가 존재하면 해당 채팅의 메시지를 실시간으로 조회
   useEffect(() => {
     if (!chatId) return;
+
     const messagesRef = collection(db, "messages");
+
     const q = query(
       messagesRef,
       where("chatId", "==", chatId),
       orderBy("createdAt", "asc")
     );
 
+    // 실시간으로 쿼리 결과의 변경사항을 수신
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
 
+    // 컴포넌트가 언마운트 될 때 구독 해제
     return () => unsubscribe();
   }, [chatId]);
 
