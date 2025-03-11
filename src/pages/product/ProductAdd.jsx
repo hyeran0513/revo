@@ -8,30 +8,14 @@ import Button from "../../components/common/Button";
 import ToastUIEditor from "../../components/common/ToastUIEditor";
 import { useSelector } from "react-redux";
 import SubBanner from "../../components/base/SubBanner";
-import { useMutation } from "@tanstack/react-query";
-
-// 상품 추가
-const addProduct = async (data) => {
-  const productRef = doc(collection(db, "products"));
-  await setDoc(productRef, { ...data, createdAt: serverTimestamp() });
-  return true;
-};
+import { useAddProductsData } from "../../hooks/useProductData";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useProductForm();
   const { user } = useSelector((state) => state.auth);
 
-  const { mutate, isLoading, isError, error } = useMutation({
-    mutationFn: addProduct,
-    onSuccess: () => {
-      console.log("상품이 성공적으로 추가되었습니다.");
-      navigate(`/mypage`);
-    },
-    onError: (error) => {
-      console.error("상품 추가 실패:", error);
-    },
-  });
+  const { mutate, isLoading, isError, error } = useAddProductsData();
 
   const handleSubmit = (e) => {
     e.preventDefault();

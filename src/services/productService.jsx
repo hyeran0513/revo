@@ -5,6 +5,8 @@ import {
   getDocs,
   orderBy,
   query,
+  serverTimestamp,
+  setDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
@@ -74,4 +76,11 @@ export const fetchFilteredProducts = async (type, filter) => {
   // Firestore에서 쿼리 실행 후 결과 반환
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+// 상품 추가
+export const fetchAddProduct = async (data) => {
+  const productRef = doc(collection(db, "products"));
+  await setDoc(productRef, { ...data, createdAt: serverTimestamp() });
+  return true;
 };
