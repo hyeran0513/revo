@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, where } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
 // 사용자 정보 조회
@@ -30,4 +30,24 @@ export const fetchOtherUser = async (chatId, userUid) => {
   }
 
   return null;
+};
+
+// 찜 데이터 조회
+export const fetchFavorites = async (uid) => {
+  const favoritesRef = await getDocs(
+    collection(db, "likes"),
+    where("userId", "==", uid)
+  );
+  const productIds = favoritesRef.docs.map((doc) => doc.data().productId);
+  return productIds;
+};
+
+// 다수 상품 데이터 조회
+export const fetchProducts = async (productIds) => {
+  const productPromises = productIds.map((productId) =>
+    getDoc(doc(db, "products", productId))
+  );
+
+  const productDocs = await Promise.all(productPromises);
+  return productDocs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
