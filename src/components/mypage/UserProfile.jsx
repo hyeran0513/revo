@@ -1,10 +1,8 @@
-import { useSelector } from "react-redux";
 import useUserAuth from "../../hooks/useUserAuth";
 import styled from "styled-components";
 
 const UserProfile = () => {
   const { isAuthenticated, userInfo, error, isLoading } = useUserAuth();
-  const { user } = useSelector((state) => state.auth);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;

@@ -1,7 +1,5 @@
 import {
   collection,
-  doc,
-  getDoc,
   onSnapshot,
   orderBy,
   query,
@@ -14,52 +12,16 @@ import styled from "styled-components";
 import ChatForm from "../../components/chat/ChatForm";
 import ChatBox from "../../components/chat/ChatBox";
 import { useSearchParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import NoData from "../../components/common/NoData";
 import SubBanner from "../../components/base/SubBanner";
-import { useQuery } from "@tanstack/react-query";
-
-// 상대방 사용자 정보 조회
-const fetchOtherUser = async (chatId, userUid) => {
-  const chatRef = doc(db, "chats", chatId);
-  const chatSnap = await getDoc(chatRef);
-
-  if (chatSnap.exists()) {
-    const chatData = chatSnap.data();
-
-    // 채팅 참여자 중 현재 사용자를 제외한 값(상대방 사용자 찾기)
-    const otherParticipant = chatData.participants.find(
-      (uid) => uid !== userUid
-    );
-
-    // 상대방이 존재하면 해당 사용자 정보를 조회
-    if (otherParticipant) {
-      const userDoc = await getDoc(doc(db, "users", otherParticipant));
-      return userDoc.exists() ? userDoc.data().username : null;
-    }
-  }
-
-  return null;
-};
+import { useOtherUserData } from "../../hooks/useUserData";
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
-
   const [searchParams] = useSearchParams();
   const searchChatId = searchParams.get("chatId"); // URL에서 chatId 조회
-
   const [chatId, setChatId] = useState(searchChatId || "");
-  const { user } = useSelector((state) => state.auth);
-
-  const {
-    data: otherUsername,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["otherUser", chatId, user.uid],
-    queryFn: () => fetchOtherUser(chatId, user.uid),
-    enabled: !!chatId,
-  });
+  const { data: otherUsername, isLoading, error } = useOtherUserData(chatId);
 
   // URL의 쿼리 파라미터(searchChatId)가 변경되면 chatId 업데이트
   useEffect(() => {
