@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import SwiperComponent from "../components/product/SwiperComponent";
-import useProductData from "../hooks/useProductData";
+import { useTypeForProductsData } from "../hooks/useProductData";
 import { useNavigate } from "react-router-dom";
 import Banner from "../components/base/Banner";
 
 const Home = () => {
-  const { data: mobile = [] } = useProductData("mobile");
-  const { data: tablet = [] } = useProductData("tablet");
+  const { data: mobile = [] } = useTypeForProductsData("mobile");
+  const { data: tablet = [] } = useTypeForProductsData("tablet");
   const navigate = useNavigate();
 
   return (

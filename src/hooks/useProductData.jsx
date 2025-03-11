@@ -1,19 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import {
+  fetchFilteredProducts,
+  fetchProducts,
+  fetchTypeForProducts,
+} from "../services/productService";
 
-const fetchProducts = async (type) => {
-  const q = query(collection(db, "products"), where("category", "==", type));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-};
-
-const useProductData = (type) => {
+// 유형에 따른 상품 데이터 조회
+export const useTypeForProductsData = (type) => {
   return useQuery({
     queryKey: ["products", type],
-    queryFn: () => fetchProducts(type),
+    queryFn: () => fetchTypeForProducts(type),
     enabled: !!type,
   });
 };
 
-export default useProductData;
+// 다수 상품 데이터 조회
+export const useProductsData = (productIds) => {
+  return useQuery({
+    queryKey: ["products", productIds],
+    queryFn: () => fetchProducts(productIds),
+    enabled: productIds?.length > 0,
+  });
+};
+
+// 필터링된 상품 데이터 조회
+export const useFilteredProductsData = (type, filter) => {
+  return useQuery({
+    queryKey: ["filterdProducts", type, filter],
+    queryFn: () => fetchFilteredProducts(type, filter),
+  });
+};

@@ -41,13 +41,3 @@ export const fetchFavorites = async (uid) => {
   const productIds = favoritesRef.docs.map((doc) => doc.data().productId);
   return productIds;
 };
-
-// 다수 상품 데이터 조회
-export const fetchProducts = async (productIds) => {
-  const productPromises = productIds.map((productId) =>
-    getDoc(doc(db, "products", productId))
-  );
-
-  const productDocs = await Promise.all(productPromises);
-  return productDocs.map((doc) => ({ id: doc.id, ...doc.data() }));
-};

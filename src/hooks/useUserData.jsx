@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   fetchFavorites,
+  fetchFilteredProducts,
   fetchOtherUser,
   fetchProducts,
   fetchUserData,
@@ -37,14 +38,5 @@ export const useFavoriteData = () => {
     queryKey: ["favorites", user?.uid],
     queryFn: () => fetchFavorites(user?.uid),
     enabled: !!user?.uid,
-  });
-};
-
-// 다수 상품 데이터 조회
-export const useProductsData = (productIds) => {
-  return useQuery({
-    queryKey: ["products", productIds],
-    queryFn: () => fetchProducts(productIds),
-    enabled: productIds?.length > 0,
   });
 };
