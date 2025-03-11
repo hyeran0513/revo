@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { BiSend } from "react-icons/bi";

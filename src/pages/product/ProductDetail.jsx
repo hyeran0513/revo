@@ -12,15 +12,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
-import LikeButton from "../../components/LikeButton";
+import LikeButton from "../../components/common/LikeButton";
 import styled from "styled-components";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 import { BiSolidImageAlt } from "react-icons/bi";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
-import SubBanner from "../../components/SubBanner";
-import Loading from "../../components/Loading";
-import NoData from "../../components/NoData";
+import SubBanner from "../../components/base/SubBanner";
+import Loading from "../../components/common/Loading";
+import NoData from "../../components/common/NoData";
 
 // 상품 정보 조회
 const fetchProduct = async (id) => {

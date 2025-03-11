@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BiSun, BiMoon, BiHeart, BiMessage } from "react-icons/bi";

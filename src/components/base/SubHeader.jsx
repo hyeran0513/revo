@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/authSlice";
-import { auth } from "../firebase/firebaseConfig";
-import useUserAuth from "../hooks/useUserAuth";
+import { logout } from "../../redux/authSlice";
+import { auth } from "../../firebase/firebaseConfig";
+import useUserAuth from "../../hooks/useUserAuth";
 
 const SubHeader = () => {
   const navigate = useNavigate();

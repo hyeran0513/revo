@@ -3,9 +3,9 @@ import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "../../components/product/ProductCard";
 import styled from "styled-components";
-import SubBanner from "../../components/SubBanner";
+import SubBanner from "../../components/base/SubBanner";
 
 // 상품 조회
 const fetchProducts = async (uid) => {

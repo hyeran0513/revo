@@ -1,11 +1,11 @@
 import React from "react";
 import { BiSolidImageAlt } from "react-icons/bi";
-import LikeButton from "./LikeButton";
+import LikeButton from "../common/LikeButton";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { formatNumber } from "../utils/format";
-import Badge from "./Badge";
+import { formatNumber } from "../../utils/format";
+import Badge from "../common/Badge";
 
 const ProductCard = ({ product, type }) => {
   const { user } = useSelector((state) => state.auth);

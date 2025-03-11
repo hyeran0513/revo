@@ -9,7 +9,7 @@ import {
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
 import styled from "styled-components";
 import { useSelector } from "react-redux";

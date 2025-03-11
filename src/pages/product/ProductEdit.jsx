@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
-import ToastUIEditor from "../../components/ToastUIEditor";
+import Button from "../../components/common/Button";
+import ToastUIEditor from "../../components/common/ToastUIEditor";
 import { useMutation } from "@tanstack/react-query";
 
 const ProductEdit = () => {

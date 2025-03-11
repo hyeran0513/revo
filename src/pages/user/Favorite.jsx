@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, getDoc, doc, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import styled from "styled-components";
-import ProductCard from "../../components/ProductCard";
-import SubBanner from "../../components/SubBanner";
+import ProductCard from "../../components/product/ProductCard";
+import SubBanner from "../../components/base/SubBanner";
 import { useSelector } from "react-redux";
-import Loading from "../../components/Loading";
+import Loading from "../../components/common/Loading";
 
 // 찜 데이터 조회
 const fetchFavorites = async (uid) => {

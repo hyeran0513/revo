@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import UserProfile from "../../components/UserProfile";
+import UserProfile from "../../components/mypage/UserProfile";
 import { BiCloudUpload, BiBox } from "react-icons/bi";
-import SubBanner from "../../components/SubBanner";
+import SubBanner from "../../components/base/SubBanner";
 
 const Mypage = () => {
   return (

@@ -9,14 +9,14 @@ import {
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebase/firebaseConfig";
-import ChatList from "../../components/ChatList";
+import ChatList from "../../components/chat/ChatList";
 import styled from "styled-components";
-import ChatForm from "../../components/ChatForm";
-import ChatBox from "../../components/ChatBox";
+import ChatForm from "../../components/chat/ChatForm";
+import ChatBox from "../../components/chat/ChatBox";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import NoData from "../../components/NoData";
-import SubBanner from "../../components/SubBanner";
+import NoData from "../../components/common/NoData";
+import SubBanner from "../../components/base/SubBanner";
 import { useQuery } from "@tanstack/react-query";
 
 // 상대방 사용자 정보 조회

@@ -4,12 +4,12 @@ import { auth } from "../../firebase/firebaseConfig";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 import { useEffect, useState } from "react";
-import Loading from "../../components/Loading";
-import InputField from "../../components/InputField";
+import Loading from "../../components/common/Loading";
+import InputField from "../../components/common/InputField";
 import { validateForm } from "../../utils/validation";
-import Modal from "../../components/Modal";
+import Modal from "../../components/common/Modal";
 import { BiX } from "react-icons/bi";
 
 const loginUser = async ({ email, password }) => {

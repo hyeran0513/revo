@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import useUserAuth from "../hooks/useUserAuth";
+import useUserAuth from "../../hooks/useUserAuth";
 import styled from "styled-components";
 
 const UserProfile = () => {

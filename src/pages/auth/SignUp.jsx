@@ -5,11 +5,11 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
-import InputField from "../../components/InputField";
+import Button from "../../components/common/Button";
+import InputField from "../../components/common/InputField";
 import { validateForm } from "../../utils/validation";
 import { useState } from "react";
-import Modal from "../../components/Modal";
+import Modal from "../../components/common/Modal";
 import { BiCheck, BiX } from "react-icons/bi";
 
 const signupUser = async ({ email, password, username, nickname }) => {

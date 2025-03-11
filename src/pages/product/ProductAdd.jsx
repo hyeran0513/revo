@@ -4,10 +4,10 @@ import { setDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
 import styled from "styled-components";
-import Button from "../../components/Button";
-import ToastUIEditor from "../../components/ToastUIEditor";
+import Button from "../../components/common/Button";
+import ToastUIEditor from "../../components/common/ToastUIEditor";
 import { useSelector } from "react-redux";
-import SubBanner from "../../components/SubBanner";
+import SubBanner from "../../components/base/SubBanner";
 import { useMutation } from "@tanstack/react-query";
 
 // 상품 추가

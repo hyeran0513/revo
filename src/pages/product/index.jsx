@@ -4,10 +4,10 @@ import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import ProductCard from "../../components/ProductCard";
-import NoData from "../../components/NoData";
-import SubBanner from "../../components/SubBanner";
-import SideFilter from "../../components/SideFilter";
+import ProductCard from "../../components/product/ProductCard";
+import NoData from "../../components/common/NoData";
+import SubBanner from "../../components/base/SubBanner";
+import SideFilter from "../../components/product/SideFilter";
 
 const fetchProducts = async (type, filter) => {
   // 조건 저장 배열

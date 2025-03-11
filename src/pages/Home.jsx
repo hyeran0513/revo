@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import SwiperComponent from "../components/SwiperComponent";
+import SwiperComponent from "../components/product/SwiperComponent";
 import useProductData from "../hooks/useProductData";
 import { useNavigate } from "react-router-dom";
-import Banner from "../components/Banner";
+import Banner from "../components/base/Banner";
 
 const Home = () => {
   const { data: mobile = [] } = useProductData("mobile");

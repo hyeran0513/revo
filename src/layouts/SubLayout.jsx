@@ -1,10 +1,10 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/base/Header";
 import styled from "styled-components";
-import SubHeader from "../components/SubHeader";
-import Footer from "../components/Footer";
-import TopButton from "../components/TopButton";
+import SubHeader from "../components/base/SubHeader";
+import Footer from "../components/base/Footer";
+import TopButton from "../components/base/TopButton";
 
 const SubLayout = () => {
   return (

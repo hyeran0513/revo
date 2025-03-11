@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Button from "./Button";
-import CustomRadio from "./CustomRadio";
+import Button from "../common/Button";
+import CustomRadio from "../base/CustomRadio";
 
 const productConditions = [
   { text: "전체", value: "", checked: true },
