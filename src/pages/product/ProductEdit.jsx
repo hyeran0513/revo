@@ -6,10 +6,12 @@ import Button from "../../components/common/Button";
 import ToastUIEditor from "../../components/common/ToastUIEditor";
 import { fetchProduct } from "../../services/productService";
 import { useEditProductData } from "../../hooks/useProductData";
+import Loading from "../../components/common/Loading";
 
 const ProductEdit = () => {
   const [state, dispatch] = useProductForm();
-  const { id } = useParams(); // url에서 상품 id 조회
+  // url에서 상품 id 조회
+  const { id } = useParams();
   const navigate = useNavigate();
 
   // 마운트 시, 상품 데이터 로드
@@ -37,10 +39,7 @@ const ProductEdit = () => {
   }, [id]);
 
   // 상품 수정 요청
-  const { mutate, isLoading, isError, error } = useEditProductData(
-    id,
-    navigate
-  );
+  const { mutate, isLoading, error } = useEditProductData(id, navigate);
 
   // 폼 제출 처리
   const handleSubmit = async (e) => {
@@ -63,11 +62,16 @@ const ProductEdit = () => {
     dispatch({ type: "SET_DESCRIPTION", payload: description });
   };
 
+  if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
+
   return (
     <ProductEditWrapper>
+      {/* 페이지 제목 */}
       <PageTitle>상품 수정</PageTitle>
 
       <FormContainer onSubmit={handleSubmit}>
+        {/* 상품명 */}
         <FormBox>
           <FormLabel>상품명</FormLabel>
           <FormField>
@@ -82,6 +86,7 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
+        {/* 상품 설명 */}
         <FormBox>
           <FormLabel>상품 설명</FormLabel>
           <ToastUIEditor
@@ -90,6 +95,7 @@ const ProductEdit = () => {
           />
         </FormBox>
 
+        {/* 가격 */}
         <FormBox>
           <FormLabel>가격</FormLabel>
           <FormField>
@@ -104,6 +110,7 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
+        {/* 카테고리 */}
         <FormBox>
           <FormLabel>카테고리</FormLabel>
           <FormField>
@@ -126,6 +133,7 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
+        {/* 상태 */}
         <FormBox>
           <FormLabel>상태</FormLabel>
           <FormField>
@@ -143,6 +151,7 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
+        {/* 위치 */}
         <FormBox>
           <FormLabel>위치</FormLabel>
           <FormField>
@@ -157,7 +166,9 @@ const ProductEdit = () => {
           </FormField>
         </FormBox>
 
+        {/* 버튼 영역 */}
         <ButtonWrap>
+          {/* 뒤로가기 버튼 */}
           <Button
             type="button"
             variant="outline"
@@ -167,6 +178,7 @@ const ProductEdit = () => {
             뒤로가기
           </Button>
 
+          {/* 수정하기 버튼 */}
           <Button type="submit" size="large">
             {mutate.isPending ? "수정 중..." : " 수정하기"}
           </Button>

@@ -1,10 +1,8 @@
 import { useAuthForm } from "../../hooks/useAuthForm";
-import { auth } from "../../firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Loading from "../../components/common/Loading";
 import InputField from "../../components/common/InputField";
 import Modal from "../../components/common/Modal";
@@ -18,15 +16,6 @@ const SignIn = () => {
   const [modalText, setModalText] = useState({ title: "", description: "" });
   const [modalType, setModalType] = useState("error");
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // 모달 노출 처리
   const showModal = (type, title, description) => {
@@ -35,18 +24,23 @@ const SignIn = () => {
     setModalOpen(true);
   };
 
-  const loginMutation = useSignInMutation(state, dispatch, showModal, navigate);
+  // 로그인 처리
+  const { mutate, isLoading, error } = useSignInMutation(
+    state,
+    dispatch,
+    showModal,
+    navigate
+  );
 
   // 로그인 폼 제출
   const handleLogin = (e) => {
     e.preventDefault();
 
-    loginMutation.mutate();
+    mutate();
   };
 
-  if (loading) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
 
   return (
     <LoginWrapper>
@@ -77,8 +71,8 @@ const SignIn = () => {
           onTogglePassword={() => setShowPassword(!showPassword)}
         />
 
-        <Button type="submit" disabled={loginMutation.isPending} size="large">
-          {loginMutation.isPending ? "로그인 중..." : "로그인"}
+        <Button type="submit" disabled={isLoading} size="large">
+          {isLoading ? "로그인 중..." : "로그인"}
         </Button>
 
         <AskAccount>

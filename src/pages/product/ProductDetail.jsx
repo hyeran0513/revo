@@ -16,11 +16,14 @@ import { useSellerData } from "../../hooks/useUserData";
 import { useProductData } from "../../hooks/useProductData";
 
 const ProductDetail = () => {
-  const { id } = useParams(); // URL에서 상품 ID 조회
+  // URL에서 상품 ID 조회
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
-  const type = searchParams.get("type"); // 상품 카테고리 파라미터 값 가져오기
+
+  // 상품 카테고리 파라미터 값 가져오기
+  const type = searchParams.get("type");
   const [chatId, setChatId] = useState(null);
 
   // 상품 데이터 fetch
@@ -83,14 +86,17 @@ const ProductDetail = () => {
 
   return (
     <>
+      {/* 서브 배너 */}
       <SubBanner text="상품 상세 정보" />
 
+      {/* 상품 상세 정보 */}
       <ProductContainer>
+        {/* 상품 상단 */}
         <ProductTop>
           {/* 상품 썸네일 */}
           {product?.image ? (
             <ProductThumb>
-              <img src={product.image} />
+              <img src={product.image} alt={product?.title} />
             </ProductThumb>
           ) : (
             <ProductThumbDefault>
@@ -119,7 +125,9 @@ const ProductDetail = () => {
           </ProductContent>
         </ProductInfo>
 
+        {/* 버튼 영역 */}
         <ButtonWrap>
+          {/* type이 없으면 뒤로가기 버튼 노출, 아니면 목록으로 버튼 노출 */}
           {type === "undefined" ? (
             <Button
               type="button"
@@ -138,6 +146,7 @@ const ProductDetail = () => {
             </Button>
           )}
 
+          {/* 로그인 된 유저 ID와 상품 판매자의 ID가 같으면 수정하기 버튼 노출, 아니면 채팅하기 버튼 노출 */}
           {user.uid === product.sellerId ? (
             <Button
               type="button"

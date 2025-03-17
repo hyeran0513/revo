@@ -7,12 +7,16 @@ import SubBanner from "../../components/base/SubBanner";
 const Mypage = () => {
   return (
     <>
+      {/* 서브 배너 */}
       <SubBanner text="마이페이지" />
 
       <MypageWrapper>
+        {/* 유저 프로필 */}
         <UserProfile />
 
+        {/* 메뉴 */}
         <Menu>
+          {/* 상품 추가 */}
           <MenuItem>
             <Link to="/product/add">
               <BiBox />
@@ -20,6 +24,7 @@ const Mypage = () => {
             </Link>
           </MenuItem>
 
+          {/* 업로드한 상품 조회 */}
           <MenuItem>
             <Link to="/product/upload">
               <BiCloudUpload />

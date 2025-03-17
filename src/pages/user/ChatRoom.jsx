@@ -8,10 +8,12 @@ import NoData from "../../components/common/NoData";
 import SubBanner from "../../components/base/SubBanner";
 import { useOtherUserData } from "../../hooks/useUserData";
 import { useChatData } from "../../hooks/useChatData";
+import Loading from "../../components/common/Loading";
 
 const ChatRoom = () => {
   const [searchParams] = useSearchParams();
-  const searchChatId = searchParams.get("chatId"); // URL에서 chatId 조회
+  // URL에서 chatId 조회
+  const searchChatId = searchParams.get("chatId");
   const [chatId, setChatId] = useState(searchChatId || "");
   const { data: otherUsername, isLoading, error } = useOtherUserData(chatId);
 
@@ -22,15 +24,23 @@ const ChatRoom = () => {
     }
   }, [searchChatId]);
 
+  // 메시지 내용 조회
   const messages = useChatData(chatId);
+
+  if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
 
   return (
     <>
+      {/* 서브 배너 */}
       <SubBanner text="채팅" />
 
+      {/* 채팅 영역 */}
       <ChatWrapper>
+        {/* 채팅 목록 */}
         <ChatList setChatId={setChatId} />
 
+        {/* 메시지 영역 */}
         {chatId ? (
           <ChatContainer>
             <ChatBox messages={messages} otherUsername={otherUsername} />

@@ -8,14 +8,17 @@ import ToastUIEditor from "../../components/common/ToastUIEditor";
 import { useSelector } from "react-redux";
 import SubBanner from "../../components/base/SubBanner";
 import { useAddProductsData } from "../../hooks/useProductData";
+import Loading from "../../components/common/Loading";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useProductForm();
   const { user } = useSelector((state) => state.auth);
 
-  const { mutate, isLoading, isError, error } = useAddProductsData();
+  // 상품 데이터 추가
+  const { mutate, isLoading, error } = useAddProductsData();
 
+  // 폼 제출
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -33,19 +36,27 @@ const ProductAdd = () => {
     mutate(data);
   };
 
+  // 상품 설명 저장
   const handleSaveDescription = (description) => {
     dispatch({ type: "SET_DESCRIPTION", payload: description });
   };
 
+  // user.uid가 변경될 때, SET_SELLERID 설정
   useEffect(() => {
     dispatch({ type: "SET_SELLERID", payload: user.uid });
   }, [user.uid]);
 
+  if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
+
   return (
     <ProductAddWrapper>
+      {/* 서브 배너 */}
       <SubBanner text="상품 추가" />
 
+      {/* 폼 영역 */}
       <FormContainer onSubmit={handleSubmit}>
+        {/* 판매자 ID */}
         <input
           type="hidden"
           value={state.sellerId}
@@ -54,6 +65,7 @@ const ProductAdd = () => {
           }
         />
 
+        {/* 상품명 */}
         <FormBox>
           <FormLabel>상품명</FormLabel>
           <FormField>
@@ -68,6 +80,7 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
+        {/* 상품 설명 */}
         <FormBox>
           <FormLabel>상품 설명</FormLabel>
           <ToastUIEditor
@@ -76,6 +89,7 @@ const ProductAdd = () => {
           />
         </FormBox>
 
+        {/* 가격 */}
         <FormBox>
           <FormLabel>가격</FormLabel>
           <FormField>
@@ -90,6 +104,7 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
+        {/* 카테고리 */}
         <FormBox>
           <FormLabel>카테고리</FormLabel>
           <FormField>
@@ -112,6 +127,7 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
+        {/* 상태 */}
         <FormBox>
           <FormLabel>상태</FormLabel>
           <FormField>
@@ -129,6 +145,7 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
+        {/* 위치 */}
         <FormBox>
           <FormLabel>위치</FormLabel>
           <FormField>
@@ -143,7 +160,9 @@ const ProductAdd = () => {
           </FormField>
         </FormBox>
 
+        {/* 버튼 영역 */}
         <ButtonWrap>
+          {/* 마이페이지로 이동 */}
           <Button
             type="button"
             variant="outline"
@@ -153,6 +172,7 @@ const ProductAdd = () => {
             마이페이지로 이동
           </Button>
 
+          {/* 상품 추가 */}
           <Button type="submit" size="large">
             상품 추가
           </Button>

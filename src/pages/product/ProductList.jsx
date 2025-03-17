@@ -16,6 +16,7 @@ const ProductList = () => {
     price: "",
   });
 
+  // 필터링된 상품 목록 조회
   const {
     data: products = [],
     isLoading,
@@ -33,14 +34,18 @@ const ProductList = () => {
   };
 
   if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
 
   return (
     <ProductWrapper>
+      {/* 서브 배너 */}
       <SubBanner text={typeText[type]} />
 
       <ProductContainer>
+        {/* 필터 영역 */}
         <SideFilter setFilter={setFilter} filter={filter} />
 
+        {/* 상품 목록 영역 */}
         <ProductListWrapper>
           {products.length > 0 ? (
             <ProductListContainer>

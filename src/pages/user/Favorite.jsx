@@ -6,29 +6,36 @@ import { useProductsData } from "../../hooks/useProductData";
 import { useFavoriteData } from "../../hooks/useFavoriteData";
 
 const Favorite = () => {
+  // 찜한 상품 아이디 조회
   const {
     data: productIds,
     isLoading: loadingFavorites,
     error: errorFavorites,
   } = useFavoriteData();
 
+  // 상품 아이디로 상품 데이터 조회
   const {
     data: products,
     isLoading: loadingProducts,
     error: errorProducts,
   } = useProductsData(productIds);
 
+  // 로딩
   if (loadingFavorites || loadingProducts) {
     return <Loading />;
   }
 
+  // 에러
   if (errorFavorites || errorProducts) {
     return <p>{errorFavorites?.message || errorProducts?.message}</p>;
   }
 
   return (
     <>
+      {/* 서브 배너 */}
       <SubBanner text="찜 목록" />
+
+      {/* 상품 목록 */}
       <ProductContainer>
         <ProductList>
           {products?.length > 0 ? (

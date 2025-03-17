@@ -4,16 +4,23 @@ import ProductCard from "../../components/product/ProductCard";
 import styled from "styled-components";
 import SubBanner from "../../components/base/SubBanner";
 import { useSellerProductsData } from "../../hooks/useProductData";
+import Loading from "../../components/common/Loading";
 
 const ProductUpload = () => {
   const { user } = useSelector((state) => state.auth);
 
-  const { data: products = [], error, isLoading } = useSellerProductsData(user);
+  // 업로드한 상품 조회
+  const { data: products = [], isLoading, error } = useSellerProductsData(user);
+
+  if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
 
   return (
     <>
+      {/* 서브 배너 */}
       <SubBanner text="업로드한 상품 조회" />
 
+      {/* 업로드한 상품 목록 */}
       <ProductUploadWrapper>
         <ProductList>
           {products.map((product) => (

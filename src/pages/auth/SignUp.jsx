@@ -26,6 +26,7 @@ const SignUp = () => {
     setModalOpen(true);
   };
 
+  // 회원가입 처리
   const { mutate, isLoading, error } = useSignUpMutation(showModal);
 
   // 회원가입 폼 제출
@@ -51,6 +52,7 @@ const SignUp = () => {
   };
 
   if (isLoading) return <Loading />;
+  if (error) return <>오류</>;
 
   return (
     <SignupWrapper>
@@ -115,8 +117,8 @@ const SignUp = () => {
           error={state.errors.nickname}
         />
 
-        <Button type="submit" disabled={mutate.isPending} size="large">
-          {mutate.isPending ? "가입 중..." : "회원가입"}
+        <Button type="submit" disabled={isLoading} size="large">
+          {isLoading ? "가입 중..." : "회원가입"}
         </Button>
       </FormContainer>
 
