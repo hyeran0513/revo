@@ -23,3 +23,12 @@ export const useOtherUserData = (chatId) => {
     enabled: !!chatId,
   });
 };
+
+// 판매자 정보 조회
+export const useSellerData = (product) => {
+  return useQuery({
+    queryKey: ["user", product?.sellerId],
+    queryFn: () => (product ? fetchUserData(product.sellerId) : null),
+    enabled: !!product?.sellerId,
+  });
+};

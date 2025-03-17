@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   fetchAddProduct,
   fetchFilteredProducts,
+  fetchProduct,
   fetchProducts,
   fetchTypeForProducts,
 } from "../services/productService";
@@ -46,5 +47,13 @@ export const useAddProductsData = () => {
     onError: (error) => {
       console.error("상품 추가 실패:", error);
     },
+  });
+};
+
+export const useProductData = (id) => {
+  return useQuery({
+    queryKey: ["product", id],
+    queryFn: () => fetchProduct(id),
+    enabled: !!id,
   });
 };

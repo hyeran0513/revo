@@ -21,20 +21,8 @@ import { Viewer } from "@toast-ui/react-editor";
 import SubBanner from "../../components/base/SubBanner";
 import Loading from "../../components/common/Loading";
 import NoData from "../../components/common/NoData";
-
-// 상품 정보 조회
-const fetchProduct = async (id) => {
-  const productDoc = await getDoc(doc(db, "products", id));
-  return productDoc.exists()
-    ? { id: productDoc.id, ...productDoc.data() }
-    : null;
-};
-
-// 사용자 정보 조회
-const fetchUser = async (uid) => {
-  const userDoc = await getDoc(doc(db, "users", uid));
-  return userDoc.exists() ? userDoc.data() : null;
-};
+import { useSellerData } from "../../hooks/useUserData";
+import { useProductData } from "../../hooks/useProductData";
 
 const ProductDetail = () => {
   const { id } = useParams(); // URL에서 상품 ID 조회
@@ -46,22 +34,10 @@ const ProductDetail = () => {
   const [sellerInfo, setSellerInfo] = useState(null);
 
   // 상품 데이터 fetch
-  const {
-    data: product,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProduct(id),
-    enabled: !!id,
-  });
+  const { data: product, error, isLoading } = useProductData(id);
 
   // 판매자 정보 fetch
-  const { data: userInfo, isLoading: userInfoLoading } = useQuery({
-    queryKey: ["user", product?.sellerId],
-    queryFn: () => (product ? fetchUser(product.sellerId) : null),
-    enabled: !!product?.sellerId,
-  });
+  const { data: userInfo, isLoading: userInfoLoading } = useSellerData(product);
 
   // 기존 채팅이 있는지 확인하고, 없으면 새 채팅 생성
   const fetchChat = async () => {

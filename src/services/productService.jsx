@@ -84,3 +84,12 @@ export const fetchAddProduct = async (data) => {
   await setDoc(productRef, { ...data, createdAt: serverTimestamp() });
   return true;
 };
+
+// 상품 정보 조회
+export const fetchProduct = async (id) => {
+  const productDoc = await getDoc(doc(db, "products", id));
+
+  return productDoc.exists()
+    ? { id: productDoc.id, ...productDoc.data() }
+    : null;
+};
