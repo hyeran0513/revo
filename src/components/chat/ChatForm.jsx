@@ -47,6 +47,7 @@ const ChatForm = ({ chatId }) => {
 
   return (
     <FormContainer>
+      {/* 메시지 입력란 */}
       <FormField>
         <InputField
           value={newMessage}
@@ -55,6 +56,8 @@ const ChatForm = ({ chatId }) => {
           onKeyDown={handleKeyDown}
         />
       </FormField>
+
+      {/* 전송 버튼 */}
       <FormButton type="button" onClick={() => sendMessage.mutate()}>
         <BiSend /> 전송
       </FormButton>

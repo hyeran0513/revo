@@ -1,57 +1,21 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-
-const fetchUser = async (uid) => {
-  const userDoc = await getDoc(doc(db, "users", uid));
-  return userDoc.exists() ? userDoc.data() : null;
-};
+import { useChatList } from "../../hooks/useChatData";
+import Loading from "../common/Loading";
 
 const ChatList = ({ setChatId }) => {
-  const [chats, setChats] = useState([]);
   const { user } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!user?.uid) return;
+  // 채팅 목록 조회
+  const { chats, loading } = useChatList(user);
 
-    const chatRef = collection(db, "chats");
-    const q = query(chatRef, where("participants", "array-contains", user.uid));
-
-    const unsubscribe = onSnapshot(q, async (snapshot) => {
-      const chatData = await Promise.all(
-        snapshot.docs.map(async (doc) => {
-          const chat = { id: doc.id, ...doc.data() };
-          const otherParticipant = chat.participants.find(
-            (participant) => participant !== user.uid
-          );
-
-          const otherUserInfo = otherParticipant
-            ? await fetchUser(otherParticipant)
-            : null;
-
-          return { ...chat, otherUserInfo };
-        })
-      );
-
-      setChats(chatData);
-    });
-
-    return () => unsubscribe();
-  }, [user?.uid]);
+  // 로딩
+  if (loading) return <Loading />;
 
   return (
     <ChatListWrapper>
       <ChatContainer>
-        {chats.map((chat) => (
+        {chats?.map((chat) => (
           <ChatItem key={chat.id} onClick={() => setChatId(chat.id)}>
             {chat.otherUserInfo
               ? chat.otherUserInfo.username
