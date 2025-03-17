@@ -4,6 +4,7 @@ import {
   fetchFilteredProducts,
   fetchProduct,
   fetchProducts,
+  fetchSellerProducts,
   fetchTypeForProducts,
   updateProduct,
 } from "../services/productService";
@@ -15,6 +16,15 @@ export const useTypeForProductsData = (type) => {
     queryKey: ["products", type],
     queryFn: () => fetchTypeForProducts(type),
     enabled: !!type,
+  });
+};
+
+// 판매자에 따른 상품 데이터 조회
+export const useSellerProductsData = (user) => {
+  return useQuery({
+    queryKey: ["products", user.uid],
+    queryFn: () => fetchSellerProducts(user.uid),
+    enabled: !!user.uid,
   });
 };
 

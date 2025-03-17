@@ -19,6 +19,13 @@ export const fetchTypeForProducts = async (type) => {
   return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
+// 판매자에 따른 상품 데이터 조회
+export const fetchSellerProducts = async (uid) => {
+  const q = query(collection(db, "products"), where("sellerId", "==", uid));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
 // 다수 상품 데이터 조회
 export const fetchProducts = async (productIds) => {
   const productPromises = productIds.map((productId) =>
