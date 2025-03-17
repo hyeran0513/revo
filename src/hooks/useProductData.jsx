@@ -5,6 +5,7 @@ import {
   fetchProduct,
   fetchProducts,
   fetchTypeForProducts,
+  updateProduct,
 } from "../services/productService";
 import { useNavigate } from "react-router-dom";
 
@@ -50,10 +51,25 @@ export const useAddProductsData = () => {
   });
 };
 
+// 단일 상품 조회
 export const useProductData = (id) => {
   return useQuery({
     queryKey: ["product", id],
     queryFn: () => fetchProduct(id),
     enabled: !!id,
+  });
+};
+
+// 상품 내용 편집
+export const useEditProductData = (id, navigate) => {
+  return useMutation({
+    mutationFn: (updatedData) => updateProduct(id, updatedData),
+    onSuccess: () => {
+      console.log("상품이 성공적으로 수정되었습니다.");
+      navigate(`/product/${id}`); // 수정된 상품 페이지로 이동
+    },
+    onError: (error) => {
+      console.error("상품 수정 실패:", error);
+    },
   });
 };

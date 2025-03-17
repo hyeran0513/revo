@@ -1,34 +1,23 @@
 import React, { useEffect } from "react";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
 import { useProductForm } from "../../hooks/useProductForm";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
 import ToastUIEditor from "../../components/common/ToastUIEditor";
-import { useMutation } from "@tanstack/react-query";
+import { fetchProduct } from "../../services/productService";
+import { useEditProductData } from "../../hooks/useProductData";
 
 const ProductEdit = () => {
   const [state, dispatch] = useProductForm();
   const { id } = useParams(); // url에서 상품 id 조회
   const navigate = useNavigate();
 
-  // 상품 데이터 fetch
-  const fetchProduct = async (id) => {
-    const productDoc = await getDoc(doc(db, "products", id));
-
-    if (productDoc.exists()) {
-      return productDoc.data();
-    } else {
-      console.error("상품을 찾을 수 없습니다.");
-    }
-  };
-
   // 마운트 시, 상품 데이터 로드
   useEffect(() => {
     if (id) {
       const loadProductData = async () => {
         const productData = await fetchProduct(id);
+
         if (productData) {
           dispatch({ type: "SET_TITLE", payload: productData.title });
           dispatch({
@@ -47,23 +36,11 @@ const ProductEdit = () => {
     }
   }, [id]);
 
-  // 상품 데이터 업데이트
-  const updateProduct = async (id, updatedData) => {
-    const productRef = doc(db, "products", id);
-    await updateDoc(productRef, updatedData);
-  };
-
   // 상품 수정 요청
-  const { mutate, isLoading, isError, error } = useMutation({
-    mutationFn: (updatedData) => updateProduct(id, updatedData),
-    onSuccess: () => {
-      console.log("상품이 성공적으로 수정되었습니다.");
-      navigate(`/product/${id}`); // 수정된 상품 페이지로 이동
-    },
-    onError: (error) => {
-      console.error("상품 수정 실패:", error);
-    },
-  });
+  const { mutate, isLoading, isError, error } = useEditProductData(
+    id,
+    navigate
+  );
 
   // 폼 제출 처리
   const handleSubmit = async (e) => {
@@ -191,7 +168,7 @@ const ProductEdit = () => {
           </Button>
 
           <Button type="submit" size="large">
-            수정하기
+            {mutate.isPending ? "수정 중..." : " 수정하기"}
           </Button>
         </ButtonWrap>
       </FormContainer>

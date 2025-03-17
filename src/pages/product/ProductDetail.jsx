@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import {
-  getDoc,
-  doc,
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import LikeButton from "../../components/common/LikeButton";
@@ -31,7 +22,6 @@ const ProductDetail = () => {
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type"); // 상품 카테고리 파라미터 값 가져오기
   const [chatId, setChatId] = useState(null);
-  const [sellerInfo, setSellerInfo] = useState(null);
 
   // 상품 데이터 fetch
   const { data: product, error, isLoading } = useProductData(id);

@@ -7,6 +7,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
@@ -92,4 +93,10 @@ export const fetchProduct = async (id) => {
   return productDoc.exists()
     ? { id: productDoc.id, ...productDoc.data() }
     : null;
+};
+
+// 상품 내용 편집
+export const updateProduct = async (id, updatedData) => {
+  const productRef = doc(db, "products", id);
+  await updateDoc(productRef, updatedData);
 };
