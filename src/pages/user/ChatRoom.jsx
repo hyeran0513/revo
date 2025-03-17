@@ -1,12 +1,4 @@
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { db } from "../../firebase/firebaseConfig";
 import ChatList from "../../components/chat/ChatList";
 import styled from "styled-components";
 import ChatForm from "../../components/chat/ChatForm";
@@ -15,9 +7,9 @@ import { useSearchParams } from "react-router-dom";
 import NoData from "../../components/common/NoData";
 import SubBanner from "../../components/base/SubBanner";
 import { useOtherUserData } from "../../hooks/useUserData";
+import { useChatData } from "../../hooks/useChatData";
 
 const ChatRoom = () => {
-  const [messages, setMessages] = useState([]);
   const [searchParams] = useSearchParams();
   const searchChatId = searchParams.get("chatId"); // URL에서 chatId 조회
   const [chatId, setChatId] = useState(searchChatId || "");
@@ -30,26 +22,7 @@ const ChatRoom = () => {
     }
   }, [searchChatId]);
 
-  // chatId가 존재하면 해당 채팅의 메시지를 실시간으로 조회
-  useEffect(() => {
-    if (!chatId) return;
-
-    const messagesRef = collection(db, "messages");
-
-    const q = query(
-      messagesRef,
-      where("chatId", "==", chatId),
-      orderBy("createdAt", "asc")
-    );
-
-    // 실시간으로 쿼리 결과의 변경사항을 수신
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    });
-
-    // 컴포넌트가 언마운트 될 때 구독 해제
-    return () => unsubscribe();
-  }, [chatId]);
+  const messages = useChatData(chatId);
 
   return (
     <>

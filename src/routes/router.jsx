@@ -4,7 +4,6 @@ import AuthLayout from "../layouts/AuthLayout";
 import Home from "../pages/Home";
 import SignUp from "../pages/auth/SignUp";
 import SignIn from "../pages/auth/SignIn";
-import Product from "../pages/product";
 import ProductDetail from "../pages/product/ProductDetail";
 import ProductEdit from "../pages/product/ProductEdit";
 import ProductAdd from "../pages/product/ProductAdd";
@@ -14,6 +13,7 @@ import Mypage from "../pages/user/Mypage";
 import NotFound from "../pages/error/NotFound";
 import ChatRoom from "../pages/user/ChatRoom";
 import SubLayout from "../layouts/SubLayout";
+import ProductList from "../pages/product/ProductList";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <SubLayout />,
     children: [
-      { path: "products", element: <Product /> },
+      { path: "products", element: <ProductList /> },
       { path: "product/upload", element: <ProductUpload /> },
       { path: "product/:id", element: <ProductDetail /> },
       { path: "product/:id/edit", element: <ProductEdit /> },

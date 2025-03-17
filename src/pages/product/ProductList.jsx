@@ -8,7 +8,7 @@ import SideFilter from "../../components/product/SideFilter";
 import { useFilteredProductsData } from "../../hooks/useProductData";
 import Loading from "../../components/common/Loading";
 
-const Product = () => {
+const ProductList = () => {
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type");
   const [filter, setFilter] = useState({
@@ -43,11 +43,11 @@ const Product = () => {
 
         <ProductListWrapper>
           {products.length > 0 ? (
-            <ProductList>
+            <ProductListContainer>
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} type={type} />
               ))}
-            </ProductList>
+            </ProductListContainer>
           ) : (
             <NoData text="상품이 없습니다." icon="shoppingbag" />
           )}
@@ -74,10 +74,10 @@ const ProductListWrapper = styled.div`
   min-height: 1200px;
 `;
 
-const ProductList = styled.div`
+const ProductListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 `;
 
-export default Product;
+export default ProductList;
