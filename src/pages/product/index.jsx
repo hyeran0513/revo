@@ -6,6 +6,7 @@ import NoData from "../../components/common/NoData";
 import SubBanner from "../../components/base/SubBanner";
 import SideFilter from "../../components/product/SideFilter";
 import { useFilteredProductsData } from "../../hooks/useProductData";
+import Loading from "../../components/common/Loading";
 
 const Product = () => {
   const [searchParams] = useSearchParams();
@@ -31,8 +32,7 @@ const Product = () => {
     other: "기타",
   };
 
-  // if (isLoading) return <div>로딩 중...</div>;
-  // if (error) return <div>{error.message}</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <ProductWrapper>

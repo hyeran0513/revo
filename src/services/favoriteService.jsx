@@ -7,6 +7,8 @@ export const fetchFavorites = async (uid) => {
     collection(db, "likes"),
     where("userId", "==", uid)
   );
+
   const productIds = favoritesRef.docs.map((doc) => doc.data().productId);
+
   return productIds;
 };

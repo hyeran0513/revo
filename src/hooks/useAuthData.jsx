@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { signInUser } from "../services/authService";
+import { signInUser, signupUser } from "../services/authService";
 
 // 로그인
 export const useSignInMutation = (state, dispatch, showModal, navigate) => {
@@ -28,6 +28,27 @@ export const useSignInMutation = (state, dispatch, showModal, navigate) => {
         errorMessage = "비밀번호가 일치하지 않습니다.";
 
       showModal("error", "로그인 실패", errorMessage);
+    },
+  });
+};
+
+// 회원가입
+export const useSignUpMutation = (showModal) => {
+  return useMutation({
+    mutationFn: signupUser,
+    onSuccess: (user) => {
+      showModal(
+        "success",
+        "회원가입이 완료되었습니다.",
+        `${user.displayName}님, 환영합니다!`
+      );
+    },
+    onError: (error) => {
+      showModal(
+        "error",
+        "회원가입이 실패했습니다.",
+        "회원가입을 다시 시도해 주세요."
+      );
     },
   });
 };

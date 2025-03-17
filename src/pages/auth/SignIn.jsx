@@ -28,6 +28,7 @@ const SignIn = () => {
     return () => unsubscribe();
   }, []);
 
+  // 모달 노출 처리
   const showModal = (type, title, description) => {
     setModalType(type);
     setModalText({ title, description });
@@ -36,8 +37,10 @@ const SignIn = () => {
 
   const loginMutation = useSignInMutation(state, dispatch, showModal, navigate);
 
+  // 로그인 폼 제출
   const handleLogin = (e) => {
     e.preventDefault();
+
     loginMutation.mutate();
   };
 

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { setDoc, collection, doc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { serverTimestamp } from "firebase/firestore";
 import { useProductForm } from "../../hooks/useProductForm";
 import styled from "styled-components";
 import Button from "../../components/common/Button";

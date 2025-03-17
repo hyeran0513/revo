@@ -1,8 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
 import { useAuthForm } from "../../hooks/useAuthForm";
-import { auth, db } from "../../firebase/firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
@@ -11,66 +7,28 @@ import { validateForm } from "../../utils/validation";
 import { useState } from "react";
 import Modal from "../../components/common/Modal";
 import { BiCheck, BiX } from "react-icons/bi";
-
-const signupUser = async ({ email, password, username, nickname }) => {
-  // Firebase에 새 사용자 생성
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-
-  // 사용자 프로필 업데이트
-  await updateProfile(userCredential.user, {
-    displayName: username,
-  });
-
-  // Firestore users 테이블에 사용자 데이터 저장
-  await setDoc(doc(db, "users", userCredential.user.uid), {
-    email: userCredential.user.email,
-    createAt: serverTimestamp(),
-    username,
-    nickname,
-  });
-
-  return userCredential.user;
-};
+import { useSignUpMutation } from "../../hooks/useAuthData";
+import Loading from "../../components/common/Loading";
 
 const SignUp = () => {
   const [state, dispatch] = useAuthForm();
-  const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalText, setModalText] = useState({ title: "", description: "" });
+  const [modalType, setModalType] = useState("error");
+  const navigate = useNavigate();
 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [modalText, setModalText] = useState({
-    title: "",
-    description: "",
-  });
-  const [isSuccess, setSuccess] = useState(false);
+  // 모달 노출 처리
+  const showModal = (type, title, description) => {
+    setModalType(type);
+    setModalText({ title, description });
+    setModalOpen(true);
+  };
 
-  const mutation = useMutation({
-    mutationFn: signupUser,
-    onSuccess: (user) => {
-      setModalText({
-        title: "회원가입이 완료되었습니다.",
-        description: `${user.displayName}님, 환영합니다!`,
-      });
-      setSuccess(true);
-      setModalOpen(true);
-    },
-    onError: (error) => {
-      setModalText({
-        title: "회원가입이 실패했습니다.",
-        description: `다시 시도해 주세요.`,
-      });
-      setSuccess(false);
-      setModalOpen(true);
-    },
-  });
+  const { mutate, isLoading, error } = useSignUpMutation(showModal);
 
-  // 회원가입 버튼 클릭 시
+  // 회원가입 폼 제출
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -84,13 +42,15 @@ const SignUp = () => {
     }
 
     // 회원가입 요청
-    mutation.mutate({
+    mutate({
       email: state.email,
       password: state.password,
       username: state.username,
       nickname: state.nickname,
     });
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <SignupWrapper>
@@ -155,20 +115,20 @@ const SignUp = () => {
           error={state.errors.nickname}
         />
 
-        <Button type="submit" disabled={mutation.isPending} size="large">
-          {mutation.isPending ? "가입 중..." : "회원가입"}
+        <Button type="submit" disabled={mutate.isPending} size="large">
+          {mutate.isPending ? "가입 중..." : "회원가입"}
         </Button>
       </FormContainer>
 
       {/* 모달 */}
       <Modal
-        isOpen={isModalOpen}
+        isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={() => navigate("/")}
       >
         <ModalContent>
-          <ModalIcon $isSuccess={isSuccess}>
-            {isSuccess ? <BiCheck /> : <BiX />}
+          <ModalIcon $isSuccess={modalType === "success"}>
+            {modalType === "success" ? <BiCheck /> : <BiX />}
           </ModalIcon>
 
           <ModalText>
