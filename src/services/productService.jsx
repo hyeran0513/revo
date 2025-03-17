@@ -49,7 +49,7 @@ export const fetchFilteredProducts = async (type, filter) => {
       // 가격으로 정렬
       useOrderByPrice = true;
     } else {
-      // 필터로 전달된 가격 값를 정수 값으로 설정
+      // 필터로 전달된 가격 값을 정수 값으로 설정
       const priceValue = parseInt(filter.price);
 
       if (!isNaN(priceValue)) {

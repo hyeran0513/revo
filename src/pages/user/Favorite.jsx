@@ -2,8 +2,8 @@ import styled from "styled-components";
 import ProductCard from "../../components/product/ProductCard";
 import SubBanner from "../../components/base/SubBanner";
 import Loading from "../../components/common/Loading";
-import { useFavoriteData } from "../../hooks/useUserData";
 import { useProductsData } from "../../hooks/useProductData";
+import { useFavoriteData } from "../../hooks/useFavoriteData";
 
 const Favorite = () => {
   const {

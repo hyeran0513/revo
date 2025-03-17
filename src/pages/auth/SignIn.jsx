@@ -1,109 +1,44 @@
-import { useMutation } from "@tanstack/react-query";
 import { useAuthForm } from "../../hooks/useAuthForm";
 import { auth } from "../../firebase/firebaseConfig";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import Loading from "../../components/common/Loading";
 import InputField from "../../components/common/InputField";
-import { validateForm } from "../../utils/validation";
 import Modal from "../../components/common/Modal";
 import { BiX } from "react-icons/bi";
-
-const loginUser = async ({ email, password }) => {
-  const userCredential = await signInWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  const token = await userCredential.user.getIdToken();
-  localStorage.setItem("authToken", token);
-  return userCredential.user;
-};
+import { useSignInMutation } from "../../hooks/useAuthData";
 
 const SignIn = () => {
   const [state, dispatch] = useAuthForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalText, setModalText] = useState({ title: "", description: "" });
+  const [modalType, setModalType] = useState("error");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [modalText, setModalText] = useState({
-    title: "",
-    description: "",
-  });
+
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-
-    if (token) {
-      if (auth.currentUser) {
-        auth.currentUser
-          .getIdTokenResult(true)
-          .then(() => {
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("토큰 인증 실패", error.message);
-            localStorage.removeItem("authToken");
-          });
-      } else {
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/");
-      } else {
-        setLoading(false);
-      }
+      if (!user) setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, []);
 
-  const mutation = useMutation({
-    mutationFn: loginUser,
-    onSuccess: (user) => {
-      navigate("/");
-    },
-    onError: (error) => {
-      console.error("로그인 실패:", error.message);
+  const showModal = (type, title, description) => {
+    setModalType(type);
+    setModalText({ title, description });
+    setModalOpen(true);
+  };
 
-      let errorMessage = "로그인에 실패했습니다. 다시 시도해주세요.";
+  const loginMutation = useSignInMutation(state, dispatch, showModal, navigate);
 
-      if (error.code === "auth/user-not-found") {
-        errorMessage = "일치하는 회원정보가 없습니다.";
-      } else if (error.code === "auth/wrong-password") {
-        errorMessage = "비밀번호가 일치하지 않습니다.";
-      }
-
-      setModalText({
-        title: "로그인 실패",
-        description: errorMessage,
-      });
-      setModalOpen(true);
-
-      dispatch({ type: "SET_ERRORS", payload: { general: errorMessage } });
-    },
-  });
-
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-
-    // 폼 유효성 검사
-    const errors = validateForm(state, "signin");
-
-    // 에러 상태 설정
-    if (Object.keys(errors).length > 0) {
-      dispatch({ type: "SET_ERRORS", payload: errors });
-      return;
-    }
-
-    mutation.mutate({ email: state.email, password: state.password });
+    loginMutation.mutate();
   };
 
   if (loading) {
@@ -112,7 +47,7 @@ const SignIn = () => {
 
   return (
     <LoginWrapper>
-      <FormContainer onSubmit={handleSubmit}>
+      <FormContainer onSubmit={handleLogin}>
         <Logo to="/">로그인</Logo>
 
         {/* 이메일 */}
@@ -139,8 +74,8 @@ const SignIn = () => {
           onTogglePassword={() => setShowPassword(!showPassword)}
         />
 
-        <Button type="submit" disabled={mutation.isPending} size="large">
-          {mutation.isPending ? "로그인 중..." : "로그인"}
+        <Button type="submit" disabled={loginMutation.isPending} size="large">
+          {loginMutation.isPending ? "로그인 중..." : "로그인"}
         </Button>
 
         <AskAccount>
@@ -153,7 +88,7 @@ const SignIn = () => {
 
       {/* 모달 */}
       <Modal
-        isOpen={isModalOpen}
+        isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={() => setModalOpen(false)}
       >
