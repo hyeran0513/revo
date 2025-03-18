@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { fetchChatList, fetchMessages } from "../services/chatService";
+import {
+  fetchChatForm,
+  fetchChatList,
+  fetchMessages,
+} from "../services/chatService";
+import { useMutation } from "@tanstack/react-query";
 
 // 채팅 메시지 실시간 조회
 export const useChatData = (chatId) => {
@@ -32,4 +37,21 @@ export const useChatList = (user) => {
   }, [user]);
 
   return { chats, loading };
+};
+
+// 채팅 폼 제출
+export const useChatForm = (userId, chatId, newMessage, setNewMessage) => {
+  return useMutation({
+    mutationFn: async () => fetchChatForm(userId, chatId, newMessage),
+    onSuccess: () => {
+      // 메시지 입력 필드 초기화
+      setNewMessage("");
+    },
+    onError: (error) => {
+      console.error("메시지 전송 실패:", error.message);
+
+      // 메시지 입력 필드 초기화
+      setNewMessage("");
+    },
+  });
 };

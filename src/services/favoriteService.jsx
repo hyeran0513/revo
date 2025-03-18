@@ -49,7 +49,5 @@ export const controlFavorite = async (userId, productId) => {
 export const checkFavorite = async (userId, productId) => {
   const productIds = await getWishlistProductIds(userId);
 
-  console.log("포함?" + productIds.includes(productId));
-
   return productIds.includes(productId);
 };

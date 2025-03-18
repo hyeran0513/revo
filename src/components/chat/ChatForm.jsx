@@ -1,47 +1,22 @@
 import React, { useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { BiSend } from "react-icons/bi";
-import { useMutation } from "@tanstack/react-query";
+import { useChatForm } from "../../hooks/useChatData";
 
 const ChatForm = ({ chatId }) => {
   const [newMessage, setNewMessage] = useState("");
   const { user } = useSelector((state) => state.auth);
 
   // 메시지를 Firestore에 추가
-  const sendMessage = useMutation({
-    mutationFn: async () => {
-      if (newMessage.trim() === "") return;
-
-      const messagesRef = collection(db, "messages");
-
-      // 메시지를 Firestore에 추가
-      await addDoc(messagesRef, {
-        chatId,
-        senderId: user.uid,
-        text: newMessage,
-        createdAt: new Date(),
-      });
-
-      // 메시지 입력 필드 초기화
-      setNewMessage("");
-    },
-    onSuccess: () => {
-      console.log("메시지 전송 성공");
-    },
-    onError: (error) => {
-      console.error("메시지 전송 실패:", error);
-    },
-  });
+  const { mutate } = useChatForm(user?.uid, chatId, newMessage, setNewMessage);
 
   // 키보드에서 Enter 키를 누르면 메시지 전송
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
 
-      sendMessage.mutate();
+      mutate();
     }
   };
 
@@ -58,7 +33,7 @@ const ChatForm = ({ chatId }) => {
       </FormField>
 
       {/* 전송 버튼 */}
-      <FormButton type="button" onClick={() => sendMessage.mutate()}>
+      <FormButton type="button" onClick={() => mutate()}>
         <BiSend /> 전송
       </FormButton>
     </FormContainer>

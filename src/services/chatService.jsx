@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   onSnapshot,
   orderBy,
@@ -49,5 +50,20 @@ export const fetchChatList = (user, setChats) => {
     );
 
     setChats(chatData);
+  });
+};
+
+// 채팅 폼 제출
+export const fetchChatForm = async (userId, chatId, newMessage) => {
+  if (newMessage.trim() === "") return;
+
+  const messagesRef = collection(db, "messages");
+
+  // 메시지를 Firestore에 추가
+  await addDoc(messagesRef, {
+    chatId,
+    senderId: userId,
+    text: newMessage,
+    createdAt: new Date(),
   });
 };
