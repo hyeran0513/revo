@@ -13,15 +13,22 @@ const ProductList = () => {
   const type = searchParams.get("type");
   const [filter, setFilter] = useState({
     condition: "",
-    price: "",
+    minPrice: "",
+    maxPrice: "",
   });
 
-  // 필터링된 상품 목록 조회
   const {
-    data: products = [],
-    isLoading,
+    data: products,
     error,
+    isLoading,
   } = useFilteredProductsData(type, filter);
+
+  const handleSetFilter = (newFilter) => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      ...newFilter,
+    }));
+  };
 
   const typeText = {
     mobile: "모바일",
@@ -39,7 +46,7 @@ const ProductList = () => {
   ];
 
   if (isLoading) return <Loading />;
-  if (error) return <>오류</>;
+  if (error) return <>{error.message}</>;
 
   return (
     <ProductWrapper>
@@ -48,7 +55,7 @@ const ProductList = () => {
 
       <ProductContainer>
         {/* 필터 영역 */}
-        <SideFilter setFilter={setFilter} filter={filter} />
+        <SideFilter setFilter={handleSetFilter} />
 
         {/* 상품 목록 영역 */}
         <ProductListWrapper>
@@ -81,7 +88,6 @@ const ProductListWrapper = styled.div`
   width: 100%;
   min-width: 0;
   flex: 1;
-  min-height: 1200px;
 `;
 
 const ProductListContainer = styled.div`

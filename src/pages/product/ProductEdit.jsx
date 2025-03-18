@@ -48,7 +48,7 @@ const ProductEdit = () => {
     const updatedData = {
       title: state.title,
       description: state.description,
-      price: state.price,
+      price: Number(state.price),
       category: state.category,
       condition: state.condition,
       images: state.images,
@@ -145,8 +145,8 @@ const ProductEdit = () => {
               required
             >
               <option value="">상태 선택</option>
-              <option value="New">새 상품</option>
-              <option value="Used">중고 상품</option>
+              <option value="used">새 상품</option>
+              <option value="used">중고 상품</option>
             </SelectField>
           </FormField>
         </FormBox>

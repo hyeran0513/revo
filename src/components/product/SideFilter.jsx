@@ -1,40 +1,28 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import Button from "../common/Button";
 import CustomRadio from "../base/CustomRadio";
+import styled from "styled-components";
 
 const productConditions = [
-  { text: "전체", value: "", checked: true },
-  { text: "새 상품", value: "new", checked: false },
-  { text: "중고", value: "used", checked: false },
+  { text: "전체", value: "" },
+  { text: "새 상품", value: "new" },
+  { text: "중고", value: "used" },
 ];
 
-const productPrice = [
-  { text: "전체", value: "", checked: true },
-  { text: "만원 이하", value: "10000", checked: false },
-  { text: "오만원 이하", value: "50000", checked: false },
-  { text: "십만원 이하", value: "100000", checked: false },
-  { text: "십만원 이상", value: "other", checked: false },
-];
+const SideFilter = ({ setFilter }) => {
+  const [selectedCondition, setSelectedCondition] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
-const SideFilter = ({ setFilter, filter }) => {
-  const [selectedCondition, setSelectedCondition] = useState(
-    productConditions.find((condition) => condition.checked)?.value || ""
-  );
-  const [selectedPrice, setSelectedPrice] = useState(
-    productPrice.find((price) => price.checked)?.value || ""
-  );
-
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setFilter({
       condition: selectedCondition,
-      price: selectedPrice,
+      minPrice,
+      maxPrice,
     });
   };
-
-  useEffect(() => {
-    console.log("Filter updated:", filter);
-  }, [filter]);
 
   return (
     <SideFilterWrapper>
@@ -53,20 +41,27 @@ const SideFilter = ({ setFilter, filter }) => {
 
         <FormField>
           <FormLabel>가격</FormLabel>
-          <PriceInput>
-            <CustomRadio
-              conditions={productPrice}
-              setSelectedValue={setSelectedPrice}
-              selectedValue={selectedPrice}
-              radioName="price"
+          <InputFieldWrapper>
+            <InputField
+              type="number"
+              value={minPrice}
+              placeholder="최소 가격"
+              onChange={(e) => setMinPrice(e.target.value)}
             />
-          </PriceInput>
+            -
+            <InputField
+              type="number"
+              value={maxPrice}
+              placeholder="최대 가격"
+              onChange={(e) => setMaxPrice(e.target.value)}
+            />
+          </InputFieldWrapper>
         </FormField>
 
         <FormAction>
           <Button
-            type="button"
             onClick={handleSubmit}
+            type="button"
             size="large"
             wfull="true"
           >
@@ -109,10 +104,22 @@ const SideFilterWrapper = styled.div`
   z-index: 10;
 `;
 
-const PriceInput = styled.div`
+const InputFieldWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+`;
+
+const InputField = styled.input`
+  padding: 0 20px;
+  height: 40px;
+  border: 1px solid ${(props) => props.theme.colors.border};
+  border-radius: 8px;
+  background-color: ${(props) => props.theme.colors.bgopacity};
+  flex: 1;
+  max-width: 100%;
+  width: calc(50% - 0.25rem);
 `;
 
 export default SideFilter;

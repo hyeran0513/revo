@@ -19,6 +19,19 @@ export const useTypeForProductsData = (type) => {
   });
 };
 
+// 필터링한 상품 데이터 조회
+export const useFilteredProductsData = (type, filter) => {
+  const { condition, minPrice, maxPrice } = filter;
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["filteredProducts", type, condition, minPrice, maxPrice],
+    queryFn: fetchFilteredProducts,
+    enabled: !!type,
+  });
+
+  return { data, error, isLoading };
+};
+
 // 판매자에 따른 상품 데이터 조회
 export const useSellerProductsData = (user) => {
   return useQuery({
@@ -34,14 +47,6 @@ export const useProductsData = (productIds) => {
     queryKey: ["products", productIds],
     queryFn: () => fetchProducts(productIds),
     enabled: productIds?.length > 0,
-  });
-};
-
-// 필터링된 상품 데이터 조회
-export const useFilteredProductsData = (type, filter) => {
-  return useQuery({
-    queryKey: ["filterdProducts", type, filter],
-    queryFn: () => fetchFilteredProducts(type, filter),
   });
 };
 
