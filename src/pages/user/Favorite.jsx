@@ -2,39 +2,19 @@ import styled from "styled-components";
 import ProductCard from "../../components/product/ProductCard";
 import SubBanner from "../../components/base/SubBanner";
 import Loading from "../../components/common/Loading";
-import { useProductsData } from "../../hooks/useProductData";
-import { useFavoriteData } from "../../hooks/useFavoriteData";
+import { useFavoriteProduct } from "../../hooks/useFavoriteData";
+import { useSelector } from "react-redux";
 
 const Favorite = () => {
-  // 찜한 상품 아이디 조회
-  const {
-    data: productIds,
-    isLoading: loadingFavorites,
-    error: errorFavorites,
-  } = useFavoriteData();
+  const { user } = useSelector((state) => state.auth);
+  const { data: products, isLoading } = useFavoriteProduct(user?.uid);
 
-  // 상품 아이디로 상품 데이터 조회
-  const {
-    data: products,
-    isLoading: loadingProducts,
-    error: errorProducts,
-  } = useProductsData(productIds);
-
-  // 로딩
-  if (loadingFavorites || loadingProducts) {
-    return <Loading />;
-  }
-
-  // 에러
-  if (errorFavorites || errorProducts) {
-    return <p>{errorFavorites?.message || errorProducts?.message}</p>;
-  }
+  if (isLoading) return <Loading />;
 
   return (
     <>
       {/* 서브 배너 */}
       <SubBanner text="찜 목록" />
-
       {/* 상품 목록 */}
       <ProductContainer>
         <ProductList>
