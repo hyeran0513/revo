@@ -56,7 +56,7 @@ const HeaderContainer = styled.div`
 
 const Logo = styled(Link)`
   font-weight: bold;
-  font-family: "Sigmar", sans-serif;
+  font-family: "Tektur", sans-serif;
   font-size: 40px;
   color: ${(props) => props.theme.colors.primary};
 `;
