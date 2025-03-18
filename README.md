@@ -35,6 +35,7 @@
 | `firebase`                       | `yarn add firebase`                     |
 | `react-icons`                    | `yarn add react-icons`                  |
 | `react-loading-spinner`          | `yarn add react-loader-spinner`         |
+| `date-fns`                       | `yarn add date-fns`                     |
 
 ---
 
