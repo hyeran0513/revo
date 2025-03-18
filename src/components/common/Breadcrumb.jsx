@@ -1,22 +1,17 @@
 import React from "react";
 import { BiHomeAlt } from "react-icons/bi";
 import styled from "styled-components";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Breadcrumb = ({ text }) => {
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get("type");
-
+const Breadcrumb = ({ breadcrumb }) => {
   return (
     <BreadcrumbWrapper>
       <BreadContainer>
-        <BreadcrumbLink to="/">
-          <BiHomeAlt />
-        </BreadcrumbLink>
-
-        <BreadcrumbLink to={`/products?type=${type}`} $isActive>
-          {text}
-        </BreadcrumbLink>
+        {breadcrumb.map((item) => (
+          <BreadcrumbLink to={item.link}>
+            {item.text === "홈" ? <BiHomeAlt /> : `${item.text}`}
+          </BreadcrumbLink>
+        ))}
       </BreadContainer>
     </BreadcrumbWrapper>
   );

@@ -17,6 +17,11 @@ const ChatRoom = () => {
   const [chatId, setChatId] = useState(searchChatId || "");
   const { data: otherUsername, isLoading, error } = useOtherUserData(chatId);
 
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: "/chatroom", text: "채팅" },
+  ];
+
   // URL의 쿼리 파라미터(searchChatId)가 변경되면 chatId 업데이트
   useEffect(() => {
     if (searchChatId) {
@@ -33,7 +38,7 @@ const ChatRoom = () => {
   return (
     <>
       {/* 서브 배너 */}
-      <SubBanner text="채팅" />
+      <SubBanner bannerText="채팅" breadcrumb={breadcrumb} />
 
       {/* 채팅 영역 */}
       <ChatWrapper>

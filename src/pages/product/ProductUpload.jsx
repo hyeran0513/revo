@@ -12,13 +12,18 @@ const ProductUpload = () => {
   // 업로드한 상품 조회
   const { data: products = [], isLoading, error } = useSellerProductsData(user);
 
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: "/product/upload", text: "업로드한 상품 조회" },
+  ];
+
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (
     <>
       {/* 서브 배너 */}
-      <SubBanner text="업로드한 상품 조회" />
+      <SubBanner bannerText="업로드한 상품 조회" breadcrumb={breadcrumb} />
 
       {/* 업로드한 상품 목록 */}
       <ProductUploadWrapper>

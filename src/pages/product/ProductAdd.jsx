@@ -15,6 +15,11 @@ const ProductAdd = () => {
   const [state, dispatch] = useProductForm();
   const { user } = useSelector((state) => state.auth);
 
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: "/product/add", text: "상품 추가" },
+  ];
+
   // 상품 데이터 추가
   const { mutate, isLoading, error } = useAddProductsData();
 
@@ -52,7 +57,7 @@ const ProductAdd = () => {
   return (
     <ProductAddWrapper>
       {/* 서브 배너 */}
-      <SubBanner text="상품 추가" />
+      <SubBanner bannerText="상품 추가" breadcrumb={breadcrumb} />
 
       {/* 폼 영역 */}
       <FormContainer onSubmit={handleSubmit}>

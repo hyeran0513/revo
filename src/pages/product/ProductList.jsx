@@ -33,13 +33,18 @@ const ProductList = () => {
     other: "기타",
   };
 
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: `/products?type=${type}`, text: `${typeText[type]}` },
+  ];
+
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (
     <ProductWrapper>
       {/* 서브 배너 */}
-      <SubBanner text={typeText[type]} />
+      <SubBanner bannerText={typeText[type]} breadcrumb={breadcrumb} />
 
       <ProductContainer>
         {/* 필터 영역 */}

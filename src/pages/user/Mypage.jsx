@@ -5,10 +5,15 @@ import { BiCloudUpload, BiBox } from "react-icons/bi";
 import SubBanner from "../../components/base/SubBanner";
 
 const Mypage = () => {
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: "/mypage", text: "마이페이지" },
+  ];
+
   return (
     <>
       {/* 서브 배너 */}
-      <SubBanner text="마이페이지" />
+      <SubBanner bannerText="마이페이지" breadcrumb={breadcrumb} />
 
       <MypageWrapper>
         {/* 유저 프로필 */}

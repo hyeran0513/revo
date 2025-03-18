@@ -26,6 +26,11 @@ const ProductDetail = () => {
   const type = searchParams.get("type");
   const [chatId, setChatId] = useState(null);
 
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: `/product/${id}?type=${type}`, text: "상품 상세 정보" },
+  ];
+
   // 상품 데이터 fetch
   const { data: product, error, isLoading } = useProductData(id);
 
@@ -87,7 +92,7 @@ const ProductDetail = () => {
   return (
     <>
       {/* 서브 배너 */}
-      <SubBanner text="상품 상세 정보" />
+      <SubBanner bannerText="상품 상세 정보" breadcrumb={breadcrumb} />
 
       {/* 상품 상세 정보 */}
       <ProductContainer>

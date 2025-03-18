@@ -9,12 +9,17 @@ const Favorite = () => {
   const { user } = useSelector((state) => state.auth);
   const { data: products, isLoading } = useFavoriteProduct(user?.uid);
 
+  const breadcrumb = [
+    { link: "/", text: "홈" },
+    { link: "/favorite", text: "찜 목록" },
+  ];
+
   if (isLoading) return <Loading />;
 
   return (
     <>
       {/* 서브 배너 */}
-      <SubBanner text="찜 목록" />
+      <SubBanner bannerText="찜 목록" breadcrumb={breadcrumb} />
       {/* 상품 목록 */}
       <ProductContainer>
         <ProductList>

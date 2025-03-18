@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import Breadcrumb from "../common/Breadcrumb";
 
-const SubBanner = ({ text }) => {
+const SubBanner = ({ bannerText, breadcrumb }) => {
   return (
     <SubBannerWrapper>
       <SubBannerContainer>
-        <SubBannerText>{text}</SubBannerText>
+        <SubBannerText>{bannerText}</SubBannerText>
       </SubBannerContainer>
-      <Breadcrumb text={text} />
+
+      <Breadcrumb breadcrumb={breadcrumb} />
     </SubBannerWrapper>
   );
 };
