@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ProductCard from "../../components/product/ProductCard";
@@ -9,12 +9,13 @@ import { useFilteredProductsData } from "../../hooks/useProductData";
 import Loading from "../../components/common/Loading";
 
 const ProductList = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const type = searchParams.get("type");
+
   const [filter, setFilter] = useState({
-    condition: "",
-    minPrice: "",
-    maxPrice: "",
+    condition: searchParams.get("condition") || "",
+    minPrice: searchParams.get("minPrice") || "",
+    maxPrice: searchParams.get("maxPrice") || "",
   });
 
   const {
@@ -24,10 +25,16 @@ const ProductList = () => {
   } = useFilteredProductsData(type, filter);
 
   const handleSetFilter = (newFilter) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      ...newFilter,
-    }));
+    setFilter((prevFilter) => {
+      const updatedFilter = { ...prevFilter, ...newFilter };
+
+      setSearchParams({
+        ...updatedFilter,
+        type,
+      });
+
+      return updatedFilter;
+    });
   };
 
   const typeText = {
@@ -44,6 +51,15 @@ const ProductList = () => {
     { link: "/", text: "홈" },
     { link: `/products?type=${type}`, text: `${typeText[type]}` },
   ];
+
+  useEffect(() => {
+    // URL 쿼리가 변경되면 필터를 다시 설정
+    setFilter({
+      condition: searchParams.get("condition") || "",
+      minPrice: searchParams.get("minPrice") || "",
+      maxPrice: searchParams.get("maxPrice") || "",
+    });
+  }, [searchParams]);
 
   if (isLoading) return <Loading />;
   if (error) return <>{error.message}</>;
