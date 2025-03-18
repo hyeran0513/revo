@@ -24,7 +24,7 @@ const SwiperComponent = ({ products }) => {
         setIsEnd(swiperInstance.isEnd);
       });
     }
-  }, []);
+  }, [swiperRef.current]);
 
   const handlePrev = () => {
     if (!isBeginning) swiperRef.current.swiper.slidePrev();
