@@ -9,17 +9,26 @@ import { useMutation } from "@tanstack/react-query";
 // 채팅 메시지 실시간 조회
 export const useChatData = (chatId) => {
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!chatId) return;
 
-    const unsubscribe = fetchMessages(chatId, setMessages);
+    setIsLoading(true);
+
+    const unsubscribe = fetchMessages(chatId, (fetchedMessages) => {
+      setMessages(fetchedMessages);
+      setIsLoading(false);
+    });
 
     // 컴포넌트가 언마운트 될 때 구독 해제
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      setIsLoading(false);
+    };
   }, [chatId]);
 
-  return messages;
+  return { messages, isLoading };
 };
 
 // 사용자를 포함하는 채팅 조회

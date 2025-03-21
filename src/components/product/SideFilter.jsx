@@ -14,9 +14,7 @@ const SideFilter = ({ setFilter }) => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleSubmit = () => {
     setFilter({
       condition: selectedCondition,
       minPrice,

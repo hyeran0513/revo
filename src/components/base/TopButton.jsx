@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { BiArrowToTop } from "react-icons/bi";
+import { IoArrowUp } from "react-icons/io5";
 
 const TopButton = () => {
   const [showButton, setShowButton] = useState(false);
@@ -30,7 +30,7 @@ const TopButton = () => {
 
   return (
     <Button show={showButton ? "true" : "false"} onClick={scrollToTop}>
-      <BiArrowToTop />
+      <IoArrowUp />
     </Button>
   );
 };

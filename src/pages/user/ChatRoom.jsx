@@ -15,7 +15,11 @@ const ChatRoom = () => {
   // URL에서 chatId 조회
   const searchChatId = searchParams.get("chatId");
   const [chatId, setChatId] = useState(searchChatId || "");
-  const { data: otherUsername, isLoading, error } = useOtherUserData(chatId);
+  const {
+    data: otherUsername,
+    isLoading: isUsernameLoading,
+    error,
+  } = useOtherUserData(chatId);
 
   const breadcrumb = [
     { link: "/", text: "홈" },
@@ -30,9 +34,9 @@ const ChatRoom = () => {
   }, [searchChatId]);
 
   // 메시지 내용 조회
-  const messages = useChatData(chatId);
+  const { messages, isLoading } = useChatData(chatId);
 
-  if (isLoading) return <Loading />;
+  if (isLoading && isUsernameLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (
