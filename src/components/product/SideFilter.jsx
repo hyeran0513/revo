@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../common/Button";
 import CustomRadio from "../base/CustomRadio";
 import styled from "styled-components";
@@ -13,6 +13,12 @@ const SideFilter = ({ setFilter }) => {
   const [selectedCondition, setSelectedCondition] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+
+  useEffect(() => {
+    setSelectedCondition("");
+    setMinPrice("");
+    setMaxPrice("");
+  }, []);
 
   const handleSubmit = () => {
     setFilter({
