@@ -1,12 +1,16 @@
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
 
 import { useRef, useState, useEffect } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
   const [initialValueState, setInitialValueState] = useState(initialValue);
   const editorRef = useRef(null);
+  const { state } = useTheme();
+  const [editorKey, setEditorKey] = useState("editor-light");
 
   useEffect(() => {
     if (editorRef.current) {
@@ -20,6 +24,10 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
     }
   }, [initialValue]);
 
+  useEffect(() => {
+    setEditorKey(`editor-${state.isDarkMode ? "dark" : "light"}`);
+  }, [state.isDarkMode]);
+
   const handleEditorChange = () => {
     const description = editorRef.current.getInstance().getMarkdown();
     onSaveDescription(description);
@@ -27,6 +35,7 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
 
   return (
     <Editor
+      key={editorKey}
       placeholder="내용을 입력해주세요."
       previewStyle="vertical"
       height="300px"
@@ -39,6 +48,7 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
         ["table", "image", "link"],
         ["code", "codeblock"],
       ]}
+      theme={state.isDarkMode ? "dark" : "light"}
       ref={editorRef}
       useCommandShortcut={true}
       onChange={handleEditorChange}
