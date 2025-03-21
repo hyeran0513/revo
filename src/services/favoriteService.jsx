@@ -11,20 +11,20 @@ import { fetchProducts } from "./productService";
 // 찜한 상품의 모든 ID 조회
 const getWishlistProductIds = async (userId) => {
   if (!userId) {
-    return;
+    return [];
   }
 
   const userRef = doc(db, "users", userId);
   const userSnap = await getDoc(userRef);
 
-  return userSnap.exists() ? userSnap.data().wishlist : null;
+  return userSnap.exists() ? userSnap.data().wishlist || [] : [];
 };
 
 // 찜한 상품들 정보 조회
 export const getWishlist = async (userId) => {
   const productIds = await getWishlistProductIds(userId);
 
-  return fetchProducts(productIds);
+  return productIds.length > 0 ? fetchProducts(productIds) : [];
 };
 
 // 찜 버튼 제어
