@@ -4,6 +4,7 @@ import SubBanner from "../../components/base/SubBanner";
 import Loading from "../../components/common/Loading";
 import { useFavoriteProduct } from "../../hooks/useFavoriteData";
 import { useSelector } from "react-redux";
+import NoData from "../../components/common/NoData";
 
 const Favorite = () => {
   const { user } = useSelector((state) => state.auth);
@@ -22,15 +23,15 @@ const Favorite = () => {
       <SubBanner bannerText="찜 목록" breadcrumb={breadcrumb} />
       {/* 상품 목록 */}
       <ProductContainer>
-        <ProductList>
-          {products?.length > 0 ? (
-            products.map((product) => (
+        {products?.length > 0 ? (
+          <ProductList>
+            {products.map((product) => (
               <ProductCard key={product.id} product={product} />
-            ))
-          ) : (
-            <p>좋아하는 항목이 없습니다.</p>
-          )}
-        </ProductList>
+            ))}
+          </ProductList>
+        ) : (
+          <NoData text="좋아하는 항목이 없습니다." icon="shoppingbag" />
+        )}
       </ProductContainer>
     </>
   );
