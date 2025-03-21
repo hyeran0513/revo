@@ -1,17 +1,6 @@
-import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { useChatList } from "../../hooks/useChatData";
-import Loading from "../common/Loading";
 
-const ChatList = ({ setChatId }) => {
-  const { user } = useSelector((state) => state.auth);
-
-  // 채팅 목록 조회
-  const { chats, loading } = useChatList(user);
-
-  // 로딩
-  if (loading) return <Loading />;
-
+const ChatList = ({ setChatId, chats }) => {
   return (
     <ChatListWrapper>
       <ChatContainer>
