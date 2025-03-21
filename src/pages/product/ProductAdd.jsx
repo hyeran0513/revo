@@ -236,6 +236,7 @@ const InputField = styled.input`
   height: 100%;
   border: 0;
   background-color: ${(props) => props.theme.inputs.background};
+  color: ${(props) => props.theme.colors.text};
 `;
 
 const SelectField = styled.select`
@@ -244,6 +245,7 @@ const SelectField = styled.select`
   height: 100%;
   border: 0;
   background-color: ${(props) => props.theme.inputs.background};
+  color: ${(props) => props.theme.colors.text};
 `;
 
 const ButtonWrap = styled.div`

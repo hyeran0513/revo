@@ -49,6 +49,7 @@ const InputBox = styled.input`
   height: 100%;
   border: 0;
   background-color: ${(props) => props.theme.inputs.background};
+  color: ${(props) => props.theme.colors.text};
 `;
 
 const PasswordButton = styled.button`
