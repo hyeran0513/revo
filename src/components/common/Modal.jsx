@@ -29,9 +29,11 @@ const Modal = ({
         <ModalBody>{children}</ModalBody>
 
         <ModalFooter>
-          <Button type="button" size="large" onClick={onConfirm}>
-            확인
-          </Button>
+          {onConfirm && (
+            <Button type="button" size="large" onClick={onConfirm}>
+              확인
+            </Button>
+          )}
         </ModalFooter>
       </ModalWrapper>
     </Overlay>
@@ -48,6 +50,7 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 `;
 
 const ModalWrapper = styled.div`

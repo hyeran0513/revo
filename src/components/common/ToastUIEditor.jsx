@@ -24,9 +24,9 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
     }
   }, [initialValue]);
 
-  useEffect(() => {
-    setEditorKey(`editor-${state.isDarkMode ? "dark" : "light"}`);
-  }, [state.isDarkMode]);
+  // useEffect(() => {
+  //   setEditorKey(`editor-${state.isDarkMode ? "dark" : "light"}`);
+  // }, [state.isDarkMode]);
 
   const handleEditorChange = () => {
     const description = editorRef.current.getInstance().getMarkdown();
@@ -35,7 +35,7 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
 
   return (
     <Editor
-      key={editorKey}
+      // key={editorKey}
       placeholder="내용을 입력해주세요."
       previewStyle="vertical"
       height="300px"
@@ -48,7 +48,7 @@ const ToastUIEditor = ({ initialValue = "", onSaveDescription }) => {
         ["table", "image", "link"],
         ["code", "codeblock"],
       ]}
-      theme={state.isDarkMode ? "dark" : "light"}
+      // theme={state.isDarkMode ? "dark" : "light"}
       ref={editorRef}
       useCommandShortcut={true}
       onChange={handleEditorChange}

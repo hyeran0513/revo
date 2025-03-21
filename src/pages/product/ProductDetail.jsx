@@ -118,7 +118,8 @@ const ProductDetail = () => {
         <ProductInfo>
           {/* 판매자 */}
           <ProductSeller>
-            {userInfo && <p>{userInfo.username}</p>}
+            {userInfo && <p>{userInfo?.username}</p>}
+            {product?.location}
           </ProductSeller>
 
           {/* 상품명 */}

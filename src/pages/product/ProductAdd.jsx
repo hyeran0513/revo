@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { serverTimestamp } from "firebase/firestore";
 import { useProductForm } from "../../hooks/useProductForm";
@@ -9,16 +9,31 @@ import { useSelector } from "react-redux";
 import SubBanner from "../../components/base/SubBanner";
 import { useAddProductsData } from "../../hooks/useProductData";
 import Loading from "../../components/common/Loading";
+import Modal from "../../components/common/Modal";
+import Postcode from "../../components/common/Postcode";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useProductForm();
   const { user } = useSelector((state) => state.auth);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const breadcrumb = [
     { link: "/", text: "홈" },
     { link: "/product/add", text: "상품 추가" },
   ];
+
+  // 위치
+  const handleLocation = () => {
+    setModalOpen(true);
+  };
+
+  // 주소 선택
+  const handleAddressSelect = (data) => {
+    const fullAddress = data.address;
+    dispatch({ type: "SET_LOCATION", payload: fullAddress });
+    setModalOpen(false);
+  };
 
   // 상품 데이터 추가
   const { mutate, isLoading, error } = useAddProductsData();
@@ -157,9 +172,7 @@ const ProductAdd = () => {
             <InputField
               type="text"
               value={state.location}
-              onChange={(e) =>
-                dispatch({ type: "SET_LOCATION", payload: e.target.value })
-              }
+              onClick={handleLocation}
               required
             />
           </FormField>
@@ -183,6 +196,17 @@ const ProductAdd = () => {
           </Button>
         </ButtonWrap>
       </FormContainer>
+
+      {/* 모달 */}
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="주소 찾기"
+      >
+        <ModalContent>
+          <Postcode onComplete={handleAddressSelect} />
+        </ModalContent>
+      </Modal>
     </ProductAddWrapper>
   );
 };
@@ -236,6 +260,14 @@ const FormLabel = styled.label`
   display: inline-block;
   margin-bottom: 8px;
   font-size: 14px;
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
 `;
 
 export default ProductAdd;
