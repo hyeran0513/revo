@@ -51,9 +51,18 @@ const ProductAdd = () => {
       location: state.location,
       createdAt: serverTimestamp(),
       sellerId: state.sellerId,
+      images: state.images,
     };
 
     mutate(data);
+  };
+
+  const handleImageChange = (index, event) => {
+    dispatch({
+      type: "SET_IMAGE_URL",
+      index,
+      payload: event.target.value,
+    });
   };
 
   // 상품 설명 저장
@@ -65,6 +74,12 @@ const ProductAdd = () => {
   useEffect(() => {
     dispatch({ type: "SET_SELLERID", payload: user.uid });
   }, [user.uid]);
+
+  useEffect(() => {
+    if (state.image === undefined) {
+      dispatch({ type: "SET_IMAGE", payload: "" });
+    }
+  }, [state.image]);
 
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;
@@ -95,6 +110,7 @@ const ProductAdd = () => {
               onChange={(e) =>
                 dispatch({ type: "SET_TITLE", payload: e.target.value })
               }
+              placeholder={state.placeholder.title}
               required
             />
           </FormField>
@@ -119,6 +135,7 @@ const ProductAdd = () => {
               onChange={(e) =>
                 dispatch({ type: "SET_PRICE", payload: e.target.value })
               }
+              placeholder={state.placeholder.price}
               required
             />
           </FormField>
@@ -173,9 +190,26 @@ const ProductAdd = () => {
               type="text"
               value={state.location}
               onClick={handleLocation}
+              placeholder={state.placeholder.location}
               required
             />
           </FormField>
+        </FormBox>
+
+        {/* 상품 이미지 */}
+        <FormBox>
+          <FormLabel>상품 이미지</FormLabel>
+          {state.images.map((image, index) => (
+            <FormField>
+              <InputField
+                type="text"
+                value={image}
+                onChange={(e) => handleImageChange(index, e)}
+                placeholder="대표 이미지 URL를 넣어주세요."
+                required
+              />
+            </FormField>
+          ))}
         </FormBox>
 
         {/* 버튼 영역 */}

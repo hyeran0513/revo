@@ -19,9 +19,12 @@ const ProductEdit = () => {
 
   // 마운트 시, 상품 데이터 로드
   useEffect(() => {
+    console.log("why");
     if (id) {
       const loadProductData = async () => {
         const productData = await fetchProduct(id);
+
+        console.log("??" + JSON.stringify(productData.images));
 
         if (productData) {
           dispatch({ type: "SET_TITLE", payload: productData.title });
@@ -32,7 +35,10 @@ const ProductEdit = () => {
           dispatch({ type: "SET_PRICE", payload: productData.price });
           dispatch({ type: "SET_CATEGORY", payload: productData.category });
           dispatch({ type: "SET_CONDITION", payload: productData.condition });
-          dispatch({ type: "SET_IMAGES", payload: productData.images || [] });
+          dispatch({
+            type: "SET_IMAGE_URL",
+            payload: productData.images || [],
+          });
           dispatch({ type: "SET_LOCATION", payload: productData.location });
         }
       };
@@ -40,6 +46,10 @@ const ProductEdit = () => {
       loadProductData();
     }
   }, [id]);
+
+  useEffect(() => {
+    console.log("Updated state.images", state.images);
+  }, [state.images]);
 
   // 위치
   const handleLocation = () => {
@@ -66,16 +76,30 @@ const ProductEdit = () => {
       price: Number(state.price),
       category: state.category,
       condition: state.condition,
-      images: state.images,
       location: state.location,
+      images: state.images,
     };
 
     mutate(updatedData);
   };
 
+  const handleImageChange = (index, event) => {
+    dispatch({
+      type: "SET_IMAGE_URL",
+      index,
+      payload: event.target.value,
+    });
+  };
+
   const handleSaveDescription = (description) => {
     dispatch({ type: "SET_DESCRIPTION", payload: description });
   };
+
+  useEffect(() => {
+    if (state.image === undefined) {
+      dispatch({ type: "SET_IMAGE", payload: "" });
+    }
+  }, [state.image]);
 
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;
@@ -97,6 +121,7 @@ const ProductEdit = () => {
                 onChange={(e) =>
                   dispatch({ type: "SET_TITLE", payload: e.target.value })
                 }
+                placeholder={state.placeholder.title}
                 required
               />
             </FormField>
@@ -121,6 +146,7 @@ const ProductEdit = () => {
                 onChange={(e) =>
                   dispatch({ type: "SET_PRICE", payload: e.target.value })
                 }
+                placeholder={state.placeholder.price}
                 required
               />
             </FormField>
@@ -175,6 +201,21 @@ const ProductEdit = () => {
                 type="text"
                 value={state.location}
                 onClick={handleLocation}
+                placeholder={state.placeholder.location}
+                required
+              />
+            </FormField>
+          </FormBox>
+
+          {/* 상품 이미지 */}
+          <FormBox>
+            <FormLabel>상품 이미지</FormLabel>
+            <FormField>
+              <InputField
+                type="text"
+                value={state.images[0]}
+                onChange={(e) => handleImageChange(0, e)}
+                placeholder="대표 이미지 URL를 넣어주세요."
                 required
               />
             </FormField>

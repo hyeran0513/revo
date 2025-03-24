@@ -99,9 +99,9 @@ const ProductDetail = () => {
         {/* 상품 상단 */}
         <ProductTop>
           {/* 상품 썸네일 */}
-          {product?.image ? (
+          {product?.images.length > 0 ? (
             <ProductThumb>
-              <img src={product.image} alt={product?.title} />
+              <img src={product.images[0]} alt={product?.title} />
             </ProductThumb>
           ) : (
             <ProductThumbDefault>
