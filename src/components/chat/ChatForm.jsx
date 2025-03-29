@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { BiSend } from "react-icons/bi";
+import { IoMdSend } from "react-icons/io";
 import { useChatForm } from "../../hooks/useChatData";
 
 const ChatForm = ({ chatId }) => {
@@ -34,7 +34,7 @@ const ChatForm = ({ chatId }) => {
 
       {/* 전송 버튼 */}
       <FormButton type="button" onClick={() => mutate()}>
-        <BiSend /> 전송
+        <IoMdSend />
       </FormButton>
     </FormContainer>
   );
@@ -79,6 +79,10 @@ const FormButton = styled.button`
 
   &:hover {
     background-color: ${(props) => props.theme.colors.primary};
+  }
+
+  svg {
+    font-size: 20px;
   }
 `;
 

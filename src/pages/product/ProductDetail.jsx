@@ -14,6 +14,7 @@ import Loading from "../../components/common/Loading";
 import NoData from "../../components/common/NoData";
 import { useSellerData } from "../../hooks/useUserData";
 import { useProductData } from "../../hooks/useProductData";
+import { BiSolidMap, BiSolidUserCircle } from "react-icons/bi";
 
 const ProductDetail = () => {
   // URL에서 상품 ID 조회
@@ -99,79 +100,90 @@ const ProductDetail = () => {
         {/* 상품 상단 */}
         <ProductTop>
           {/* 상품 썸네일 */}
-          {product?.images.length > 0 ? (
-            <ProductThumb>
-              <img src={product.images[0]} alt={product?.title} />
-            </ProductThumb>
-          ) : (
-            <ProductThumbDefault>
-              <BiSolidImageAlt />
-            </ProductThumbDefault>
-          )}
+          <ProductThumbWrapper>
+            {product?.images.length > 0 ? (
+              <ProductThumb>
+                <img src={product.images[0]} alt={product?.title} />
+              </ProductThumb>
+            ) : (
+              <ProductThumbDefault>
+                <BiSolidImageAlt />
+              </ProductThumbDefault>
+            )}
 
-          {/* 좋아요 버튼 */}
-          <LikeButtonWrapper>
-            {user && <LikeButton productId={id} userId={user.uid} />}
-          </LikeButtonWrapper>
+            {/* 좋아요 버튼 */}
+            <LikeButtonWrapper>
+              {user && <LikeButton productId={id} userId={user.uid} />}
+            </LikeButtonWrapper>
+          </ProductThumbWrapper>
         </ProductTop>
 
-        <ProductInfo>
-          {/* 판매자 */}
-          <ProductSeller>
-            {userInfo && <p>{userInfo?.username}</p>}
-            {product?.location}
-          </ProductSeller>
-
+        <ProductDetails>
           {/* 상품명 */}
           <ProductTitle>{product?.title}</ProductTitle>
 
-          {/* 상품 설명 */}
-          <ProductContent>
-            <Viewer initialValue={product?.description} />
-          </ProductContent>
-        </ProductInfo>
+          <Badge>
+            <BiSolidMap />
+            {product?.location}
+          </Badge>
 
-        {/* 버튼 영역 */}
-        <ButtonWrap>
-          {/* type이 없으면 뒤로가기 버튼 노출, 아니면 목록으로 버튼 노출 */}
-          {type === "undefined" ? (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate(-1)}
-            >
-              뒤로 가기
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate(-1)}
-            >
-              목록으로
-            </Button>
-          )}
+          <ProductInfo>
+            {/* 판매자 */}
+            <ProductSeller>
+              <BiSolidUserCircle />
+              {userInfo && <p>{userInfo?.username}</p>}
+            </ProductSeller>
 
-          {/* 로그인 된 유저 ID와 상품 판매자의 ID가 같으면 수정하기 버튼 노출, 아니면 채팅하기 버튼 노출 */}
-          {user.uid === product.sellerId ? (
-            <Button
-              type="button"
-              onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
-            >
-              수정하기
-            </Button>
-          ) : (
-            <Button type="button" onClick={handleChat}>
-              채팅하기
-            </Button>
-          )}
-        </ButtonWrap>
+            {/* 상품 설명 */}
+            <ProductContent>
+              <Viewer initialValue={product?.description} />
+            </ProductContent>
+          </ProductInfo>
+
+          {/* 버튼 영역 */}
+          <ButtonWrap>
+            {/* type이 없으면 뒤로가기 버튼 노출, 아니면 목록으로 버튼 노출 */}
+            {type === "undefined" ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate(-1)}
+              >
+                뒤로 가기
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate(-1)}
+              >
+                목록으로
+              </Button>
+            )}
+
+            {/* 로그인 된 유저 ID와 상품 판매자의 ID가 같으면 수정하기 버튼 노출, 아니면 채팅하기 버튼 노출 */}
+            {user.uid === product.sellerId ? (
+              <Button
+                type="button"
+                onClick={() => navigate(`/product/${id}/edit?type=${type}`)}
+              >
+                수정하기
+              </Button>
+            ) : (
+              <Button type="button" onClick={handleChat}>
+                채팅하기
+              </Button>
+            )}
+          </ButtonWrap>
+        </ProductDetails>
       </ProductContainer>
     </>
   );
 };
 
 const ProductContainer = styled.div`
+  display: flex;
+  gap: 2rem;
   margin: 0 auto;
   max-width: 1200px;
 `;
@@ -183,13 +195,22 @@ const ProductInfo = styled.div`
 `;
 
 const ProductSeller = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 20px;
   border-bottom: 1px solid ${(props) => props.theme.colors.border};
+
+  svg {
+    font-size: 24px;
+    fill: ${(props) => props.theme.colors.secondary};
+  }
 `;
 
 const ProductTitle = styled.p`
-  padding: 20px;
-  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+  margin-bottom: 4px;
+  font-size: 18px;
+  font-weight: bold;
 `;
 
 const ProductContent = styled.div`
@@ -205,14 +226,16 @@ const ButtonWrap = styled.div`
   margin-top: 40px;
 `;
 
-const ProductTop = styled.div`
-  position: relative;
-`;
+const ProductTop = styled.div``;
 
 const LikeButtonWrapper = styled.div`
   position: absolute;
   bottom: 10px;
   right: 10px;
+`;
+
+const ProductThumbWrapper = styled.div`
+  position: relative;
 `;
 
 const ProductThumb = styled.div`
@@ -241,6 +264,21 @@ const ProductThumbDefault = styled.div`
     font-size: 60px;
     fill: ${(props) => props.theme.thumb.icon};
   }
+`;
+
+const Badge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: ${(props) => props.theme.colors.secondary};
+`;
+
+const ProductDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 export default ProductDetail;

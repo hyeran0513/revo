@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { formatTimestamp, formatToDate } from "../../utils/format";
+import { BiSolidUserCircle } from "react-icons/bi";
 
 const ChatBox = ({ messages, otherUsername }) => {
   const { user } = useSelector((state) => state.auth);
@@ -15,7 +16,12 @@ const ChatBox = ({ messages, otherUsername }) => {
 
   return (
     <>
-      <MessageHead>{otherUsername}</MessageHead>
+      <MessageHead>
+        <UserInfo>
+          <BiSolidUserCircle />
+          {otherUsername}
+        </UserInfo>
+      </MessageHead>
 
       <MessageBody>
         {messages.map((msg, index) => {
@@ -51,6 +57,17 @@ const ChatBox = ({ messages, otherUsername }) => {
 const MessageHead = styled.div`
   padding: 20px;
   border-bottom: 1px solid ${(props) => props.theme.colors.border};
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  svg {
+    font-size: 34px;
+    fill: ${(props) => props.theme.colors.secondary};
+  }
 `;
 
 const MessageBody = styled.div`

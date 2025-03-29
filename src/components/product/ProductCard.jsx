@@ -18,7 +18,7 @@ const ProductCard = ({ product, type }) => {
             {user && <LikeButton productId={product.id} userId={user.uid} />}
           </LikeButtonWrapper>
 
-          {product.images.length > 0 ? (
+          {product?.images?.length > 0 ? (
             <ProductThumb>
               <img src={product.images[0]} alt={product.name} />
             </ProductThumb>
